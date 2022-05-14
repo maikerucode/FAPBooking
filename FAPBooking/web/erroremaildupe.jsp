@@ -12,6 +12,6 @@
         <title>Error Page</title>
     </head>
     <body>
-        <h1 style="color:red">Sign-up failed... Username is already taken</h1>
+        <h1 style="color:red">Sign-up failed... Email is already taken</h1>
     </body>
 </html>

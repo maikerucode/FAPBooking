@@ -82,7 +82,7 @@ public class BookingServlet extends HttpServlet {
             
             // if input is a past date
             else if (checkDate.equals("max booking length")) {
-                response.sendRedirect("errormaxlength.jsp");
+                response.sendRedirect("errorbooklength.jsp");
             }
             
             // === booking =========================================

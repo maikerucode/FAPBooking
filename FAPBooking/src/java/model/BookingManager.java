@@ -44,7 +44,7 @@ public class BookingManager {
             while (ctr != roomTypeVal || unavailRooms.equals("false")) {
                 // retrieve all records of the given room type that are open
                 String query = "SELECT * FROM hotelbookingdb.room_table"
-                            + "WHERE (room_type = ? AND room_status = 'Open')";
+                            + " WHERE (room_type = ? AND room_status = 'Open')";
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, roomTypeName);
 
@@ -54,17 +54,20 @@ public class BookingManager {
                 /* if there is a reservation for that room w/ coinciding dates,
                     check another room */
                 while (resultRooms.next()) {
-                    LocalDate from = bookDateIn.minusMonths(2); // last 2 months
-                    LocalDate to = bookDateOut.plusMonths(2); // next 2 months
+                    LocalDate from = bookDateIn.minusMonths(30); // prev 30 days
+                    LocalDate to = bookDateOut.plusMonths(30); // next 30 days
+                    System.out.println("LocalDate from: " + from);
+                    System.out.println("LocalDate to: " + to);
                     
-                    // retrieve all records for that room 
+                    // retrieve all records for the room 
                     query = "SELECT * FROM hotelbookingdb.reserve_table"
-                            + " WHERE (BETWEEN ? AND ? AND room_no = ?)";
+                            + " WHERE room_no = ?"
+                            + " AND NOT (check_in > ?  OR check_out < ?)";
 
                     ps = conn.prepareStatement(query);
-                    ps.setObject(1, from);
-                    ps.setObject(2, to);
-                    ps.setString(3, resultRooms.getString("room_no"));
+                    ps.setString(1, resultRooms.getString("room_no"));
+                    ps.setObject(2, from);
+                    ps.setObject(3, to); 
 
                     ResultSet resultReserve = ps.executeQuery();
 
@@ -110,6 +113,6 @@ public class BookingManager {
     // nts: include the computation of expenses
 }
 
-// ReferenceS:
+// References:
 // https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
-// https://stackoverflow.com/questions/55909013/mysql-select-all-rows-from-this-year-to-a-specific-month-from-last-year
+// https://stackoverflow.com/questions/14208958/select-data-from-date-range-between-two-dates
