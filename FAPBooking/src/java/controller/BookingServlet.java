@@ -91,10 +91,13 @@ public class BookingServlet extends HttpServlet {
                 int sumRoomTypes = roomSingle + roomDouble + roomTriple + roomQuad;
                 LocalDate dateIn = LocalDate.of(inYear, inMonth, inDay);
                 LocalDate dateOut = LocalDate.of(outYear, outMonth, outDay);
+                System.out.println("sumRoomTypes: " + sumRoomTypes);
+                System.out.println("dateIn: " + dateIn);
+                System.out.println("dateOut: " + dateOut);
                 
                 // if the values for each room type are all 0
-                if (sumRoomTypes < 0) {
-                    response.sendRedirect("errorroom.jsp");
+                if (sumRoomTypes == 0) {
+                    response.sendRedirect("errorbookroomtypes.jsp");
                 }
 
                 // if booking is successful & there is at least 1 room type value
@@ -109,7 +112,7 @@ public class BookingServlet extends HttpServlet {
                 
                 // if the booking is not possible (ex: insufficient rooms)
                 else {
-                    response.sendRedirect(".jsp");
+                    response.sendRedirect("errorbooking.jsp");
                 }
             }
             
