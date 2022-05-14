@@ -5,7 +5,7 @@
 
 
 # sophie
-
+(05/15) -> added baseline of project (model & controller packages, JSPs, web.xml)
 
 
 # carlos
