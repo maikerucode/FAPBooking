@@ -1,6 +1,4 @@
 <%-- 
-    Document   : errorcaptcha
-    Created on : 04 8, 22, 3:02:03 PM
     Author     : star
 --%>
 
@@ -12,6 +10,6 @@
         <title>Error Page</title>
     </head>
     <body>
-        <h1 style="color:red">Incorrect Captcha... Please try again</h1>
+        <h1 style="color:red">You can't book for more than 30 days...</h1>
     </body>
 </html>
