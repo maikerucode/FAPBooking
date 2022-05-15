@@ -183,6 +183,7 @@ public class BookingManager {
             // reset pointers to default position
             resultRooms.beforeFirst(); 
             resultReserve.beforeFirst();
+            System.out.println("==========================");
             
             while (resultRooms.next() && ctr != roomTypeVal) {
                 // if there are no existing reservations for that room
@@ -204,6 +205,11 @@ public class BookingManager {
                     } while (resultReserve.next() && ctr < roomTypeVal);
                 }
             }
+            
+            System.out.println("--------------------------");
+            System.out.println("bookRooms");
+            System.out.println("roomTypeVal " + roomTypeVal);
+            System.out.println("ctr: " + ctr);
         }
         
         catch (SQLException sqle) {
