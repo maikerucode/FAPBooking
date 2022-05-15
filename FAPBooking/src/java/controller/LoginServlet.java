@@ -76,7 +76,6 @@ public class LoginServlet extends HttpServlet {
                     // check if log-in is successful
                     if (user != null) {
                         session.setAttribute("user", user);
-
                         response.sendRedirect("home.jsp");
                     }
 

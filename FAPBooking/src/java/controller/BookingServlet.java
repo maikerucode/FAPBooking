@@ -20,6 +20,8 @@ public class BookingServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession(true);
+        Booking booking = (Booking) session.getAttribute("booking"); 
+        
         ServletContext sc = getServletContext();
         Connection conn = (Connection) sc.getAttribute("conn");
         
@@ -31,83 +33,94 @@ public class BookingServlet extends HttpServlet {
             action = "";
         }
         
+        // home.jsp -> booking.jsp
         if (action.equals("Book a Room")) {
             response.sendRedirect("booking.jsp");
         }
         
-        else if (action.equals("Confirm Booking")) {
-            int inMonth = Integer.parseInt(request.getParameter("inMonth"));
-            int inDay = Integer.parseInt(request.getParameter("inDay"));
-            int inYear = Integer.parseInt(request.getParameter("inYear"));
-            int outMonth = Integer.parseInt(request.getParameter("outMonth"));
-            int outDay = Integer.parseInt(request.getParameter("outDay"));
-            int outYear = Integer.parseInt(request.getParameter("outYear"));
-            int roomSingle = Integer.parseInt(request.getParameter("roomSingle"));
-            int roomDouble = Integer.parseInt(request.getParameter("roomDouble"));
-            int roomTriple = Integer.parseInt(request.getParameter("roomTriple"));
-            int roomQuad = Integer.parseInt(request.getParameter("roomQuad"));
-            
-            System.out.println("in month: " + inMonth);
-            System.out.println("in day: " + inDay);
-            System.out.println("in year: " + inYear);
-            System.out.println("out month: " + outMonth);
-            System.out.println("out day: " + outDay);
-            System.out.println("out year: " + outYear);
-            System.out.println("room type single: " + roomSingle);
-            System.out.println("room type double: " + roomDouble);
-            System.out.println("room type triple: " + roomTriple);
-            System.out.println("room type quad: " + roomQuad);
+        else if (action.equals("Confirm Booking") || action.equals("Submit Payment")) {            
+            User user = (User) session.getAttribute("user");
+            boolean validBooking = false;
+            System.out.println("user email: " + user.getEmail());
+                    
+            // check if user tries to book while having an ongoing booking
+            if(action.equals("Confirm Booking")
+                    && bm.checkOngoing(user.getEmail(), conn)) {
+                response.sendRedirect("errorongoing.jsp");
+            }
             
             // === input validation ================================
-            
-            // result of the validation of the input dates
-            String checkDate = ev.checkDates(inMonth, inDay, inYear,
-                                outMonth, outDay, outYear);
-            
-            // if an date is invalid (ex: February 30)
-            if (checkDate.equals("invalid date")) {
-                response.sendRedirect("errordates.jsp");
-            }
-            
-            /* if check-in date is not before
-                or same as the check-out date */
-            else if (checkDate.equals("invalid date range")) {
-                response.sendRedirect("errordaterange.jsp");
-            }
-            
-            // if input is a past date
-            else if (checkDate.equals("past date")) {
-                response.sendRedirect("errordatepast.jsp");
-            }
-            
-            // if input is a past date
-            else if (checkDate.equals("max booking length")) {
-                response.sendRedirect("errorbooklength.jsp");
+            else if(action.equals("Confirm Booking")) {
+                int inMonth = Integer.parseInt(request.getParameter("inMonth"));
+                int inDay = Integer.parseInt(request.getParameter("inDay"));
+                int inYear = Integer.parseInt(request.getParameter("inYear"));
+                int outMonth = Integer.parseInt(request.getParameter("outMonth"));
+                int outDay = Integer.parseInt(request.getParameter("outDay"));
+                int outYear = Integer.parseInt(request.getParameter("outYear"));
+
+                // result of the validation of the input dates
+                String checkDate = ev.checkDates(inMonth, inDay, inYear,
+                                    outMonth, outDay, outYear);
+
+                // if an date is invalid (ex: February 30)
+                switch (checkDate) {
+                    case "invalid date":
+                        response.sendRedirect("errordates.jsp");
+                        break;
+                    case "invalid date range":
+                        response.sendRedirect("errordaterange.jsp");
+                        break;
+                    case "past date":
+                        response.sendRedirect("errordatepast.jsp");
+                        break;
+                    case "max booking length":
+                        response.sendRedirect("errorbookinglength.jsp");
+                        break;
+                    default:
+                        validBooking = true;
+                        break;
+                }
             }
             
             // === booking =========================================
-            // if the input passes the validation checks
-            else {
-                int sumRoomTypes = roomSingle + roomDouble + roomTriple + roomQuad;
-                LocalDate dateIn = LocalDate.of(inYear, inMonth, inDay);
-                LocalDate dateOut = LocalDate.of(outYear, outMonth, outDay);
-                System.out.println("sumRoomTypes: " + sumRoomTypes);
-                System.out.println("dateIn: " + dateIn);
-                System.out.println("dateOut: " + dateOut);
+            if (validBooking || action.equals("Submit Payment")) {
+                
+                if (action.equals("Confirm Booking")) {
+                    booking = new Booking();
+                    
+                    booking.setTypeSingle(Integer.parseInt(request.getParameter("roomSingle")));
+                    booking.setTypeDouble(Integer.parseInt(request.getParameter("roomDouble")));
+                    booking.setTypeTriple(Integer.parseInt(request.getParameter("roomTriple")));
+                    booking.setTypeQuad(Integer.parseInt(request.getParameter("roomQuad")));
+                    booking.setBookDateIn(Integer.parseInt(request.getParameter("inYear")),
+                            Integer.parseInt(request.getParameter("inMonth")), Integer.parseInt(request.getParameter("inDay")));
+                    booking.setBookDateOut(Integer.parseInt(request.getParameter("outYear")),
+                            Integer.parseInt(request.getParameter("outMonth")), Integer.parseInt(request.getParameter("outDay")));
+                }
                 
                 // if the values for each room type are all 0
-                if (sumRoomTypes == 0) {
-                    response.sendRedirect("errorbookroomtypes.jsp");
+                if (booking.getSumRoomTypes() == 0) {
+                    response.sendRedirect("errorbookingroomtypes.jsp");
                 }
 
-                // if booking is successful & there is at least 1 room type value
-                else if(bm.checkBooking(roomSingle, roomDouble, roomTriple,
-                                    roomQuad, dateIn, dateOut, conn)) {
+                // if there is at least 1 room of any type provided by user
+                else if(bm.checkBooking(booking, conn)) {
                     
-                    response.sendRedirect("bookingconfirm.jsp");
-                    /* nts: in bookingconfirm JSP, call bm.book() to
-                       finalize booking, but call bm.checkBooking again
-                       for double checking */
+                    if(action.equals("Confirm Booking")) {
+                        session.setAttribute("user", user);
+                        session.setAttribute("booking", booking);
+                        response.sendRedirect("bookingpayment.jsp");
+                    }
+                    
+                    else if(action.equals("Submit Payment")) {
+                        // add payment input validation methods here
+                        // if input is valid, process the booking
+                        
+                        // NTS: check if values in bm are still stored
+                        bm.book(user.getEmail());
+                        session.setAttribute("user", user);
+                        response.sendRedirect("bookingsuccess.jsp");
+                    }
                 }
                 
                 // if the booking is not possible (ex: insufficient rooms)
@@ -115,11 +128,7 @@ public class BookingServlet extends HttpServlet {
                     response.sendRedirect("errorbooking.jsp");
                 }
             }
-            
-//            nts: error page if 0 rooms for all room types
-
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

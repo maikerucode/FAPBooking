@@ -10,6 +10,8 @@
         <title>Error Page</title>
     </head>
     <body>
-        <h1 style="color:red">You can't book for more than 30 days...</h1>
+        <h1 style="color:red">You already have an ongoing booking...</h1>
+        
+        <a href="home.jsp">Return to Home Page</a>
     </body>
 </html>

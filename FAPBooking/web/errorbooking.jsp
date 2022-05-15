@@ -7,10 +7,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Booking Page</title>
+        <title>Error Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <!--online payment here (ex: gcash)-->
+        <h1 style="color:red">There are not enough rooms to satisfy
+            your booking requirements...</h1>
+        
+        <a href="booking.jsp">Return to Booking Page</a>
     </body>
 </html>
