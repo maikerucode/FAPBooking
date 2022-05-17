@@ -17,7 +17,6 @@ public class Booking {
     private LocalDate bookDateIn;
     private LocalDate bookDateOut;
 
-    private ResultSet resultRooms;
     private ResultSet resultReserve;
 
     private int total_charge;

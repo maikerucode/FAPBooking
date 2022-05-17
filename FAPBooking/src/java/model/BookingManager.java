@@ -76,6 +76,7 @@ public class BookingManager {
     // checks for available rooms of a specific room type
     public boolean checkRoom(String roomTypeName, int roomTypeVal) {
         try {
+            System.out.println("== checkRooms() ==========");
             // retrieve all records of the given room type that are open
             String query = "SELECT * FROM hotelbookingdb.room_table"
                         + " WHERE (room_type = ? AND room_status = 'Open')";
@@ -152,20 +153,18 @@ public class BookingManager {
        if user has checked out */
     
     // performs the actual booking
-    // nts: include the computation of expenses
     public void book(String email) {
         bookRooms("Single", booking.getTypeSingle(), email);
         bookRooms("Double", booking.getTypeDouble(), email);
         bookRooms("Triple", booking.getTypeTriple(), email);
         bookRooms("Quad", booking.getTypeQuad(), email);
         
-        getTotalCharges(email);
-        
-        // close all resultsets?
+        getTotalCharge(email);
     }
     
     public void bookRooms(String roomTypeName, int roomTypeVal, String email) {
         try {
+            System.out.println("== bookRooms() ===========");
             int ctr = 0;
             getRoomRates(); // get the room rates from the database
             
@@ -183,7 +182,6 @@ public class BookingManager {
             // reset pointers to default position
             resultRooms.beforeFirst(); 
             resultReserve.beforeFirst();
-            System.out.println("==========================");
             
             while (resultRooms.next() && ctr != roomTypeVal) {
                 // if there are no existing reservations for that room
@@ -207,7 +205,6 @@ public class BookingManager {
             }
             
             System.out.println("--------------------------");
-            System.out.println("bookRooms");
             System.out.println("roomTypeVal " + roomTypeVal);
             System.out.println("ctr: " + ctr);
         }
@@ -220,9 +217,7 @@ public class BookingManager {
     public void addBooking(String email) {
         try {
             /* email | room_no | room_type | check_in | check_out
-                 | total_charge | reserve_status */
-            
-            // add while loop/s here to reserve based on booking info
+                 | total_charge | reserve_status */            
             String query = "INSERT INTO hotelbookingdb.reserve_table"
                             + " VALUES(?,?,?,?,?,'Ongoing')";
             PreparedStatement ps = conn.prepareStatement(query);
@@ -233,19 +228,25 @@ public class BookingManager {
             ps.setString(5, "");
             
             ps.executeUpdate();
+            
+            System.out.println("initial total_charge: " + total_charge);
 
             switch (resultRooms.getString("room_type")) {
                 case "Single":
                     total_charge = total_charge + rateSingle;
+                    System.out.println("total_charge + rateSingle: " + total_charge);
                     break;
                 case "Double":
                     total_charge = total_charge + rateDouble;
+                    System.out.println("total_charge + rateDouble: " + total_charge);
                     break;
                 case "Triple":
                     total_charge = total_charge + rateTriple;
+                    System.out.println("total_charge + rateTriple: " + total_charge);
                     break;
                 case "Quad":
                     total_charge = total_charge + rateQuad;
+                    System.out.println("total_charge + rateQuad: " + total_charge);
                     break;
                 default:
                     break;
@@ -257,7 +258,7 @@ public class BookingManager {
         }
     }
     
-    public void getTotalCharges(String email) {        
+    public void getTotalCharge(String email) {        
         try {
             String query = "UPDATE hotelbookingdb.reserve_table"
                     + " SET total_charge = ? WHERE email = ?";
@@ -276,7 +277,8 @@ public class BookingManager {
     public void getRoomRates() {
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM hotelbookingdb.rate_table");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM hotelbookingdb.rate_table"
+                    + " WHERE room_type = 'Single'");
             rs.next();
             rateSingle = Integer.parseInt(rs.getString("room_rate"));
             
