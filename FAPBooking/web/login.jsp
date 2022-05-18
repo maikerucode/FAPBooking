@@ -42,6 +42,8 @@
         </form>
         
         <a href="signup.jsp">Not registered yet? Sign up here</a>
+        
+        <a href="welcome.jsp">Test Welcome Page</a>
     </body>
 </html>
 
