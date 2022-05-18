@@ -18,8 +18,6 @@
                 response.sendRedirect("login.jsp");
                 return;
             }
-            
-            
         %>
         
         <h1>Let's book a room, <% out.print(account.getEmail()); %>!</h1>
