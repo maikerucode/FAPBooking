@@ -19,9 +19,11 @@
                 response.sendRedirect("login.jsp");
                 return;
             }
+            
+            String role = account.getRole();
         %>
         
-        <h1>Hello, <% out.print(account.getRole()); %> <% out.print(account.getEmail()); %>!</h1>
+        <h1>Hello, <% out.print(role); %> <% out.print(account.getEmail()); %>!</h1>
         
         <!--logout button-->
         <form method="post" action="Logout">
@@ -39,10 +41,31 @@
         <form method="post" action="Booking">
             <input type="submit" name="action" value="Book a Room"/>
         </form>
+        <br>
+        
+        <!--admin dashboard button-->
+        <form method="post" action="Admin" id="adminForm">
+            <% System.out.println("Not yet done..."); %>
+            <input type="submit" name="action" value="Admin Dashboard"/>
+            <input type="hidden" name="pageNumber" value="1"/>
+        </form>    
     </body>
 </html>
 
 <script>
+var role = "<%=role%>";
+var adminForm = document.getElementById("adminForm");
+<!--document.write("JavaScript role:" + role);-->
+
+<!--show admin dashboard button if user is an admin-->
+if (role === "Guest") {
+    adminForm.style.display = "none";
+}
+
+else {
+    adminForm.style.display = "block";
+}
+
 <!--refresh the page once if the back button is used-->
 window.addEventListener( "pageshow", function ( event ) {
   var historyTraversal = event.persisted || 
@@ -61,7 +84,8 @@ if (window.history.replaceState) {
 </script>
 
 <!--
-reference:
+references:
 page refresh: https://stackoverflow.com/questions/43043113/how-to-force-reloading-a-page-when-using-browser-back-button
 JS to prevent resubmission of form: https://stackoverflow.com/questions/6320113/how-to-prevent-form-resubmission-when-page-is-refreshed-f5-ctrlr
+hide & show content: https://www.washington.edu/accesscomputing/webd2/student/unit5/module2/lesson5.html
 -->
