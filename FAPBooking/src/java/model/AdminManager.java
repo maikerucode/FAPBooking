@@ -50,14 +50,16 @@ public class AdminManager {
             String query;
             if (tableName.equals("Reserve") || tableName.equals("Room")) {
                 query = "SELECT * FROM " + dbTable
-                         + " ODER BY check_in, check_out"   
+                        // 'pending' > 'ongoing' > 'done' > check_in > check_out
+                         + " ORDER BY reserve_status DESC, check_in ASC, check_out ASC"   
                          + " LIMIT " + (start - 1) + "," + end;
             } else {
                 query = "SELECT * FROM " + dbTable
                                + " LIMIT " + (start - 1) + "," + end;
             }
             
-            Statement s = conn.createStatement();
+            Statement s = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                                                ResultSet.CONCUR_READ_ONLY);
             records = s.executeQuery(query);
         }
         
@@ -68,52 +70,48 @@ public class AdminManager {
         return records;
     }
     
-    
     // edit/delete record methods
-    
+    // include confirmation of booking payment
     
     public boolean checkLast() {
-        
+        System.out.println("== am.checkLast() ===========================");
         boolean last = false;
         
         try {
-            // NTS: double check each SQL query
-            // ADJUST SQL COMMANDS FOR RESERVE & ROOM (BEC OF ORDER BY DATE)
+            // NTS: ADJUST SQL COMMANDS FOR RESERVE & ROOM (BEC OF ORDER BY DATE)
             
             // retrieve last record in table
             String query = "";
             switch (tableName) {
                 case "Reserve":
                     query = "SELECT * FROM " + dbTable
-                            + " WHERE email=(SELECT MAX(email) AND MAX(room_no)"
-                            + " FROM " + dbTable + ")";
+                            + " ORDER BY reserve_status ASC, check_in DESC,"
+                            + " check_out DESC, room_no DESC LIMIT 1";
                     break;
                 case "Room":
                     query = "SELECT * FROM " + dbTable
-                            + " WHERE email=(SELECT MAX(room_no)"
-                            + " FROM " + dbTable + ")";
+                            + " ORDER BY room_no DESC LIMIT 1";
                     break;
                 case "User":
                     query = "SELECT * FROM " + dbTable
-                            + " WHERE email=(SELECT MAX(email)"
-                            + " FROM " + dbTable + ")";
+                            + " ORDER BY email DESC LIMIT 1";
                     break;
                 default:
                     break;
             }
                 
-            Statement s = conn.createStatement();
-//            Statement s = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-//                                                ResultSet.CONCUR_READ_ONLY);
+            Statement s = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                                                ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = s.executeQuery(query);
             
-            // move pointer of "ResultSet records" to last row
-            records.last();  
-            
-            boolean rsnext;
-            boolean recordsnext;
-            
-            while ((rsnext = rs.next()) || (recordsnext = records.next())) {
+            while (rs.next() && records.next()) {
+                records.last();
+                
+                System.out.println("rs email: " + rs.getString("email"));
+                System.out.println("rs room_no: " + rs.getString("room_no"));
+                System.out.println("records room_no: " + records.getString("email"));
+                System.out.println("records room_no: " + records.getString("room_no"));
+                
                 switch (tableName) {
                     case "Reserve":
                         if (rs.getString("email").equals(records.getString("email"))
@@ -143,7 +141,7 @@ public class AdminManager {
         catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        
+        System.out.println("=============================================");
         return last;
     }
 }

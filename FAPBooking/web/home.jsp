@@ -45,9 +45,11 @@
         
         <!--admin dashboard button-->
         <form method="post" action="Admin" id="adminForm">
-            <% System.out.println("Not yet done..."); %>
+            <% out.print("Not yet done..."); %>
+            <br>
             <input type="submit" name="action" value="Admin Dashboard"/>
             <input type="hidden" name="pageNumber" value="1"/>
+            <input type="hidden" name="tableName" value="Reserve"/>
         </form>    
     </body>
 </html>

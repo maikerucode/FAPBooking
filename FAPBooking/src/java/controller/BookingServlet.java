@@ -122,7 +122,7 @@ public class BookingServlet extends HttpServlet {
                     }
                 }
                 
-                // if the booking is not possible (ex: insufficient rooms)
+                // if the booking is not possible (ex: insufficient available rooms)
                 else {
                     response.sendRedirect("errorbooking.jsp");
                 }

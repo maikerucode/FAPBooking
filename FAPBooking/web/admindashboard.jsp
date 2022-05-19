@@ -20,7 +20,9 @@
             }
 
             ResultSet rs = (ResultSet) request.getAttribute("records");
-            int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+            rs.first(); // return pointer to default position
+            boolean checkLast = (Boolean) request.getAttribute("checkLast");
+            int pageNumber = (Integer) request.getAttribute("pageNumber");
         %>
         
         <!--TBU...-->
@@ -47,9 +49,9 @@
                     <tr class="text-center">
                         <td><%= rs.getString("email") %></td>
                         <td><%= rs.getString("room_no") %></td>
-                        <td><%= rs.getString("check_in") %></td>
-                        <td><%= rs.getString("check_out") %></td>
-                        <td><%= rs.getString("total_charge") %></td>
+                        <td><%= rs.getDate("check_in") %></td>
+                        <td><%= rs.getDate("check_out") %></td>
+                        <td><%= rs.getObject("total_charge") %></td>
                         <td><%= rs.getString("reserve_status") %></td>
                         <td>
                             <div>
@@ -107,24 +109,25 @@
 
 <script>
 var pageNumber = "<%=pageNumber%>";
-var checkLast = "<%=Boolean.parseBoolean(request.getParameter("checkLast"))%>";
+var checkLast = "<%=checkLast%>";
+console.log("script checkLast: " + checkLast);
 var backButton = document.getElementById("backButton");
 var nextButton = document.getElementById("nextButton");
 <!--document.write("pageNumber: " + pageNumber);-->
 <!--document.write("checkLast: " + checkLast);-->
 
 <!--hide backButton if current page number is 1-->
-if (pageNumber === 1) {
+if (pageNumber === "1") {
     backButton.style.display = "none";
 } else {
     backButton.style.display = "block";
 }
 
 <!--hide nextButton if last page-->
-if (checkLast === true) {
-    checkLast.style.display = "none";
+if (checkLast === "true") {
+    nextButton.style.display = "none";
 } else {
-    backButton.style.display = "block";
+    nextButton.style.display = "block";
 }
 </script>    
 

@@ -76,7 +76,7 @@ public class BookingManager {
     // checks for available rooms of a specific room type
     public boolean checkRoom(String roomTypeName, int roomTypeVal) {
         try {
-            System.out.println("== checkRooms() ==========");
+            System.out.println("== bm.checkRooms() ==========================");
             // retrieve all records of the given room type that are open
             String query = "SELECT * FROM hotelbookingdb.room_table"
                         + " WHERE (room_type = ? AND room_status = 'Open')";
@@ -144,7 +144,7 @@ public class BookingManager {
         catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        
+        System.out.println("=============================================");
         return availRooms;
     }
     
@@ -164,7 +164,7 @@ public class BookingManager {
     
     public void bookRooms(String roomTypeName, int roomTypeVal, String email) {
         try {
-            System.out.println("== bookRooms() ===========");
+            System.out.println("== bm.bookRooms() ===========================");
             int ctr = 0;
             getRoomRates(); // get the room rates from the database
             
@@ -212,6 +212,8 @@ public class BookingManager {
         catch (SQLException sqle) {
             sqle.printStackTrace();
         }
+        System.out.println("== bm.bookRooms() ===========================");
+        System.out.println("=============================================");
     }
     
     public void addBooking(String email) {
@@ -219,7 +221,7 @@ public class BookingManager {
             /* email | room_no | room_type | check_in | check_out
                  | total_charge | reserve_status */            
             String query = "INSERT INTO hotelbookingdb.reserve_table"
-                            + " VALUES(?,?,?,?,?,'Ongoing')";
+                            + " VALUES(?,?,?,?,?,'Pending')";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, email);
             ps.setString(2, resultRooms.getString("room_no"));

@@ -37,9 +37,11 @@ public class AdminServlet extends HttpServlet {
         }
         
         String tableName = request.getParameter("tableName");
-        // for displaying 20 records at a time
         int pageId = Integer.parseInt(request.getParameter("pageNumber"));
         int pageTotal = 20;   // display 20 records
+        System.out.println("tableName: " + tableName);
+        System.out.println("pageId: " + pageId);
+        System.out.println("pageTotal: " + pageTotal);
         
         if (pageId == 1) { }
         else {
@@ -50,8 +52,22 @@ public class AdminServlet extends HttpServlet {
         // NTS: pass the value of pageNumber, checkLast to admindashboard jsp
         if (action.equals("Admin Dashboard")) {
             ResultSet rs = am.getRecords(pageId, pageTotal, tableName, conn);
+            boolean checkLast = am.checkLast();
             
-            // pass tableName to getTotalRecord() method
+            request.setAttribute("records", rs);
+            request.setAttribute("checkLast", checkLast);
+            request.setAttribute("pageNumber", pageId);
+            
+            System.out.println("rs: " + rs);
+            System.out.println("checkLast: " + checkLast);
+            System.out.println("pageId: " + pageId);
+            
+            request.getRequestDispatcher("admindashboard.jsp").forward(request, response);
+        }
+        
+        else {
+            // placeholder jsp destination
+            response.sendRedirect("errorconn.jsp");
         }
             
         
