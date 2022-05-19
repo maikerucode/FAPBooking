@@ -12,15 +12,18 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 import java.io.FileNotFoundException;
-
 import java.io.FileOutputStream;
+
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Map;
 
 /**
  *
@@ -57,13 +60,13 @@ public class AccountDetails {
         Document doc = new Document();
 
         //Fonts
+        Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(200, 0, 0));
+
         //Sample
 //        Font[] fonts = {
 //            new Font(),
 //            new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(0, 0, 0))
 //        };
-
-        Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(200,0,0));
 
         /*
             Font("Font-Fam", ""Font-size", "Font-type", "BaseColor(R,G,B)")
@@ -74,20 +77,35 @@ public class AccountDetails {
               Font-size: 12
               color: black
          */
-        
+        //PDF Formulation
         try {
-            //Directs PDF to Desktop
+            //PDFWriter Directs PDF to Desktop
             PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
                     + uname + "_" + dtf.format(now) + "AccountDetails.pdf"));
 
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
-           
-            //PDF Formulation
+            //PDFWriter 
+            PdfReader reader = new PdfReader("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
+                    + uname + "_" + dtf.format(now) + "AccountDetails.pdf");
+            
+            //PDFStamper
+            System.out.println("IsTampered: " + reader.isTampered());
+            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
+                    + uname + "_" + dtf.format(now) + "AccountDetails.pdf"));
+            System.out.println("IsTampered: " + reader.isTampered());
+            Map<String, String> info = reader.getInfo();
+            
+            info.put("Author", role + "_" + uname);
+            info.put("Title", "AccountDetails" + "_" + role + "_" + uname);
+            info.put("Subject", "User's Account Details");
+            stamper.setMoreInfo(info);
+            
+            //PDF Open
             doc.open();
             Paragraph par = new Paragraph();
             Paragraph header = new Paragraph("Account Details Report \n", headerFont);
-            
+
             par.add(dtf.format(now) + "\n");
 
             par.add("Welcome\n");
@@ -108,8 +126,11 @@ public class AccountDetails {
             doc.add(header);
             doc.add(par);
             doc.add(table);
+            
+            //Close
             doc.close();
-
+            stamper.close();
+            
             System.out.println("Account Details Printed");
         } catch (Exception ex) {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
