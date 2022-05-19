@@ -93,8 +93,6 @@
             </form>   
         </div>
         
-        <!--button to jsp w/ user table with edit & next/back buttons-->
-        
         <!--button to jsp w/ display prices w/ edit buttons-->
         
         <!--button to jsp w/ display available rooms-->
