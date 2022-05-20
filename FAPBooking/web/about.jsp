@@ -68,80 +68,30 @@
             </div>
 
             <div class="w3-row w3-bar w3-display-bottommiddle w3-deep-orange w3-hide-small w3-hide-medium" style="bottom:-16px">
-                <a href="#" class="w3-bar-item w3-button w3-light-grey">Home</a>
-                <a href="about.jsp" class="w3-bar-item w3-button">About</a>
+                <a href="welcome.jsp" class="w3-bar-item w3-button">Home</a>
+                <a href="#" class="w3-bar-item w3-button w3-light-grey">About</a>
                 <a href="#" class="w3-bar-item w3-button">Bookings</a>
                 <a href="#" class="w3-bar-item w3-button">Login</a>
             </div>
 
             <div class="w3-center w3-deep-orange w3-hide-large" style="max-height:30px" style="bottom:-16px">
                 <div class="w3-row w3-bar w3-deep-orange w3-light-grey" style="max-height:30px">
-                    <a href="#" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
-                    <a href="about.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">About</a>
+                    <a href="welcome.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
+                    <a href="#" class="w3-bar-item w3-button w3-light-grey" style="font-size: 10px;">About</a>
                     <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Bookings</a>
                     <a href="#" class="w3-bar-item w3-button" style="font-size: 10px;">Login</a>
                 </div>
             </div>
         </header>
+        <br><br>
         <div class="w3-content" style="max-width:700px;">
 
-            <div class="w3-container w3-margin-top w3-text-light-grey" id="rooms">
-                <h3 class="w3-marcellus">Rooms and Services</h3>
-                <p>Insert one-liner here</p>
-            </div>
-
             <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
-                <div class="w3-half w3-margin-bottom">
-                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=117vU8v1NcQSv9YnyXzQj3092p8FhplvY" alt="Norway" style="width:100%">
-                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=1TpBVL0oKnw43ENgipoT-aoN-IHwS2eQr" alt="Norway" style="width:100%">
-                    <div class="w3-container w3-white">
-                        <h3>Single Room</h3>
-<!--                        <h6 class="w3-opacity">From $99</h6>
-                        <p>Single bed</p>
-                        <p>15m<sup>2</sup></p>
-                        <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i></p>-->
-                    </div>
-                </div>
-                <div class="w3-half w3-margin-bottom">
-                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=1C4AbynYIGc1r1VDGzNl7zaOgWJZRo16P" alt="Norway" style="width:100%">
-                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=1P7gPANp86Lkzih-fhfKlvc3WBjI5D9UO" alt="Norway" style="width:100%">
-                    <div class="w3-container w3-white">
-                        <h3>Double Room</h3>
-<!--                        <h6 class="w3-opacity">From $149</h6>
-                        <p>Queen-size bed</p>
-                        <p>25m<sup>2</sup></p>
-                        <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> <i class="fa fa-tv"></i></p>-->
-                    </div>
-                </div>
-            </div>
-            <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
-                <div class="w3-half w3-margin-bottom">
-                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=15Gup0nCKhPiYhOVY1ntBgnT3GKb-ab1z" alt="Norway" style="width:100%">
-                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=1kO43zpGtLpHvwUX7QiRkwrXQWcFmD2VZ" alt="Norway" style="width:100%">
-                    <div class="w3-container w3-white">
-                        <h3>Triple Room</h3>
-<!--                        <h6 class="w3-opacity">From $99</h6>
-                        <p>Single bed</p>
-                        <p>15m<sup>2</sup></p>
-                        <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i></p>-->
-                    </div>
-                </div>
-                <div class="w3-half w3-margin-bottom">
-                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=1pDTNFArffuBcQQdPKjg_irDWZ-3lIvXw" alt="Norway" style="width:100%">
-                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=1i3iWJsjQDM-bS-684b-AwZRn4UQ1He56" alt="Norway" style="width:100%">
-                    <div class="w3-container w3-white">
-                        <h3>Quad Room</h3>
-<!--                        <h6 class="w3-opacity">From $149</h6>
-                        <p>Queen-size bed</p>
-                        <p>25m<sup>2</sup></p>
-                        <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> <i class="fa fa-tv"></i></p>-->
-                    </div>
-                </div>
                 <div class="w3-margin-bottom">
                     <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:685px">
                     <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:398px">
                     <div class="w3-container w3-white">
-                        <h3>About Us</h3>
+                        <h3>University Inn</h3>
                         <h6 class="w3-opacity">Established in 2022</h6>
                         <p>Insert more thorough overview of univ inn</p>
 
