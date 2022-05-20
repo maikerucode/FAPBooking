@@ -6,16 +6,18 @@ package reports;
 
 //Imports
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-
-import java.io.FileNotFoundException;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import java.io.FileOutputStream;
 
 import java.sql.ResultSet;
@@ -23,7 +25,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Map;
+import model.ReportManager;
 
 /**
  *
@@ -37,6 +39,9 @@ public class AccountDetails {
     String home = "";
     String currPath = System.getProperty("user.dir");
     ResultSet result;
+
+    //Document
+    Document doc = new Document();
 
     //General Constructor
     public void AccountDetails() {
@@ -56,11 +61,8 @@ public class AccountDetails {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
-        //Document
-        Document doc = new Document();
-
         //Fonts
-        Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(200, 0, 0));
+        Font headerFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, new BaseColor(200, 0, 0));
 
         //Sample
 //        Font[] fonts = {
@@ -77,34 +79,24 @@ public class AccountDetails {
               Font-size: 12
               color: black
          */
+        
         //PDF Formulation
         try {
             //PDFWriter Directs PDF to Desktop
-            PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + uname + "_" + dtf.format(now) + "AccountDetails.pdf"));
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
+                    + uname + "_" + dtf.format(now) + "_AccountDetails.pdf"));
 
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
-            //PDFWriter 
-            PdfReader reader = new PdfReader("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + uname + "_" + dtf.format(now) + "AccountDetails.pdf");
             
-            //PDFStamper
-            System.out.println("IsTampered: " + reader.isTampered());
-            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + uname + "_" + dtf.format(now) + "AccountDetails.pdf"));
-            System.out.println("IsTampered: " + reader.isTampered());
-            Map<String, String> info = reader.getInfo();
-            
-            info.put("Author", role + "_" + uname);
-            info.put("Title", "AccountDetails" + "_" + role + "_" + uname);
-            info.put("Subject", "User's Account Details");
-            stamper.setMoreInfo(info);
-            
+            //Header/Footer Event
+            HeaderFooterPageEvent eve = new HeaderFooterPageEvent();
+            writer.setPageEvent(eve);
+
             //PDF Open
             doc.open();
             Paragraph par = new Paragraph();
-            Paragraph header = new Paragraph("Account Details Report \n", headerFont);
+            Paragraph reportType = new Paragraph("Account Details \n", headerFont);
 
             par.add(dtf.format(now) + "\n");
 
@@ -123,19 +115,50 @@ public class AccountDetails {
             }
 
             //Add to doc
-            doc.add(header);
+            doc.add(reportType);
             doc.add(par);
             doc.add(table);
-            
+
             //Close
             doc.close();
-            stamper.close();
-            
+
             System.out.println("Account Details Printed");
         } catch (Exception ex) {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
+    }
+
+    public class HeaderFooterPageEvent extends PdfPageEventHelper {
+
+        @Override //Header
+        public void onStartPage(PdfWriter writer, Document document) {
+            PdfPTable tableHeader = new PdfPTable(1);
+            Font fontTitle = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, new BaseColor(0, 0, 0));
+            Font subTitle = new Font(Font.FontFamily.HELVETICA, 18, Font.ITALIC);
+
+            PdfPCell cCompany = new PdfPCell(new Phrase("University Inn", fontTitle));
+            PdfPCell cSub = new PdfPCell(new Phrase("Hotel Room Booking", subTitle));
+
+            cCompany.setBorder(Rectangle.NO_BORDER);
+            cSub.setBorder(Rectangle.NO_BORDER);
+            cSub.setPadding(10);
+
+            tableHeader.addCell(cCompany);
+            tableHeader.addCell(cSub);
+
+            try {
+                doc.add(tableHeader);
+            } catch (DocumentException ex) {
+                Logger.getLogger(ReportManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        @Override //Header
+        public void onEndPage(PdfWriter writer, Document document) {
+            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("page " + document.getPageNumber()), 550, 30, 0);
+        }
+
     }
 
 }
