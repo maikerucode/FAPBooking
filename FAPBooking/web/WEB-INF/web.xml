@@ -69,6 +69,10 @@
         <servlet-name>BookingServlet</servlet-name>
         <servlet-class>controller.BookingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>controller.AdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -88,6 +92,10 @@
     <servlet-mapping>
         <servlet-name>BookingServlet</servlet-name>
         <url-pattern>/Booking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/Admin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
