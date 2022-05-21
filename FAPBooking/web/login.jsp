@@ -87,7 +87,7 @@
             <div class="w3-row w3-bar w3-display-bottommiddle w3-deep-orange w3-hide-small w3-hide-medium" style="bottom:-16px">
                 <a href="welcome.jsp" class="w3-bar-item w3-button">Home</a>
                 <a href="about.jsp" class="w3-bar-item w3-button">About</a>
-                <a href="#" class="w3-bar-item w3-button">Book Now</a>
+                <a href="booking.jsp" class="w3-bar-item w3-button">Book Now</a>
                 <a href="#" class="w3-bar-item w3-button w3-light-grey">Login</a>
             </div>
 
@@ -95,7 +95,7 @@
                 <div class="w3-row w3-bar w3-deep-orange" style="max-height:30px">
                     <a href="welcome.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
                     <a href="about.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">About</a>
-                    <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Book Now</a>
+                    <a href="booking.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Book Now</a>
                     <a href="#" class="w3-bar-item w3-button w3-light-grey" style="font-size: 10px;">Login</a>
                 </div>
             </div>
