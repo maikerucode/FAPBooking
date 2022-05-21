@@ -19,6 +19,7 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import java.io.FileOutputStream;
+import java.sql.Date;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
@@ -31,103 +32,120 @@ import model.ReportManager;
  *
  * @author Lenovo
  */
-public class AccountDetails {
+public class MonthlyPrefferredRooms {
 
     //Variables
-    String firstname = "";
-    String lastname = "";
-    String email = "";
-    int phonenumber = 0;
-    String role = "";
-    String home = "";
+    String email;
+    String role;
+    
+    //type
+    String firstType;
+    String secondType;
+    String thirdType;
+    String fourthType;
+    
+    //quantity per type
+    int firstCount;
+    int secondCount;
+    int thirdCount;
+    int fourthCount;
     ResultSet result;
 
     //Document
     Document doc = new Document();
 
     //General Constructor
-    public void AccountDetails() {
+    public void MonthlyPrefferredRooms() {
     }
 
-    public void AccountDetails(String firstname, String lastname, String email, int phonenumber, String role, ResultSet result) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public void MonthlyPrefferredRooms(String email, String role, 
+                                        String firstType, String secondType, String thirdType, String fourthType,
+                                        int firstCount, int secondCount, int thirdCount, int forthCount, ResultSet result) {
         this.email = email;
-        this.phonenumber = phonenumber;
         this.role = role;
-
+        
+        this.firstType = firstType;
+        this.secondType = secondType;
+        this.thirdType = thirdType;
+        this.fourthType = fourthType;
+        
+        this.firstCount = firstCount;
+        this.secondCount = secondCount;
+        this.thirdCount = thirdCount;
+        this.fourthCount = forthCount;
+        
         //Debugging
-        System.out.println("AccountDetails.java");
-        System.out.println("Username: " + this.email);
+        System.out.println("MonthlyPrefferredRooms.java");
+        System.out.println("Username: " + this.email + "\n");
         System.out.println("Role: " + this.role + "\n");
-
+        
+        //Quantity
+        System.out.println("First Count: " + this.firstCount + "\n");
+        System.out.println("Second Count: " + this.secondCount + "\n");
+        System.out.println("Third Count: " + this.thirdCount + "\n");
+        System.out.println("Forth Count" + this.fourthCount + "\n");
+        
+        //Type
+        System.out.println("First Type: " + this.firstType + "\n");
+        System.out.println("Second Type: " + this.secondType + "\n");
+        System.out.println("Third Type: " + this.thirdType + "\n");
+        System.out.println("Forth Type" + this.fourthType + "\n");
+        
         //Date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
         //Fonts
-        Font headerFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, new BaseColor(200, 0, 0));
-
-        //Sample
-//        Font[] fonts = {
-//            new Font(),
-//            new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(0, 0, 0))
-//        };
-
-        /*
-            Font("Font-Fam", ""Font-size", "Font-type", "BaseColor(R,G,B)")
-                RGB Max Val - 255
-                
-            Default
-              Font-Fam: Helvetica
-              Font-size: 12
-              color: black
-         */
+        Font headerFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, new BaseColor(200, 0, 0));
+        Font bodyFont = new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC);
+        
         //PDF Formulation
         try {
             //PDFWriter Directs PDF to Desktop
             PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + email + "_" + dtf.format(now) + "_AccountDetails.pdf"));
+                    + email + "_" + dtf.format(now) + "MonthlyPrefferredRooms.pdf"));
 
-            //Directs PDF to currect project directory (Tentative)
-            //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
             //Header/Footer Event
-            HeaderFooterPageEvent eve = new HeaderFooterPageEvent();
+            MonthlyPrefferredRooms.HeaderFooterPageEvent eve = new MonthlyPrefferredRooms.HeaderFooterPageEvent();
             writer.setPageEvent(eve);
 
             //PDF Open
             doc.open();
-            Paragraph reportType = new Paragraph("Account Details: \n", headerFont);
-            Paragraph introduction = new Paragraph();            
-            
-            introduction.add("Date and Time: " + dtf.format(now) + "\n\n");
+            Paragraph reportType = new Paragraph("Monthly Prefferred Rooms: \n", headerFont);
+            Paragraph introduction = new Paragraph();
+            Paragraph body = new Paragraph();
+
+            introduction.add(dtf.format(now) + "\n");
 
             //User
             introduction.add("Welcome\n");
             introduction.add("User: " + email + "\n");
             introduction.add("Role: " + this.role + "\n");
-            
+
             //Tables
             PdfPTable table = new PdfPTable(2);
-            table.addCell("Name");
-            table.addCell("Role");
+            table.addCell("Type");
+            table.addCell("Quantity");
             
-
-            while (result.next()) {
-                table.addCell(result.getString("username"));
-                table.addCell(result.getString("role"));
-            }
-
+            //Table Input
+            table.addCell(firstType);
+            table.addCell(Integer.toString(firstCount));
+            table.addCell(secondType);
+            table.addCell(Integer.toString(secondCount));
+            table.addCell(thirdType);
+            table.addCell(Integer.toString(thirdCount));
+            table.addCell(fourthType);
+            table.addCell(Integer.toString(fourthCount));
+            
             //Add to doc
             doc.add(reportType);
             doc.add(introduction);
-            doc.add(table);
 
             //Close
             doc.close();
-
-            System.out.println("Account Details Printed");
-        } catch (Exception ex) {
+            
+            System.out.println("Monthly Prefferred Rooms Printed");
+            } catch (Exception ex) {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
@@ -158,11 +176,10 @@ public class AccountDetails {
             }
         }
 
-        @Override //Footer
+        @Override //Header
         public void onEndPage(PdfWriter writer, Document document) {
             ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("page " + document.getPageNumber()), 550, 30, 0);
         }
 
     }
-
 }

@@ -4,22 +4,20 @@
  */
 package reports;
 
-//Imports
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
-
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,34 +29,26 @@ import model.ReportManager;
  *
  * @author Lenovo
  */
-public class AccountDetails {
-
+public class AnnualNumberOfUsers {
+    
     //Variables
-    String firstname = "";
-    String lastname = "";
+    //mainModel mm = new mainModel();
     String email = "";
-    int phonenumber = 0;
     String role = "";
-    String home = "";
-    ResultSet result;
 
     //Document
     Document doc = new Document();
 
-    //General Constructor
-    public void AccountDetails() {
+    AnnualNumberOfUsers() {
     }
 
-    public void AccountDetails(String firstname, String lastname, String email, int phonenumber, String role, ResultSet result) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    AnnualNumberOfUsers(String email, String role, ResultSet result) {
         this.email = email;
-        this.phonenumber = phonenumber;
         this.role = role;
 
         //Debugging
-        System.out.println("AccountDetails.java");
-        System.out.println("Username: " + this.email);
+        System.out.println("AnnualNumberOfUsers.java");
+        System.out.println("Username: " + this.email + "\n");
         System.out.println("Role: " + this.role + "\n");
 
         //Date
@@ -66,73 +56,60 @@ public class AccountDetails {
         LocalDateTime now = LocalDateTime.now();
 
         //Fonts
-        Font headerFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, new BaseColor(200, 0, 0));
+        Font headerFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, new BaseColor(200, 0, 0));
+        Font bodyFont = new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC);
 
-        //Sample
-//        Font[] fonts = {
-//            new Font(),
-//            new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD, new BaseColor(0, 0, 0))
-//        };
-
-        /*
-            Font("Font-Fam", ""Font-size", "Font-type", "BaseColor(R,G,B)")
-                RGB Max Val - 255
-                
-            Default
-              Font-Fam: Helvetica
-              Font-size: 12
-              color: black
-         */
         //PDF Formulation
         try {
             //PDFWriter Directs PDF to Desktop
             PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + email + "_" + dtf.format(now) + "_AccountDetails.pdf"));
+                    + email + "_" + dtf.format(now) + "AnnualNumberOfUsers.pdf"));
 
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
             //Header/Footer Event
-            HeaderFooterPageEvent eve = new HeaderFooterPageEvent();
+            AnnualNumberOfUsers.HeaderFooterPageEvent eve = new AnnualNumberOfUsers.HeaderFooterPageEvent();
             writer.setPageEvent(eve);
 
             //PDF Open
             doc.open();
-            Paragraph reportType = new Paragraph("Account Details: \n", headerFont);
-            Paragraph introduction = new Paragraph();            
-            
-            introduction.add("Date and Time: " + dtf.format(now) + "\n\n");
+            Paragraph reportType = new Paragraph("Annual Number of Users: \n", headerFont);
+            Paragraph introduction = new Paragraph();
+            Paragraph body = new Paragraph();
+
+            introduction.add(dtf.format(now) + "\n");
 
             //User
             introduction.add("Welcome\n");
             introduction.add("User: " + email + "\n");
             introduction.add("Role: " + this.role + "\n");
-            
+
+            //Body
             //Tables
             PdfPTable table = new PdfPTable(2);
-            table.addCell("Name");
+            table.addCell("User");
             table.addCell("Role");
-            
 
             while (result.next()) {
-                table.addCell(result.getString("username"));
+                table.addCell(result.getString("email"));
                 table.addCell(result.getString("role"));
             }
 
             //Add to doc
             doc.add(reportType);
             doc.add(introduction);
-            doc.add(table);
+            doc.add(body);
 
             //Close
             doc.close();
 
-            System.out.println("Account Details Printed");
+            System.out.println("Annual Number of Users Printed");
         } catch (Exception ex) {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
     }
-
+    
     public class HeaderFooterPageEvent extends PdfPageEventHelper {
 
         @Override //Header
@@ -158,11 +135,10 @@ public class AccountDetails {
             }
         }
 
-        @Override //Footer
+        @Override //Header
         public void onEndPage(PdfWriter writer, Document document) {
             ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("page " + document.getPageNumber()), 550, 30, 0);
         }
 
     }
-
 }
