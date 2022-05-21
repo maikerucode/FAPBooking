@@ -41,12 +41,10 @@
         <form method="post" action="Booking">
             <input type="submit" name="action" value="Book a Room"/>
         </form>
-        <br>
+        <br><br>
         
         <!--admin dashboard button-->
         <form method="post" action="Admin" id="adminForm">
-            <% out.print("Not yet done..."); %>
-            <br>
             <input type="submit" name="action" value="Admin Dashboard"/>
             <input type="hidden" name="pageNumber" value="1"/>
             <input type="hidden" name="tableName" value="Reserve"/>

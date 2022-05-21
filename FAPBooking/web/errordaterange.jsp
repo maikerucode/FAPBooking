@@ -2,6 +2,7 @@
     Author     : star
 --%>
 
+<%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -10,6 +11,14 @@
         <title>Error Page</title>
     </head>
     <body>
+        <%
+            User account = (User) session.getAttribute("user");
+            if (account == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+        %>
+        
         <h1 style="color:red">Check-in date must not be
             later than the check-out date...</h1>
     </body>

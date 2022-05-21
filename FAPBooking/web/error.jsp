@@ -19,6 +19,6 @@
             }
         %>
         
-        <h1 style="color:red">Input date(s) are invalid...</h1>
+        <h1 style="color:red">Could not access the requested page...</h1>
     </body>
 </html>

@@ -19,6 +19,6 @@
             }
         %>
         
-        <h1 style="color:red">Input date(s) are invalid...</h1>
+        <h1 style="color:red">Failed to update record...</h1>
     </body>
 </html>
