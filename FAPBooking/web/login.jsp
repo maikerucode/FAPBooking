@@ -112,12 +112,13 @@
 
                 <p style="font-size: 20px">password</p>
                 <input name="password" type="password" size="40" required/>
-                <br><br>
-
+                <br>
+                
+                <p style="font-size: 20px">captcha</p>
                 <img class="w3-border" id="captcha" src="captcha.png">
                 <br><br>
 
-                <input type="text" name="captchaAnswer" required/>
+                <input type="text" name="captchaAnswer" placeholder="Enter here..." required/>
                 <br><br>
 
                 <input type="submit" name="action" value="Login"/>

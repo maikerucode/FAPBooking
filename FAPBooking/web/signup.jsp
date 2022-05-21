@@ -122,12 +122,13 @@
                     <option value="Guest">Guest</option>
                     <option value="Admin">Admin</option>
                 </select>
-                <br><br>
-
+                <br>
+                
+                <p style="font-size: 20px">captcha</p>
                 <img id="captcha" src="captcha.png">
                 <br><br>
 
-                <input type="text" name="captchaAnswer" required/>
+                <input type="text" name="captchaAnswer" placeholder="Enter here..." required/>
                 <br><br>
 
                 <input type="submit" name="action" value="Sign-up"/>
