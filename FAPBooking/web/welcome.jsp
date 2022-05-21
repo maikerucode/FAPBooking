@@ -70,7 +70,7 @@
             <div class="w3-row w3-bar w3-display-bottommiddle w3-deep-orange w3-hide-small w3-hide-medium" style="bottom:-16px">
                 <a href="#" class="w3-bar-item w3-button w3-light-grey">Home</a>
                 <a href="about.jsp" class="w3-bar-item w3-button">About</a>
-                <a href="#" class="w3-bar-item w3-button">Bookings</a>
+                <a href="#" class="w3-bar-item w3-button">Book Now</a>
                 <a href="login.jsp" class="w3-bar-item w3-button">Login</a>
             </div>
 
@@ -78,7 +78,7 @@
                 <div class="w3-row w3-bar w3-deep-orange" style="max-height:30px">
                     <a href="#" class="w3-bar-item w3-button w3-light-grey" style="font-size: 10px;">Home</a>
                     <a href="about.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">About</a>
-                    <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Bookings</a>
+                    <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Book Now</a>
                     <a href="login.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Login</a>
                 </div>
             </div>
@@ -86,8 +86,7 @@
         <div class="w3-content" style="max-width:700px;">
 
             <div class="w3-container w3-margin-top w3-text-light-grey" id="rooms">
-                <h3 class="w3-marcellus">Rooms and Services</h3>
-                <p>Insert one-liner here</p>
+                <h3 class="w3-marcellus">Rooms</h3>
             </div>
 
             <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
@@ -143,7 +142,7 @@
                     <div class="w3-container w3-white">
                         <h3>About Us</h3>
                         <h6 class="w3-opacity">Established in 2022</h6>
-                        <p>Insert more thorough overview of univ inn</p>
+                        <p>University Inn is committed to provide comfortable and hygienic accommodations, as both students and guests remain the first and foremost priority. </p>
 
 
                     </div>

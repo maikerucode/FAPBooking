@@ -36,7 +36,7 @@
             <div class="w3-row w3-bar w3-display-bottommiddle w3-deep-orange w3-hide-small w3-hide-medium" style="bottom:-16px">
                 <a href="welcome.jsp" class="w3-bar-item w3-button">Home</a>
                 <a href="about.jsp" class="w3-bar-item w3-button">About</a>
-                <a href="#" class="w3-bar-item w3-button">Bookings</a>
+                <a href="#" class="w3-bar-item w3-button">Book Now</a>
                 <a href="login.jsp" class="w3-bar-item w3-button">Login</a>
             </div>
 
@@ -44,7 +44,7 @@
                 <div class="w3-row w3-bar w3-deep-orange" style="max-height:30px">
                     <a href="welcome.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
                     <a href="about.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">About</a>
-                    <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Bookings</a>
+                    <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Book Now</a>
                     <a href="login.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Login</a>
                 </div>
             </div>
@@ -55,8 +55,6 @@
 
             <div class="w3-center">
                 <h1 style="color:red; font-size:20px">Incorrect Captcha... Please try again</h1>
-
-                <a class="w3-text-white" href="booking.jsp">Return to Booking Page</a>
 
             </div>
         </main>

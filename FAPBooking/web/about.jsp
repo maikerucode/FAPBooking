@@ -70,7 +70,7 @@
             <div class="w3-row w3-bar w3-display-bottommiddle w3-deep-orange w3-hide-small w3-hide-medium" style="bottom:-16px">
                 <a href="welcome.jsp" class="w3-bar-item w3-button">Home</a>
                 <a href="#" class="w3-bar-item w3-button w3-light-grey">About</a>
-                <a href="#" class="w3-bar-item w3-button">Bookings</a>
+                <a href="#" class="w3-bar-item w3-button">Book Now</a>
                 <a href="login.jsp" class="w3-bar-item w3-button">Login</a>
             </div>
 
@@ -78,7 +78,7 @@
                 <div class="w3-row w3-bar w3-deep-orange" style="max-height:30px">
                     <a href="welcome.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
                     <a href="#" class="w3-bar-item w3-button w3-light-grey" style="font-size: 10px;">About</a>
-                    <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Bookings</a>
+                    <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Book Now</a>
                     <a href="login.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Login</a>
                 </div>
             </div>
@@ -93,7 +93,9 @@
                     <div class="w3-container w3-white">
                         <h3>University Inn</h3>
                         <h6 class="w3-opacity">Established in 2022</h6>
-                        <p>Insert more thorough overview of univ inn</p>
+                        <p>University Inn is committed to provide comfortable and hygienic accommodations, as students and guests remain the first and foremost priority. The hotel applies more stringent sanitation protocols to protect and secure the guests’ welfare.
+
+Guests are assured of comfort, luxury and impeccable service at the University Inn. Stay and experience the renowned Fueled by Passion Service by the hotel's gracious associates.</p>
 
 
                     </div>
