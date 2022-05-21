@@ -57,7 +57,7 @@
     </head>
     <body>
         <header class="w3-display-container w3-content w3-center" style="max-width:1600px">
-            <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-height:450px">
+            <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-width: 100%">
             <div class="w3-display-middle w3-padding w3-border w3-wide w3-text-light-grey w3-center w3-hide-medium w3-hide-small">
                 <h1 class="w3-hide-medium w3-hide-small w3-xxlarge w3-marcellus">University Inn</h1>
                 <h3 class="w3-hide-medium w3-hide-small">yes. welcome.</h3>
@@ -127,8 +127,8 @@
                     </div>
                 </div>
                 <div class="w3-half w3-margin-bottom">
-                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=1pDTNFArffuBcQQdPKjg_irDWZ-3lIvXw" alt="Norway" style="width:100%">
-                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=1i3iWJsjQDM-bS-684b-AwZRn4UQ1He56" alt="Norway" style="width:100%">
+                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=1pDTNFArffuBcQQdPKjg_irDWZ-3lIvXw" alt="Norway" style="width:100%; object-fit: cover">
+                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=1i3iWJsjQDM-bS-684b-AwZRn4UQ1He56" alt="Norway" style="width:100%; object-fit: cover">
                     <div class="w3-container w3-white">
                         <h3>Quad Room</h3>
 <!--                        <h6 class="w3-opacity">From $149</h6>
@@ -138,8 +138,8 @@
                     </div>
                 </div>
                 <div class="w3-margin-bottom">
-                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:685px">
-                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:398px">
+                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:100%">
+                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:100%">
                     <div class="w3-container w3-white">
                         <h3>About Us</h3>
                         <h6 class="w3-opacity">Established in 2022</h6>

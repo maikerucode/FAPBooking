@@ -88,8 +88,8 @@
 
             <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
                 <div class="w3-margin-bottom">
-                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:685px">
-                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:398px">
+                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:100%">
+                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:100%">
                     <div class="w3-container w3-white">
                         <h3>University Inn</h3>
                         <h6 class="w3-opacity">Established in 2022</h6>
