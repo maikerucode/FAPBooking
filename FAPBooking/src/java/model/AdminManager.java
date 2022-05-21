@@ -22,12 +22,9 @@ public class AdminManager {
     
     public ResultSet getRecords(int start, int end,
                                     String tableName, Connection conn) {
-        
         this.conn = conn;
         this.tableName = tableName;
         records = null;
-        
-        // TBU...
         
         switch (tableName) {
             case "Reserve":
@@ -48,10 +45,10 @@ public class AdminManager {
         
         try {
             String query;
-            if (tableName.equals("Reserve") || tableName.equals("Room")) {
+            if (tableName.equals("Reserve")) {
                 query = "SELECT * FROM " + dbTable
-                        // 'pending' > 'ongoing' > 'done' > check_in > check_out
-                         + " ORDER BY reserve_status DESC, check_in ASC, check_out ASC"   
+                        // 'pending' > 'ongoing' > 'done' > check_in > check_out > room_no
+                         + " ORDER BY reserve_status DESC, check_in ASC, check_out ASC, room_no ASC"   
                          + " LIMIT " + (start - 1) + "," + end;
             } else {
                 query = "SELECT * FROM " + dbTable
@@ -73,8 +70,63 @@ public class AdminManager {
     // edit/delete record methods
     // include confirmation of booking payment
     
+    public boolean deleteRecord(String tableName, Object val, Connection conn) {
+        this.conn = conn;
+        String col = "";
+        
+        switch (tableName) {
+            case "Reserve": case "User":
+                col = "email";
+                break;
+            default:
+                break;
+        }
+        
+        try {
+            String query = "DELETE FROM " +  dbTable
+                            + " WHERE " + col + " = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setObject(1, val);
+            ps.executeUpdate();
+            
+            System.out.println("record deleted!");
+            return true;
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    // for reserve_table
+    public boolean updateRecord(String tableName, Object email, 
+                                 Object reserve_status, Object ref_no, Connection conn) {
+        this.conn = conn;
+        
+        try {
+            String query = "UPDATE " +  dbTable
+                            + " SET reserve_status = ?"
+                            + " AND ref_no = ?"
+                            + " WHERE email = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setObject(1, reserve_status);
+            ps.setObject(2, ref_no);
+            ps.setObject(3, email);
+            ps.executeUpdate();
+            
+            System.out.println("record updated!");
+            return true;
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        
+        return false;
+    }
+    
     public boolean checkLast() {
-        System.out.println("== am.checkLast() ===========================");
+//        System.out.println("== am.checkLast() ===========================");
         boolean last = false;
         
         try {
@@ -87,10 +139,6 @@ public class AdminManager {
                     query = "SELECT * FROM " + dbTable
                             + " ORDER BY reserve_status ASC, check_in DESC,"
                             + " check_out DESC, room_no DESC LIMIT 1";
-                    break;
-                case "Room":
-                    query = "SELECT * FROM " + dbTable
-                            + " ORDER BY room_no DESC LIMIT 1";
                     break;
                 case "User":
                     query = "SELECT * FROM " + dbTable
@@ -106,21 +154,11 @@ public class AdminManager {
             
             while (rs.next() && records.next()) {
                 records.last();
-                
-                System.out.println("rs email: " + rs.getString("email"));
-                System.out.println("rs room_no: " + rs.getString("room_no"));
-                System.out.println("records room_no: " + records.getString("email"));
-                System.out.println("records room_no: " + records.getString("room_no"));
-                
+
                 switch (tableName) {
                     case "Reserve":
                         if (rs.getString("email").equals(records.getString("email"))
                                 && rs.getString("room_no").equals(records.getString("room_no"))) {
-                            last = true;
-                        }
-                        break;
-                    case "Room":
-                        if (rs.getString("room_no").equals(records.getString("room_no"))) {
                             last = true;
                         }
                         break;
@@ -133,15 +171,11 @@ public class AdminManager {
                         break;
                 }
             }
-            
-            // new:
-            // check if last record of "records" == last record of entire/complete table
         }
         
         catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        System.out.println("=============================================");
         return last;
     }
 }

@@ -25,19 +25,13 @@
             int pageNumber = (Integer) request.getAttribute("pageNumber");
         %>
         
-        <h1>Table of Reservations</h1>
-
+        <h1>Table of Users</h1>
+        
         <div>
             <table id="reserveTable">
                 <tr class="text-center">
                     <th>Email</th>
-                    <th>Room Number</th>
-                    <th>Check-in</th>
-                    <th>Check-out</th>
-                    <th>Total Charge</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                    <th>Reference Number</th>
+                    <th>Role</th>
                 </tr>
                 
                 <%
@@ -45,23 +39,13 @@
                 %>
                     <tr class="text-center">
                         <td><%= rs.getString("email") %></td>
-                        <td><%= rs.getString("room_no") %></td>
-                        <td><%= rs.getDate("check_in") %></td>
-                        <td><%= rs.getDate("check_out") %></td>
-                        <td><%= rs.getObject("total_charge") %></td>
-                        <td><%= rs.getString("reserve_status") %></td>
-                        <td><%= rs.getString("ref_no") %></td>
+                        <td><%= rs.getString("role") %></td>
                         <td>
                             <div>
-                                <form name="UpdateButton" method="post" action="Admin">
-                                    <input name="action" type="submit" value="Update"/>
-                                    <input type="hidden" name="tableName" value="Reserve"/>
-                                </form>
-                                
                                 <form name="DeleteButton" method="post" action="Admin"/>
                                     <input name="action" type="submit" value="Delete"/>
                                     <input name="email" type="hidden" value="<%=rs.getString("email")%>"/>
-                                    <input type="hidden" name="tableName" value="Reserve"/>
+                                    <input type="hidden" name="tableName" value="User"/>
                                 </form>
                             </div>
                         </td>
@@ -76,7 +60,7 @@
                 <input type="submit" name="action" value="Back"/>
                 <% int valBack = pageNumber - 1; %>
                 <input type="hidden" name="pageNumber" value="<%=valBack%>"/>
-                <input type="hidden" name="tableName" value="Reserve"/>
+                <input type="hidden" name="tableName" value="User"/>
             </form>
             <br>
             
@@ -84,25 +68,19 @@
                 <input type="submit" name="action" value="Next"/>
                 <% int valNext = pageNumber + 1; %>
                 <input type="hidden" name="pageNumber" value="<%=valNext%>"/>
-                <input type="hidden" name="tableName" value="Reserve"/>
+                <input type="hidden" name="tableName" value="User"/>
             </form>   
         </div>
-
-        <!--button to jsp w/ display prices w/ edit buttons-->
         
-        
-        <!--button to jsp w/ display users w/ delete button-->
-        <form name="ViewUsersButton" method="post" action="Admin"/>
-            <input type="submit" name="action" value="View Users"/>
-            <input type="hidden" name="pageNumber" value="1"/>
-            <input type="hidden" name="tableName" value="User"/>
-        </form>
-        
-        <!--button to jsp w/ display available rooms-->
-        
-        
-        <!--(??) button to create new admin account-->
-        
+        <!--return button-->
+        <div>
+            <form method="post" action="Admin" id="returnButton">
+                <input name="returnButton" type="submit" value="Return"/>
+                <input name="action" type="hidden" value="Admin Dashboard"/>
+                <input type="hidden" name="pageNumber" value="1"/>
+                <input type="hidden" name="tableName" value="Reserve"/>
+            </form>
+        </div>
     </body>
 </html>
 <script>

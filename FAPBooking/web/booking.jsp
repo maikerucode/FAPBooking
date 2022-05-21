@@ -94,6 +94,8 @@
                                     + y + "</option>");
                     out.println("<option value='" + y + "'>"
                                     + y.plusYears(1) + "</option>");
+                    out.println("<option value='" + y + "'>"
+                                    + y.plusYears(2) + "</option>");
                 %>
             </select>
             <br><br>
