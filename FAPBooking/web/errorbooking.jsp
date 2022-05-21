@@ -1,6 +1,4 @@
 <%-- 
-    Document   : errorduplicate
-    Created on : 04 8, 22, 6:44:24 PM
     Author     : star
 --%>
 
@@ -12,6 +10,9 @@
         <title>Error Page</title>
     </head>
     <body>
-        <h1 style="color:red">Sign-up failed... Username is already taken</h1>
+        <h1 style="color:red">There are not enough rooms to satisfy
+            your booking requirements...</h1>
+        
+        <a href="booking.jsp">Return to Booking Page</a>
     </body>
 </html>

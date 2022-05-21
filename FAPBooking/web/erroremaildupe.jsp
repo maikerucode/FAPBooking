@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
-    Created on : May 13, 2022, 2:40:08 PM
-    Author     : michael
+    Document   : errorduplicate
+    Created on : 04 8, 22, 6:44:24 PM
+    Author     : star
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,9 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Error Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1 style="color:red">Sign-up failed... Email is already taken</h1>
     </body>
 </html>
