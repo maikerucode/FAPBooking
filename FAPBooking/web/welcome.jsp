@@ -71,15 +71,15 @@
                 <a href="#" class="w3-bar-item w3-button w3-light-grey">Home</a>
                 <a href="about.jsp" class="w3-bar-item w3-button">About</a>
                 <a href="#" class="w3-bar-item w3-button">Bookings</a>
-                <a href="#" class="w3-bar-item w3-button">Login</a>
+                <a href="login.jsp" class="w3-bar-item w3-button">Login</a>
             </div>
 
             <div class="w3-center w3-deep-orange w3-hide-large" style="max-height:30px" style="bottom:-16px">
-                <div class="w3-row w3-bar w3-deep-orange w3-light-grey" style="max-height:30px">
-                    <a href="#" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
+                <div class="w3-row w3-bar w3-deep-orange" style="max-height:30px">
+                    <a href="#" class="w3-bar-item w3-button w3-light-grey" style="font-size: 10px;">Home</a>
                     <a href="about.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">About</a>
                     <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Bookings</a>
-                    <a href="#" class="w3-bar-item w3-button" style="font-size: 10px;">Login</a>
+                    <a href="login.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Login</a>
                 </div>
             </div>
         </header>
