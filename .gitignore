@@ -1,3 +1,5 @@
 /FAPBooking/nbproject/private/
 /FAPBooking/build/
 /FAPBooking/dist/
+FAPBooking/build/web/WEB-INF/classes/controller/ReportServlet.class
+FAPBooking/src/java/controller/ReportServlet.java
