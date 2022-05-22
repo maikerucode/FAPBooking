@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.AdminManager;
+import model.UserManager;
 
 /**
  *
@@ -17,7 +18,8 @@ import model.AdminManager;
  */
 public class AdminServlet extends HttpServlet {
 
-    AdminManager am = new AdminManager();
+    private AdminManager am;
+    private UserManager um;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -35,8 +37,11 @@ public class AdminServlet extends HttpServlet {
             action = "";
         }
         
+        am = new AdminManager();
+        
         // NTS: pass the value of pageNumber, checkLast to admindashboard jsp
-        if (action.equals("Admin Dashboard") || action.equals("View Users")
+        if (action.equals("Admin Dashboard") || action.equals("View Rooms")
+                 || action.equals("View Rates") || action.equals("View Users")
                 || action.equals("Back") || action.equals("Next")) {
             int pageId = Integer.parseInt(request.getParameter("pageNumber"));
             int pageTotal = 20;   // display 20 records
@@ -59,12 +64,22 @@ public class AdminServlet extends HttpServlet {
             System.out.println("pageId: " + pageId);
             System.out.println("checkLast: " + checkLast);
             
-            if (tableName.equals("Reserve")) {
-                request.getRequestDispatcher("admindashboard.jsp").forward(request, response);
-            } else if (tableName.equals("User")) {
-                request.getRequestDispatcher("adminviewusers.jsp").forward(request, response);
-            } else {
-                response.sendRedirect("error.jsp");
+            switch (tableName) {
+                case "Reserve":
+                    request.getRequestDispatcher("admindashboard.jsp").forward(request, response);
+                    break;
+                case "User":
+                    request.getRequestDispatcher("adminviewusers.jsp").forward(request, response);
+                    break;
+                case "Room":
+                    request.getRequestDispatcher("adminviewrooms.jsp").forward(request, response);
+                    break;
+                case "Rate":
+                    request.getRequestDispatcher("adminviewrates.jsp").forward(request, response);
+                    break;
+                default:
+                    response.sendRedirect("error.jsp");
+                    break;
             }
         }
         
@@ -92,17 +107,34 @@ public class AdminServlet extends HttpServlet {
             }
         }
         
+        else if (action.equals("Add an Admin")) {
+            String key = getServletContext().getInitParameter("securityKey");
+            String cipher = getServletContext().getInitParameter("securityCipher");
+            um = new UserManager();
+            
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            
+            boolean dupe = um.register(email, password, "Admin", key, cipher, conn);
+                        
+            if (!dupe) {
+                response.sendRedirect("successaddadmin.jsp");
+            } else {
+                response.sendRedirect("erroremaildupe.jsp");
+            }
+        }
+        
         else if (action.equals("Update")) {
             request.setAttribute("email", request.getParameter("email"));
             request.getRequestDispatcher("adminupdatereserve.jsp").forward(request, response);
         }
         
-        else if (action.equals("Update Record")) {
-            Object val1 = request.getParameter("email");
-            Object val2 = request.getParameter("reserveStatus");
-            Object val3 = request.getParameter("refNumber");
+        else if (action.equals("Update Reservation")) {
+            String email = (String) request.getParameter("email");
+            String reserveStat = (String) request.getParameter("reserveStatus");
+            String refNumber = (String) request.getParameter("refNumber");
                     
-            if (am.updateRecord(tableName, val1, val2, val3, conn)) {
+            if (am.updateReserve(tableName, email, reserveStat, refNumber, conn)) {
                 response.sendRedirect("successupdate.jsp");
             } else {
                 response.sendRedirect("errorupdate.jsp");

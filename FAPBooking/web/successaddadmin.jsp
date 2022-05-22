@@ -19,14 +19,14 @@
             }
         %>
         
-        <h1>Record is updated successfully!</h1>
+        <h1>Successfully created the admin account!</h1
         
         <br>
         <form method="post" action="Admin" id="adminForm">
             <input name="returnButton" type="submit" value="Return"/>
-            <input name="action" type="hidden" value="Admin Dashboard"/>
+            <input name="action" type="hidden" value="View Users"/>
             <input type="hidden" name="pageNumber" value="1"/>
-            <input type="hidden" name="tableName" value="Reserve"/>
+            <input type="hidden" name="tableName" value="User"/>
         </form>
     </body>
 </html>
