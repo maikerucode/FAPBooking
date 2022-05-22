@@ -24,7 +24,7 @@
         
         <div>
             <form name="UpdateRecordButton" method="post" action="Admin">
-                <p>email</p>
+                <p>Email</p>
                 <input id="emailInput" type="text" size="40" disabled/> 
 
                 <p>Reservation Status</p>
@@ -47,5 +47,5 @@
 </html>
 <script>
 var email = "<%=email%>";
-document.getElementById("emailInput").value = email
+document.getElementById("emailInput").value = email;
 </script>

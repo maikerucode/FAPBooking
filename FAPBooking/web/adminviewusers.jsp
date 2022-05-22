@@ -31,7 +31,10 @@
             <table id="userTable">
                 <tr class="text-center">
                     <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Role</th>
+                    <th>Reference Number</th>
                 </tr>
                 
                 <%
@@ -39,7 +42,10 @@
                 %>
                     <tr class="text-center">
                         <td><%= rs.getString("email") %></td>
+                        <td><%= rs.getString("firstName") %></td>
+                        <td><%= rs.getString("lastName") %></td>
                         <td><%= rs.getString("role") %></td>
+                        <td><%= rs.getString("refNumber") %></td>
                         <td>
                             <div>
                                 <form name="DeleteButton" method="post" action="Admin"/>
@@ -76,10 +82,16 @@
                 
         <!--add an admin button-->
         <form name="Add Button" method="post" action="Admin"/>
-            <p>email</p>
+            <p>Email</p>
             <input name="email" type="text" size="40" required/>
             
-            <p>password</p>
+            <p>First Name</p>
+            <input name="firstName" type="text" size="40" required/>
+            
+            <p>Last Name</p>
+            <input name="lastName" type="text" size="40" required/>
+            
+            <p>Password</p>
             <input name="password" type="password" size="40" required/>
             <br><br>
             

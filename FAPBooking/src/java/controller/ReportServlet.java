@@ -47,8 +47,7 @@ public class ReportServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         String email = user.getEmail();
         String role = user.getRole();
-        ;
-
+      
         if (action.equals("Get Report")) {
             try {
                 String dateString = "2002/01/14";
@@ -60,6 +59,16 @@ public class ReportServlet extends HttpServlet {
                 oor.OrderOfRecipt(email, role, date, role, role, 0);
                 rm.printReport(email, role, conn);
                 response.sendRedirect("reportconfirm.jsp");
+
+        // change/remove this
+        if (action.equals("Get Report")) {
+            try {
+                ReportManager rm = new ReportManager();
+                
+                // change/remove this
+                rm.printReport(email, role, conn);  
+                
+                response.sendRedirect("successreport.jsp");
             } catch (DocumentException exm) {
                 Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, exm);
                 response.sendRedirect("errorreport.jsp");

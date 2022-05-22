@@ -21,19 +21,17 @@
             }
             
             String role = account.getRole();
+            System.out.println("role is: " + role);
         %>
-        
-        <h1>Hello, <% out.print(role); %> <% out.print(account.getEmail()); %>!</h1>
-        
         <!--logout button-->
         <form method="post" action="Logout">
             <input type="submit" name="action" value="Logout"/>
         </form>
         <br>
         
-        <!--get report PDF button-->
-        <form method="post" action="Report">
-            <input type="submit" name="action" value="Get Report"/>
+        <!--user dashboard button-->
+        <form method="get" action="User">
+            <input type="submit" name="action" value="User Dashboard"/>
         </form>
         <br>
         

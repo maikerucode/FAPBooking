@@ -96,10 +96,13 @@ public class LoginServlet extends HttpServlet {
                 
                 else if (action.equals("Sign-up")) {
                 
+                    String firstName = request.getParameter("firstName");
+                    String lastName = request.getParameter("lastName");
                     String confirmPass = request.getParameter("confirmPass");
 
                     if (password.equals(confirmPass)) {
-                        boolean dupe = um.register(email, password, role, key, cipher, conn);
+                        boolean dupe = um.register(email, firstName, lastName,
+                                                    password, role, key, cipher, conn);
                         
                         if (!dupe) {
                             request.getRequestDispatcher("login.jsp").forward(request, response);

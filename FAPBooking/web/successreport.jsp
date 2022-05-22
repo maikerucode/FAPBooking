@@ -8,7 +8,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Message Page</title>
+        <title>Report Confirmation Page</title>
     </head>
     <body>
         <%
@@ -19,14 +19,6 @@
             }
         %>
         
-        <h1>Record has updated successfully!</h1>
-        
-        <br>
-        <form method="post" action="Admin" id="adminForm">
-            <input name="returnButton" type="submit" value="Return"/>
-            <input name="action" type="hidden" value="Admin Dashboard"/>
-            <input type="hidden" name="pageNumber" value="1"/>
-            <input type="hidden" name="tableName" value="Reserve"/>
-        </form>
+        <h1>Report Generated! Please check your Desktop for the file</h1>
     </body>
 </html>

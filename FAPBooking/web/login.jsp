@@ -73,6 +73,25 @@
             }
         %>
 
+        <h1>Login</h1>
+        
+        <form method="post" action="Login">
+            <p>Email</p>
+            <input name="email" type="text" size="40" required/>
+            
+            <p>Password</p>
+
+            <input name="password" type="password" size="40" required/>
+            <br><br>
+            
+            <img id="captcha" src="captcha.png">
+            <br>
+            
+            <input type="text" name="captchaAnswer" required/>
+            <br><br>
+            
+            <input type="submit" name="action" value="Login"/>
+
         <header class="w3-display-container w3-content w3-center" style="max-width:1600px">
             <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-height:450px">
             <div class="w3-display-middle w3-padding w3-border w3-wide w3-text-light-grey w3-center w3-hide-medium w3-hide-small">
@@ -125,8 +144,6 @@
             </form>
 
             <a href="signup.jsp">Not registered yet? Sign up here</a>
-            <br><br>
-
         </div>
 
         <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
