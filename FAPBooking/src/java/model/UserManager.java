@@ -36,9 +36,12 @@ public class UserManager {
             if (result.next() && password.equals(decrypt(result.getString("password"), cipher, algo))) {
                 user = new User();
                 
-                // retrieve then store the email & role
+                // retrieve then store user's account details
                 user.setEmail(email);
+                user.setFirstName(result.getString("firstName"));
+                user.setLastName(result.getString("lastName"));
                 user.setRole(result.getString("role"));
+                user.setRefNumber(result.getString("refNumber"));
             }
             
             result.close();
@@ -51,8 +54,9 @@ public class UserManager {
         return user;
     }
     
-    public boolean register(String email, String password, String role,
-                            String k, String cipher, Connection conn) {
+    public boolean register(String email, String firstName, String lastName, 
+                            String password, String role, String k, String cipher,
+                            Connection conn) {
         
         System.out.println("key: " + k);
         UserManager.key = k.getBytes();
@@ -61,12 +65,14 @@ public class UserManager {
         String newPass = encrypt(password, cipher, algo);
         
         try {
-            String query = "INSERT INTO hotelbookingdb.user_table VALUES(?,?,?)";
+            String query = "INSERT INTO hotelbookingdb.user_table VALUES(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(query);
-            
             ps.setString(1, email);
-            ps.setString(2, newPass);
-            ps.setString(3, role);
+            ps.setString(2, firstName);
+            ps.setString(3, lastName);
+            ps.setString(4, newPass);
+            ps.setString(5, role);
+            ps.setString(6, "");
             ps.executeUpdate();
             
             System.out.println("user added!");
@@ -78,6 +84,41 @@ public class UserManager {
         }
         
         return true;
+    }
+    
+    public void updateRefNumber(String refNumber, String email, Connection conn) {
+        System.out.println("new refNumber: " + refNumber);
+        
+        try {
+            String query = "UPDATE hotelbookingdb.user_table"
+                             + " SET refNumber=? WHERE email=?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, refNumber);
+            ps.setString(2, email);
+            ps.executeUpdate();
+            
+            System.out.println("reference number of user updated!");
+        } catch (SQLException sqle) {
+//            sqle.printStackTrace();
+        }
+    }
+    
+    public String getRefNumber(String email, Connection conn) {
+        String refNumber = "";
+        
+        try {   
+            String query = "SELECT * FROM hotelbookingdb.user_table WHERE email=?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, email);
+            ResultSet result = ps.executeQuery();
+            result.next();
+            
+            refNumber = result.getString("refNumber");
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        
+        return refNumber;
     }
     
     public static String encrypt(String str, String cipher, String algo) {

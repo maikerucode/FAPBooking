@@ -113,9 +113,12 @@ public class AdminServlet extends HttpServlet {
             um = new UserManager();
             
             String email = request.getParameter("email");
+            String firstName = request.getParameter("firstName");
+            String lastName = request.getParameter("lastName");
             String password = request.getParameter("password");
             
-            boolean dupe = um.register(email, password, "Admin", key, cipher, conn);
+            boolean dupe = um.register(email, firstName, lastName, password,
+                                        "Admin", key, cipher, conn);
                         
             if (!dupe) {
                 response.sendRedirect("successaddadmin.jsp");

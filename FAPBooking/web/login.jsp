@@ -24,10 +24,17 @@
         <h1>Login</h1>
         
         <form method="post" action="Login">
+<<<<<<< Updated upstream
             <p>email</p>
             <input name="email" type="text" size="40" required/>
             
             <p>password</p>
+=======
+            <p>Email</p>
+            <input name="email" type="text" size="40" required/>
+            
+            <p>Password</p>
+>>>>>>> Stashed changes
             <input name="password" type="password" size="40" required/>
             <br><br>
             
