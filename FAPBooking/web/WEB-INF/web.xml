@@ -24,7 +24,7 @@
         <init-param>
             <param-name>dbPassword</param-name>
             <!--<param-value>app</param-value>-->
-            <param-value>8700</param-value>
+            <param-value>root</param-value>
         </init-param>
         <init-param>
             <param-name>jdbcDriverURL</param-name>
@@ -42,7 +42,7 @@
         </init-param>
         <init-param>
             <param-name>databaseName</param-name>
-            <param-value>MyOnlineStoreDB</param-value>
+            <param-value>hotelbookingdb</param-value>
         </init-param>
     </servlet>
     <servlet>

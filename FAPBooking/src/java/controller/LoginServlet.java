@@ -33,6 +33,16 @@ public class LoginServlet extends HttpServlet {
         String port = config.getInitParameter("dbPort");
         String database = config.getInitParameter("databaseName");
         
+        //Debugging
+        System.out.println("driver: " + driver);
+        System.out.println("usernamae: " + username);
+        System.out.println("password: " + driver);
+        
+        System.out.println("driverUrl: " + driverUrl);
+        System.out.println("hostname: " + hostname);
+        System.out.println("port: " + port);
+        System.out.println("database: " + database);
+        
         ConnectionManager cm = new ConnectionManager();
         conn = cm.establishConn(driver, username, password, driverUrl, hostname, port, database);
         
