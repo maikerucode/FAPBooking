@@ -31,13 +31,13 @@
             <table id="reserveTable">
                 <tr class="text-center">
                     <th>Email</th>
-                    <th>Room Number</th>
+                    <th>Room No.</th>
                     <th>Check-in</th>
                     <th>Check-out</th>
                     <th>Total Charge</th>
                     <th>Status</th>
                     <th>Action</th>
-                    <th>Reference Number</th>
+                    <th>Reference No.</th>
                 </tr>
                 
                 <%
@@ -50,11 +50,11 @@
                         <td><%= rs.getDate("check_out") %></td>
                         <td><%= rs.getObject("total_charge") %></td>
                         <td><%= rs.getString("reserve_status") %></td>
-                        <td><%= rs.getString("ref_no") %></td>
                         <td>
                             <div>
                                 <form name="UpdateButton" method="post" action="Admin">
                                     <input name="action" type="submit" value="Update"/>
+                                    <input name="email" type="hidden" value="<%=rs.getString("email")%>"/>
                                     <input type="hidden" name="tableName" value="Reserve"/>
                                 </form>
                                 
@@ -65,6 +65,7 @@
                                 </form>
                             </div>
                         </td>
+                        <td><%= rs.getString("ref_no") %></td>
                     </tr>
                 <%
                     }
@@ -87,22 +88,30 @@
                 <input type="hidden" name="tableName" value="Reserve"/>
             </form>   
         </div>
-
-        <!--button to jsp w/ display prices w/ edit buttons-->
+        <br><br><br>
+                
+        <!--button to jsp w/ room table -->
+        <form name="ViewRoomsButton" method="post" action="Admin"/>
+            <input type="submit" name="action" value="View Rooms"/>
+            <input type="hidden" name="pageNumber" value="1"/>
+            <input type="hidden" name="tableName" value="Room"/>
+        </form>
+        <br><br>
         
+        <!--button to jsp w/ rate table -->
+        <form name="ViewRoomsButton" method="post" action="Admin"/>
+            <input type="submit" name="action" value="View Rates"/>
+            <input type="hidden" name="pageNumber" value="1"/>
+            <input type="hidden" name="tableName" value="Rate"/>
+        </form>
+        <br><br>
         
-        <!--button to jsp w/ display users w/ delete button-->
+        <!--button to jsp w/ user table -->
         <form name="ViewUsersButton" method="post" action="Admin"/>
             <input type="submit" name="action" value="View Users"/>
             <input type="hidden" name="pageNumber" value="1"/>
             <input type="hidden" name="tableName" value="User"/>
         </form>
-        
-        <!--button to jsp w/ display available rooms-->
-        
-        
-        <!--(??) button to create new admin account-->
-        
     </body>
 </html>
 <script>
@@ -115,7 +124,7 @@ var nextButton = document.getElementById("nextButton");
 <!--document.write("checkLast: " + checkLast);-->
 
 <!--hide backButton if current page number is 1-->
-if (pageNumber === "1") {
+if (pageNumber == "1") {
     backButton.style.display = "none";
 } else {
     backButton.style.display = "block";

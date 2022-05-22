@@ -28,7 +28,7 @@
         <h1>Table of Users</h1>
         
         <div>
-            <table id="reserveTable">
+            <table id="userTable">
                 <tr class="text-center">
                     <th>Email</th>
                     <th>Role</th>
@@ -72,6 +72,22 @@
             </form>   
         </div>
         
+        <h2>Add an admin account</h2>        
+                
+        <!--add an admin button-->
+        <form name="Add Button" method="post" action="Admin"/>
+            <p>email</p>
+            <input name="email" type="text" size="40" required/>
+            
+            <p>password</p>
+            <input name="password" type="password" size="40" required/>
+            <br><br>
+            
+            <input name="action" type="submit" value="Add an Admin"/>
+            <input type="hidden" name="tableName" value="User"/>
+        </form>        
+        <br><br>
+        
         <!--return button-->
         <div>
             <form method="post" action="Admin" id="returnButton">
@@ -93,7 +109,7 @@ var nextButton = document.getElementById("nextButton");
 <!--document.write("checkLast: " + checkLast);-->
 
 <!--hide backButton if current page number is 1-->
-if (pageNumber === "1") {
+if (pageNumber == "1") {
     backButton.style.display = "none";
 } else {
     backButton.style.display = "block";

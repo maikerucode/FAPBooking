@@ -19,7 +19,7 @@
             }
         %>
         
-        <h1>Deletion of record is successful!</h1>
+        <h1>Deletion of record(s) is successful!</h1>
         
         <br>
         <form method="post" action="Admin" id="adminForm">

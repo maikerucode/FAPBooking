@@ -17,6 +17,7 @@
                 response.sendRedirect("login.jsp");
                 return;
             }
+            String email = (String) request.getAttribute("email");
         %>
         
         <h1>Update Reservation</h1>
@@ -24,7 +25,7 @@
         <div>
             <form name="UpdateRecordButton" method="post" action="Admin">
                 <p>email</p>
-                <input name="email" id="emailInput" type="text" size="40" disabled/> 
+                <input id="emailInput" type="text" size="40" disabled/> 
 
                 <p>Reservation Status</p>
                 <select name="reserveStatus">
@@ -34,14 +35,17 @@
                 <br><br>
                 
                 <p>Reference Number</p>
-                <input name="refNumber" type="password" size="60" required/> 
-                <input name="action" type="submit" value="Update Record"/>
+                <input name="refNumber" type="text" size="60" required/> 
+                <br><br>
+                
+                <input name="action" type="submit" value="Update Reservation"/>
+                <input type="hidden" name="email" value="<%=email%>"/>
                 <input type="hidden" name="tableName" value="Reserve"/>
             </form>
         </div>
     </body>
 </html>
 <script>
-var email = "<%=request.getAttribute("email")%>";
-document.getElementById("emailInput").setAttribute("value",email);
+var email = "<%=email%>";
+document.getElementById("emailInput").value = email
 </script>
