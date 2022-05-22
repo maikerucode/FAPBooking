@@ -40,7 +40,8 @@ public class AccountDetails {
     int phonenumber = 0;
     String role = "";
     String home = "";
-    ResultSet result;
+    ResultSet userResult;
+    ResultSet reservationResult;
 
     //Document
     Document doc = new Document();
@@ -49,12 +50,14 @@ public class AccountDetails {
     public void AccountDetails() {
     }
 
-    public void AccountDetails(String firstname, String lastname, String email, int phonenumber, String role, ResultSet result) {
+    public void AccountDetails(String firstname, String lastname, String email, int phonenumber, String role, ResultSet userResult, ResultSet reservationResult) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.phonenumber = phonenumber;
         this.role = role;
+        this.userResult = userResult;
+        this.reservationResult = reservationResult;
 
         //Debugging
         System.out.println("AccountDetails.java");
@@ -98,7 +101,8 @@ public class AccountDetails {
             //PDF Open
             doc.open();
             Paragraph reportType = new Paragraph("Account Details: \n", headerFont);
-            Paragraph introduction = new Paragraph();            
+            Paragraph introduction = new Paragraph();
+            Paragraph body = new Paragraph();
             
             introduction.add("Date and Time: " + dtf.format(now) + "\n\n");
 
@@ -106,22 +110,47 @@ public class AccountDetails {
             introduction.add("Welcome\n");
             introduction.add("User: " + email + "\n");
             introduction.add("Role: " + this.role + "\n");
-            
+
             //Tables
-            PdfPTable table = new PdfPTable(2);
-            table.addCell("Name");
-            table.addCell("Role");
-            
+            PdfPTable usertbl = new PdfPTable(4);
+            PdfPTable reservationtbl = new PdfPTable(5);
 
-            while (result.next()) {
-                table.addCell(result.getString("username"));
-                table.addCell(result.getString("role"));
+            body.add("User Details");
+            //User Table
+            usertbl.addCell("Email");
+            usertbl.addCell("firstname");
+            usertbl.addCell("lastname");
+            usertbl.addCell("Role");
+
+            while (userResult.next()) {
+                usertbl.addCell(userResult.getString("email"));
+                usertbl.addCell(userResult.getString("firstname"));
+                usertbl.addCell(userResult.getString("lastname"));
+                usertbl.addCell(userResult.getString("role"));
             }
-
+            
+            body.add("Reservation Details");
+            //Reservation Table
+            usertbl.addCell("Room Number");
+            usertbl.addCell("Check In");
+            usertbl.addCell("Check Out");
+            usertbl.addCell("Total Charge");
+            usertbl.addCell("Reference Number");
+            
+            while (reservationResult.next()) {
+                usertbl.addCell(userResult.getString("room_no"));
+                usertbl.addCell(userResult.getString("check_in"));
+                usertbl.addCell(userResult.getString("check_out"));
+                usertbl.addCell(userResult.getString("total_charge"));
+                usertbl.addCell(userResult.getString("ref_no"));
+            }
+            
+            //Reservations Table
             //Add to doc
             doc.add(reportType);
             doc.add(introduction);
-            doc.add(table);
+            doc.add(usertbl);
+            doc.add(reservationtbl);
 
             //Close
             doc.close();
