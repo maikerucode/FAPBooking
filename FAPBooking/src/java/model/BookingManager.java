@@ -51,6 +51,26 @@ public class BookingManager {
         return true;
     }
 
+    //checks all reservations made by the user
+    public ResultSet userReservations(String email, Connection conn) {
+        ResultSet records = null;
+
+        if (conn != null) {
+            try {
+                String query = "SELECT * FROM hotelbookingdb.reserve_table"
+                        + " WHERE email = ?";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, email);
+                records = ps.executeQuery();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        } else {
+            System.out.println("userReservations is null: ");
+        }
+        return records;
+    }
+
     // checks the database if there are available rooms at the given date
     public boolean checkBooking(Booking booking, Connection conn) {
         this.booking = booking;
@@ -69,10 +89,10 @@ public class BookingManager {
         return (availSingle && availDouble
                 && availTriple && availQuad);
     }
-    
+
     public void book(String email) {
         getRoomRates();
-        
+
         checkRoom("Single", booking.getTypeSingle(), true, email);
         checkRoom("Double", booking.getTypeDouble(), true, email);
         checkRoom("Triple", booking.getTypeTriple(), true, email);
@@ -84,7 +104,7 @@ public class BookingManager {
 
     // checks for available rooms of a specific room type
     public boolean checkRoom(String roomTypeName, int roomTypeVal,
-                                boolean addRoom, String email) {
+            boolean addRoom, String email) {
         try {
             System.out.println("== bm.checkRooms() ==========================");
             // retrieve all records of the given room type that are open
@@ -121,9 +141,7 @@ public class BookingManager {
                     if (addRoom) {
                         addBooking(email);
                     }
-                }
-
-                // else, check for conflicting dates
+                } // else, check for conflicting dates
                 else {
                     System.out.println("resultReserve is not empty...");
                     do {
