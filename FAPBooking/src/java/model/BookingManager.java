@@ -100,9 +100,9 @@ public class BookingManager {
 
         getTotalCharge(email);
     }
-//  ==============================================================================
+        //  ==============================================================================
 
-    // checks for available rooms of a specific room type
+        // checks for available rooms of a specific room type
     public boolean checkRoom(String roomTypeName, int roomTypeVal,
             boolean addRoom, String email) {
         try {

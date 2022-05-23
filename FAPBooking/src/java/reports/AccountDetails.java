@@ -43,6 +43,7 @@ public class AccountDetails {
     String Filename;
     Connection conn;
     UserManager um = new UserManager();
+    BookingManager bm = new BookingManager();
 
     //Document
     Document doc = new Document();
@@ -61,7 +62,7 @@ public class AccountDetails {
         System.out.println("Username: " + this.email);
         System.out.println("Role: " + this.role + "\n");
         userResult = um.getSingleUser(email, conn);
-        
+        reservationResult = bm.userReservations(email, conn);
         
         //Date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -117,7 +118,7 @@ public class AccountDetails {
             PdfPTable usertbl = new PdfPTable(4);
             PdfPTable reservationtbl = new PdfPTable(5);
 
-            body.add("User Details");
+            introduction.add("User Details");
             //User Table
             usertbl.addCell("Email");
             usertbl.addCell("firstname");
@@ -131,24 +132,24 @@ public class AccountDetails {
                 usertbl.addCell(userResult.getString("role"));
             }
 
-            body.add("Reservation Details");
+            body.add("\n Reservation Details");
 
             if (reservationResult.next() == false) {
                 System.out.println("reservationResult is null");
             } else {
                 do {
                     //Reservation Table
-                    usertbl.addCell("Room Number");
-                    usertbl.addCell("Check In");
-                    usertbl.addCell("Check Out");
-                    usertbl.addCell("Total Charge");
-                    usertbl.addCell("Reference Number");
+                    reservationtbl.addCell("Room Number");
+                    reservationtbl.addCell("Check In");
+                    reservationtbl.addCell("Check Out");
+                    reservationtbl.addCell("Total Charge");
+                    reservationtbl.addCell("Reference Number");
 
-                    usertbl.addCell(userResult.getString("room_no"));
-                    usertbl.addCell(userResult.getString("check_in"));
-                    usertbl.addCell(userResult.getString("check_out"));
-                    usertbl.addCell(userResult.getString("total_charge"));
-                    usertbl.addCell(userResult.getString("ref_no"));
+                    reservationtbl.addCell(reservationResult.getString("room_no"));
+                    reservationtbl.addCell(reservationResult.getString("check_in"));
+                    reservationtbl.addCell(reservationResult.getString("check_out"));
+                    reservationtbl.addCell(reservationResult.getString("total_charge"));
+                    reservationtbl.addCell(reservationResult.getString("ref_no"));
 
                 } while (reservationResult.next());
 
@@ -159,6 +160,7 @@ public class AccountDetails {
             doc.add(reportType);
             doc.add(introduction);
             doc.add(usertbl);
+            doc.add(body);
             doc.add(reservationtbl);
 
             //Close

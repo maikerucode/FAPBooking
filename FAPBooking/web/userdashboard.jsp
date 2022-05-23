@@ -45,8 +45,8 @@
         </form>
         
         <h3>Account Details</h3>
-        <form name="GenerateAccountDetails" method="post" action="User">
-            <input name="generateAccountDetailsReport" type="submit" value="Generate Report"/>
+        <form name="GenerateAccountDetails" method="post" action="Report">
+            <input name="action" type="submit" value="Get Report"/>
         </form>
     </body>
 </html>

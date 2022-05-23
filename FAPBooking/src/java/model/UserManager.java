@@ -178,8 +178,8 @@ public class UserManager {
             if (conn != null) {
                 String query = "SELECT * FROM hotelbookingdb.user_table WHERE email = ?";
                 PreparedStatement ps = conn.prepareStatement(query);
-                result = ps.executeQuery();
                 ps.setString(1, email);
+                result = ps.executeQuery();
                 System.out.println("reference number of user updated!");
                 return result;
             } else {
