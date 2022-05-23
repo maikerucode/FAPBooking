@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Author     : star
 --%>
 
@@ -8,8 +8,52 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>University Inn</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&effect=shadow-multiple">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap" rel="stylesheet">
+
+        <style>
+            body {
+                background-color: #54240C;
+                /*654827*/
+                /*4d371d*/
+            }
+
+            h1, h3, h5, h6, a {
+                font-family: "Montserrat", serif;
+            }
+
+            .w3-marcellus {
+                /* font-family: "Lobster", Sans-serif;*/
+                font-family: 'Marcellus SC', serif;
+            }
+
+            .navbar {
+                justify-content: space-between;
+            }
+
+            .flexMain {
+                display: flex;
+                height: 768px;
+                width: 90vw;
+                margin: auto;
+                flex-wrap:wrap;
+            }
+
+            .flexItem {
+                background-color: green;
+                width: 50%;
+                height:33%;
+            }
+
+        </style>
+
     </head>
     <body>
         <%
@@ -18,13 +62,13 @@
                 response.sendRedirect("login.jsp");
                 return;
             }
-            
+
             ResultSet rs = (ResultSet) request.getAttribute("records");
             rs.beforeFirst(); // return pointer to default position
             boolean checkLast = (Boolean) request.getAttribute("checkLast");
             int pageNumber = (Integer) request.getAttribute("pageNumber");
         %>
-        
+
         <h1>Table of Reservations</h1>
 
         <div>
@@ -39,7 +83,7 @@
                     <th>Action</th>
                     <th>Reference No.</th>
                 </tr>
-                
+
                 <%
                     while (rs.next()) {
                 %>
@@ -57,7 +101,7 @@
                                     <input name="email" type="hidden" value="<%=rs.getString("email")%>"/>
                                     <input type="hidden" name="tableName" value="Reserve"/>
                                 </form>
-                                
+
                                 <form name="DeleteButton" method="post" action="Admin"/>
                                     <input name="action" type ="submit" value="Delete"/>
                                     <input name="email" type="hidden" value="<%=rs.getString("email")%>"/>
@@ -67,59 +111,46 @@
                         </td>
                         <td><%= rs.getString("MAX(ref_no)") %></td>
                     </tr>
-                <%
-                    }
-                %>
-            </table>
-            <br>
-            
-            <form method="post" action="Admin" id="backButton">
-                <input type="submit" name="action" value="Back"/>
-                <% int valBack = pageNumber - 1; %>
-                <input type="hidden" name="pageNumber" value="<%=valBack%>"/>
-                <input type="hidden" name="tableName" value="Reserve"/>
-            </form>
-            <br>
-            
-            <form method="post" action="Admin" id="nextButton">
-                <input type="submit" name="action" value="Next"/>
-                <% int valNext = pageNumber + 1; %>
-                <input type="hidden" name="pageNumber" value="<%=valNext%>"/>
-                <input type="hidden" name="tableName" value="Reserve"/>
-            </form>   
+
+                    <%
+                        }
+                    %>
+                </table>
+                <br>
+
+                <form method="post" action="Admin" id="backButton">
+                    <input type="submit" name="action" value="Back"/>
+                    <% int valBack = pageNumber - 1;%>
+                    <input type="hidden" name="pageNumber" value="<%=valBack%>"/>
+                    <input type="hidden" name="tableName" value="Reserve"/>
+                </form>
+                <br>
+
+                <form method="post" action="Admin" id="nextButton">
+                    <input type="submit" name="action" value="Next"/>
+                    <% int valNext = pageNumber + 1;%>
+                    <input type="hidden" name="pageNumber" value="<%=valNext%>"/>
+                    <input type="hidden" name="tableName" value="Reserve"/>
+                </form>
+            </div>
+
+            <!--button to jsp w/ display prices w/ edit buttons-->
+
+            <!--button to jsp w/ display available rooms-->
+
+            <!--(??) button to create new admin account-->
         </div>
-        <br><br><br>
-                
-        <!--button to jsp w/ room table -->
-        <form name="ViewRoomsButton" method="post" action="Admin"/>
-            <input type="submit" name="action" value="View Rooms"/>
-            <input type="hidden" name="pageNumber" value="1"/>
-            <input type="hidden" name="tableName" value="Room"/>
-        </form>
-        <br><br>
-        
-        <!--button to jsp w/ rate table -->
-        <form name="ViewRoomsButton" method="post" action="Admin"/>
-            <input type="submit" name="action" value="View Rates"/>
-            <input type="hidden" name="pageNumber" value="1"/>
-            <input type="hidden" name="tableName" value="Rate"/>
-        </form>
-        <br><br>
-        
-        <!--button to jsp w/ user table -->
-        <form name="ViewUsersButton" method="post" action="Admin"/>
-            <input type="submit" name="action" value="View Users"/>
-            <input type="hidden" name="pageNumber" value="1"/>
-            <input type="hidden" name="tableName" value="User"/>
-        </form>
+        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
+            <p class="w3-medium"><a href="#">Back to Top</a></p>
+        </footer>
     </body>
 </html>
 <script>
-var pageNumber = "<%=pageNumber%>";
-var checkLast = "<%=checkLast%>";
-console.log("script checkLast: " + checkLast);
-var backButton = document.getElementById("backButton");
-var nextButton = document.getElementById("nextButton");
+    var pageNumber = "<%=pageNumber%>";
+    var checkLast = "<%=checkLast%>";
+    console.log("script checkLast: " + checkLast);
+    var backButton = document.getElementById("backButton");
+    var nextButton = document.getElementById("nextButton");
 <!--document.write("pageNumber: " + pageNumber);-->
 <!--document.write("checkLast: " + checkLast);-->
 
@@ -139,15 +170,15 @@ if (checkLast === "true") {
 
 <!--refresh the page once if the back button is used-->
 window.addEventListener( "pageshow", function ( event ) {
-  var historyTraversal = event.persisted || 
-                         ( typeof window.performance != "undefined" && 
+  var historyTraversal = event.persisted ||
+                         ( typeof window.performance != "undefined" &&
                               window.performance.navigation.type === 2 );
   if ( historyTraversal ) {
     // Handle page restore.
     window.location.reload();
   }
 });
-</script>    
+</script>
 
 <!--
 references:

@@ -1,0 +1,56 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 21, 2022, 2:17:30 PM
+    Author     : michael
+*/
+
+body {
+    background-color: #54240C; 
+    /*654827*/
+    /*4d371d*/
+}
+
+h1, h3, h5, h6, a {
+    font-family: "Montserrat", serif;
+}
+
+.w3-marcellus {
+    /* font-family: "Lobster", Sans-serif;*/
+    font-family: 'Marcellus SC', serif;
+}
+
+input[type='text'] {
+    font-family: "Montserrat", serif;
+}
+
+.navbar {
+    justify-content: space-between;
+}
+
+.flexMain {
+    display: flex;
+    height: 768px;
+    width: 90vw;
+    margin: auto;
+    flex-wrap:wrap;
+}
+
+.flexItem {
+    background-color: green;
+    width: 50%;
+    height:33%;
+}
+
+.loginForm {
+    text-align: center;
+}
+
+main {
+    margin: 0 auto;
+    min-height: calc(100vh - 335.23px - 117.3px);
+
+}

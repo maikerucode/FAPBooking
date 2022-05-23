@@ -1,6 +1,6 @@
 <%-- 
-    Document   : errorconn
-    Created on : 03 22, 22, 11:26:12 AM
+    Document   : report
+    Created on : 05 2, 22, 4:49:50 PM
     Author     : star
 --%>
 
@@ -54,7 +54,7 @@
             <br><br>
 
             <div class="w3-center">
-                <h1 style="color:red; font-size:20px">Connection is null...</h1>
+                <h1 class="w3-text-green" style="font-size:20px">Report Generated! Please check your Downloads folder :)</h1>
 
                 <a class="w3-text-white" href="booking.jsp">Return to Booking Page</a>
 
