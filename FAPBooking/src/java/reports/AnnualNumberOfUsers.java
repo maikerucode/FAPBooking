@@ -35,6 +35,7 @@ public class AnnualNumberOfUsers {
     //mainModel mm = new mainModel();
     String email = "";
     String role = "";
+    String location = System.getProperty("user.home");
 
     //Document
     Document doc = new Document();
@@ -53,6 +54,7 @@ public class AnnualNumberOfUsers {
 
         //Date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtfFilename = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         LocalDateTime now = LocalDateTime.now();
 
         //Fonts
@@ -62,7 +64,7 @@ public class AnnualNumberOfUsers {
         //PDF Formulation
         try {
             //PDFWriter Directs PDF to Desktop
-            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(location + "\\Desktop\\"
                     + email + "_" + dtf.format(now) + "AnnualNumberOfUsers.pdf"));
 
             //Directs PDF to currect project directory (Tentative)
