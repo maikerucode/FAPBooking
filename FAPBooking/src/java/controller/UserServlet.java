@@ -31,22 +31,29 @@ public class UserServlet extends HttpServlet {
             action = "";
         }
         
-        um = new UserManager();
+        // check if connection is null
+        if (conn != null) {
+            um = new UserManager();
         
-        if (action.equals("User Dashboard")) {
-            String refNumber = um.getRefNumber(user.getEmail(), conn);
-            request.setAttribute("refNumber", refNumber);
-            request.getRequestDispatcher("userdashboard.jsp").forward(request, response);
-        }
-        
-        else if (action.equals("Update Reference Number")) {
-            String newRefNumber = request.getParameter("refNumber");
-            um.updateRefNumber(newRefNumber, user.getEmail(), conn);
-            response.sendRedirect("successuserupdate.jsp");
+            if (action.equals("User Dashboard")) {
+                String refNumber = um.getRefNumber(user.getEmail(), conn);
+                request.setAttribute("refNumber", refNumber);
+                request.getRequestDispatcher("userdashboard.jsp").forward(request, response);
+            }
+
+            else if (action.equals("Update Reference Number")) {
+                String newRefNumber = request.getParameter("refNumber");
+                um.updateRefNumber(newRefNumber, user.getEmail(), conn);
+                response.sendRedirect("successuserupdate.jsp");
+            }
+
+            else {
+                response.sendRedirect("error.jsp");
+            }
         }
         
         else {
-            response.sendRedirect("error.jsp");
+            response.sendRedirect("errorconn.jsp");
         }
     }
 
