@@ -43,6 +43,11 @@
             <input name="updateRefNumber" type="submit" value="Update"/>
             <input type="hidden" name="action" value="Update Reference Number"/>
         </form>
+        
+        <h3>Account Details</h3>
+        <form name="GenerateAccountDetails" method="post" action="User">
+            <input name="generateAccountDetailsReport" type="submit" value="Generate Report"/>
+        </form>
     </body>
 </html>
 <script>
