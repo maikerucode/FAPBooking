@@ -8,9 +8,6 @@ package controller;
 import com.itextpdf.text.DocumentException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -21,45 +18,32 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ReportManager;
 import model.User;
-import reports.OrderOfReceipt;
 
 /**
  *
  * @author star
  */
 public class ReportServlet extends HttpServlet {
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         HttpSession session = request.getSession(true);
         ServletContext sc = getServletContext();
         Connection conn = (Connection) sc.getAttribute("conn");
-
+        
         String action = request.getParameter("action");
         System.out.println("action is: " + action);
-
+        
         // prevents nullpointerexception to be thrown
         if (action == null) {
             action = "";
         }
-
+        
         User user = (User) session.getAttribute("user");
         String email = user.getEmail();
         String role = user.getRole();
-      
-        if (action.equals("Get Report")) {
-            try {
-                String dateString = "2002/01/14";
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                Date date = formatter.parse(dateString);
-                
-                ReportManager rm = new ReportManager();
-                OrderOfReceipt oor = new OrderOfReceipt();
-                oor.OrderOfRecipt(email, role, date, role, role, 0);
-                rm.printReport(email, role, conn);
-                response.sendRedirect("reportconfirm.jsp");
-
+        
         // change/remove this
         if (action.equals("Get Report")) {
             try {
@@ -69,11 +53,10 @@ public class ReportServlet extends HttpServlet {
                 rm.printReport(email, role, conn);  
                 
                 response.sendRedirect("successreport.jsp");
-            } catch (DocumentException exm) {
-                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, exm);
-                response.sendRedirect("errorreport.jsp");
-            } catch(ParseException pe){
-                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, pe);
+            }
+            
+            catch (DocumentException ex) {
+                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
                 response.sendRedirect("errorreport.jsp");
             }
         }

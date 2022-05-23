@@ -28,9 +28,10 @@ public class AdminManager {
         try {
             String query;
             if (tableName.equals("Reserve")) {
-                query = "SELECT * FROM " + getDBTable(tableName)
-                        // 'pending' > 'ongoing' > 'done' > check_in > check_out > email > room_no
-                         + " ORDER BY reserve_status DESC, check_in, check_out, email, room_no"   
+                query = "SELECT email, GROUP_CONCAT(room_no SEPARATOR ', '), MAX(check_in)"
+                        + " , MAX(check_out), MAX(total_charge), MAX(reserve_status), MAX(ref_no)"
+                         + " FROM " + getDBTable(tableName)
+                         + " GROUP BY email"
                          + " LIMIT " + (start - 1) + "," + end;
             } else if (tableName.equals("Rate")) {
                 query = "SELECT * FROM " + getDBTable(tableName)

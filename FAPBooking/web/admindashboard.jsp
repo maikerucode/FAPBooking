@@ -45,11 +45,11 @@
                 %>
                     <tr class="text-center">
                         <td><%= rs.getString("email") %></td>
-                        <td><%= rs.getString("room_no") %></td>
-                        <td><%= rs.getDate("check_in") %></td>
-                        <td><%= rs.getDate("check_out") %></td>
-                        <td><%= rs.getObject("total_charge") %></td>
-                        <td><%= rs.getString("reserve_status") %></td>
+                        <td><%= rs.getString("GROUP_CONCAT(room_no SEPARATOR ', ')") %></td>
+                        <td><%= rs.getDate("MAX(check_in)") %></td>
+                        <td><%= rs.getDate("MAX(check_out)") %></td>
+                        <td><%= rs.getObject("MAX(total_charge)") %></td>
+                        <td><%= rs.getString("MAX(reserve_status)") %></td>
                         <td>
                             <div>
                                 <form name="UpdateButton" method="post" action="Admin">
@@ -59,13 +59,13 @@
                                 </form>
                                 
                                 <form name="DeleteButton" method="post" action="Admin"/>
-                                    <input name="action" type="submit" value="Delete"/>
+                                    <input name="action" type ="submit" value="Delete"/>
                                     <input name="email" type="hidden" value="<%=rs.getString("email")%>"/>
                                     <input type="hidden" name="tableName" value="Reserve"/>
                                 </form>
                             </div>
                         </td>
-                        <td><%= rs.getString("ref_no") %></td>
+                        <td><%= rs.getString("MAX(ref_no)") %></td>
                     </tr>
                 <%
                     }
