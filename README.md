@@ -9,6 +9,6 @@
 (05/19) -> added admindashboard.jsp & AdminManager.java. updated home.jsp & AdminServlet.<br>
 (05/20) -> resolved NullPointerException in AdminManager.java<br>
 (05/22) -> updated BookingManager, AdminServlet, etc. added admin & error JSPs, and the redirect feature in some error JSPs if user is not logged in.<br>
-(05/23) -> added UserServlet and user-related JSPs. updated User and UserManager classes and some JSPs.
+(05/23) -> added UserServlet and user-related JSPs. updated User, UserManager, & AdminManager classes and some JSPs.
 
 # carlos
