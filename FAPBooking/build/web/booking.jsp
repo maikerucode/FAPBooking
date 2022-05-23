@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Author     : star
 --%>
 
@@ -20,12 +20,12 @@
 
         <style>
             body {
-                background-color: #54240C; 
+                background-color: #54240C;
                 /*654827*/
                 /*4d371d*/
             }
 
-            h1, h3, h5, h6, a {
+            h1, h3, h5, h6, a, p {
                 font-family: "Montserrat", serif;
             }
 
@@ -72,6 +72,7 @@
             }
         %>
 
+
         <header class="w3-display-container w3-content w3-center" style="max-width:1600px">
             <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-height:450px">
             <div class="w3-display-middle w3-padding w3-border w3-wide w3-text-light-grey w3-center w3-hide-medium w3-hide-small">
@@ -86,7 +87,7 @@
             <div class="w3-row w3-bar w3-display-bottommiddle w3-deep-orange w3-hide-small w3-hide-medium" style="bottom:-16px">
                 <a href="welcome.jsp" class="w3-bar-item w3-button">Home</a>
                 <a href="about.jsp" class="w3-bar-item w3-button">About</a>
-                <a href="#" class="w3-bar-item w3-button">Book Now</a>
+                <a href="#" class="w3-bar-item w3-button w3-light-grey">Book Now</a>
                 <a href="login.jsp" class="w3-bar-item w3-button">Login</a>
             </div>
 
@@ -94,120 +95,111 @@
                 <div class="w3-row w3-bar w3-deep-orange" style="max-height:30px">
                     <a href="welcome.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
                     <a href="about.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">About</a>
-                    <a href="#contact" class="w3-bar-item w3-button" style="font-size: 10px;">Book Now</a>
+                    <a href="#" class="w3-bar-item w3-button w3-light-grey" style="font-size: 10px;">Book Now</a>
                     <a href="login.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Login</a>
                 </div>
             </div>
         </header>
-
+        <!--booking button-->
         <br><br>
+        <form method="post" action="Booking" class="w3-center w3-text-light-grey">
+            <h3>length of stay</h3>
 
-        <div class="loginForm w3-text-light-grey w3-marcellus">
+            <p>check-in date</p>
+            <select name="inMonth">
+                <%
+                    String[] arrMo = new String[]{
+                        "January", "February", "March", "April",
+                        "May", "June", "July", "August",
+                        "September", "October", "November", "December"
+                    };
+                    Year y = Year.now();
+                    int i = 1;
 
-            <h1>Let's book a room, <% out.print(account.getEmail()); %>!</h1>
+                    for (String m : arrMo) {
+                        // <option value='January'>January</option>
+                        out.println("<option value='" + i + "'>"
+                                + m + "</option>");
+                        i++;
+                    }
+                %>
+            </select>
 
-            <!--booking button-->
-            <form method="post" action="Booking">
-                <h3>length of stay</h3>
+            <select name="inDay">
+                <%
+                    for (int d = 1; d <= 31; d++) {
+                        // <option value='24'>24</option>
+                        out.println("<option value='" + d + "'>"
+                                + d + "</option>");
+                    }
+                %>
+            </select>
 
-                <p>check-in date</p>
-                <select name="inMonth">
-                    <%
-                        String[] arrMo = new String[]{
-                            "January", "February", "March", "April",
-                            "May", "June", "July", "August",
-                            "September", "October", "November", "December"
-                        };
-                        Year y = Year.now();
-                        int i = 1;
+            <select name="inYear">
+                <%
+                    out.println("<option value='" + y + "'>"
+                            + y + "</option>");
+                    out.println("<option value='" + y.plusYears(1) + "'>"
+                            + y.plusYears(1) + "</option>");
+                %>
+            </select>
+            <br>
+            <!-- =================================================== -->
 
-                        for (String m : arrMo) {
-                            // <option value='January'>January</option>
-                            out.println("<option value='" + i + "'>"
-                                    + m + "</option>");
-                            i++;
-                        }
-                    %>
-                </select>
+            <p>check-out date</p>
+            <select name="outMonth">
+                <%
+                    i = 1;
+                    for (String m : arrMo) {
+                        out.println("<option value='" + i + "'>"
+                                + m + "</option>");
+                        i++;
+                    }
+                %>
+            </select>
 
-                <select name="inDay">
-                    <%
-                        for (int d = 1; d <= 31; d++) {
-                            // <option value='24'>24</option>
-                            out.println("<option value='" + d + "'>"
-                                    + d + "</option>");
-                        }
-                    %>
-                </select>
+            <select name="outDay">
+                <%
+                    for (int d = 1; d <= 31; d++) {
+                        out.println("<option value='" + d + "'>"
+                                + d + "</option>");
+                    }
+                %>
+            </select>
 
-                <select name="inYear">
-                    <%
-                        out.println("<option value='" + y + "'>"
-                                + y + "</option>");
-                        out.println("<option value='" + y + "'>"
-                                + y.plusYears(1) + "</option>");
-                    %>
-                </select>
-                <br>
-                <!-- =================================================== -->
+            <select name="outYear">
+                <%
+                    out.println("<option value='" + y + "'>"
+                            + y + "</option>");
+                    out.println("<option value='" + y.plusYears(1) + "'>"
+                            + y.plusYears(1) + "</option>");
+                    out.println("<option value='" + y.plusYears(2) + "'>"
+                            + y.plusYears(2) + "</option>");
+                %>
+            </select>
+            <br><br>
+            <!-- =================================================== -->
 
-                <p>check-out date</p>
-                <select name="outMonth">
-                    <%
-                        i = 1;
-                        for (String m : arrMo) {
-                            out.println("<option value='" + i + "'>"
-                                    + m + "</option>");
-                            i++;
-                        }
-                    %>
-                </select>
+            <h3>room types</h3>
 
-                <select name="outDay">
-                    <%
-                        for (int d = 1; d <= 31; d++) {
-                            out.println("<option value='" + d + "'>"
-                                    + d + "</option>");
-                        }
-                    %>
-                </select>
+            <p>Single</p>
+            <input name="roomSingle" type="number" min="0" max="10"
+                   placeholder="0" value="0" step="1" required/>
 
-                <select name="outYear">
-                    <%
-                        out.println("<option value='" + y + "'>"
-                                + y + "</option>");
-                        out.println("<option value='" + y + "'>"
-                                + y.plusYears(1) + "</option>");
-                    %>
-                </select>
-                <br><br>
-                <!-- =================================================== -->
+            <p>Double</p>
+            <input name="roomDouble" type="number" min="0" max="10"
+                   placeholder="0" value="0" step="1" required/>
 
-                <h3>room types</h3>
-                <!--nts: retrieve available number of rooms for each room type from DB
-                    then display here
-                --> 
+            <p>Triple</p>
+            <input name="roomTriple" type="number" min="0" max="10"
+                   placeholder="0" value="0" step="1" required/>
 
-                <p>Single</p>
-                <input name="roomSingle" type="number" min="0" max="10"
-                       placeholder="0" value="0" step="1"/>
+            <p>Quad</p>
+            <input name="roomQuad" type="number" min="0" max="10"
+                   placeholder="0" value="0" step="1" required/>
+            <br><br><br>
+        </form>
 
-                <p>Double</p>
-                <input name="roomDouble" type="number" min="0" max="10"
-                       placeholder="0" value="0" step="1"/>
-
-                <p>Triple</p>
-                <input name="roomTriple" type="number" min="0" max="10"
-                       placeholder="0" value="0" step="1"/>
-
-                <p>Quad</p>
-                <input name="roomQuad" type="number" min="0" max="10"
-                       placeholder="0" value="0" step="1"/>            
-                <br><br><br>
-
-                <input type="submit" name="action" value="Confirm Booking"/>
-            </form>
-        </div>
         <br><br>
         <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
             <p class="w3-medium"><a href="#">Back to Top</a></p>

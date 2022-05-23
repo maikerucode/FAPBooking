@@ -9,8 +9,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Sign-up Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>University Inn</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&effect=shadow-multiple">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="errorStyles.css">
     </head>
     <body>
         <%
@@ -20,32 +28,6 @@
                 return;
             }
         %>
-
-        <h1>Create a new account</h1>
-
-        <form method="post" action="Login">
-            <p>Email</p>
-            <input name="email" type="text" size="40" required/>
-
-            <p>First Name</p>
-            <input name="firstName" type="text" size="40" required/>
-
-            <p>Last Name</p>
-            <input name="lastName" type="text" size="40" required/>
-
-            <p>password</p>
-            <input name="password" type="password" size="40" required/>
-
-            <p>confirm password</p>
-            <input name="confirmPass" type="password" size="40" required/>
-            <br><br>
-
-            <img id="captcha" src="captcha.png">
-            <br>
-
-            <input type="text" name="captchaAnswer" required/>
-            <br><br>
-
         <header class="w3-display-container w3-content w3-center" style="max-width:1600px">
             <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-height:450px">
             <div class="w3-display-middle w3-padding w3-border w3-wide w3-text-light-grey w3-center w3-hide-medium w3-hide-small">
@@ -73,42 +55,36 @@
                 </div>
             </div>
         </header>
-
         <br><br>
-
-        <div class="loginForm w3-text-light-grey w3-marcellus">
-
-            <h1 class="w3-marcellus">Sign Up Here!</h1>
+        <div class="loginForm w3-text-light-grey w3-marcellus">        
+            <h1>Create a new account</h1>
 
             <form method="post" action="Login">
-                <p style="font-size: 20px">email</p>
+                <p style="font-size: 20px">Email</p>
                 <input name="email" type="text" size="40" required/>
+
+                <p style="font-size: 20px">First Name</p>
+                <input name="firstName" type="text" size="40" required/>
+
+                <p style="font-size: 20px">Last Name</p>
+                <input name="lastName" type="text" size="40" required/>
 
                 <p style="font-size: 20px">password</p>
                 <input name="password" type="password" size="40" required/>
 
                 <p style="font-size: 20px">confirm password</p>
                 <input name="confirmPass" type="password" size="40" required/>
+                <br><br>
 
-                <p style="font-size: 20px">role</p>
-                <select name="role">
-                    <option value="Guest">Guest</option>
-                    <option value="Admin">Admin</option>
-                </select>
-                <br>
-
-                <p style="font-size: 20px">captcha</p>
                 <img id="captcha" src="captcha.png">
                 <br><br>
 
-                <input type="text" name="captchaAnswer" placeholder="Enter here..." required/>
-                <br><br>
+                <input type="text" name="captchaAnswer" required/>
 
                 <input type="submit" name="action" value="Sign-up"/>
                 <input type="hidden" name="role" value="Guest"/>
                 <br><br>
             </form>
-
         </div>
         <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
             <p class="w3-medium"><a href="#">Back to Top</a></p>
@@ -118,15 +94,15 @@
 
 <!--refresh the page once if the back button is used-->
 <script>
-window.addEventListener( "pageshow", function ( event ) {
-  var historyTraversal = event.persisted ||
-                         ( typeof window.performance != "undefined" &&
-                              window.performance.navigation.type === 2 );
-  if ( historyTraversal ) {
-    // Handle page restore.
-    window.location.reload();
-  }
-});
+    window.addEventListener("pageshow", function (event) {
+        var historyTraversal = event.persisted ||
+                (typeof window.performance != "undefined" &&
+                        window.performance.navigation.type === 2);
+        if (historyTraversal) {
+            // Handle page restore.
+            window.location.reload();
+        }
+    });
 </script>
 
 <!--
