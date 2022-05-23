@@ -33,7 +33,7 @@
         <p><% out.print(account.getEmail()); %></p>
         
         <h3>Reference Number</h3>
-        <p><%= refNo%></p>
+        <p><%= refNo %></p>
         
         <h3>Update your payment's reference number</h3>
         <form name="UpdateRecordButton" method="post" action="User">

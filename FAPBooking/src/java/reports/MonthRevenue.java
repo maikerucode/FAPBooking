@@ -4,58 +4,43 @@
  */
 package reports;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.FileOutputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.io.*;
+import java.sql.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.logging.*;
 import model.ReportManager;
 
 /**
  *
  * @author Lenovo
  */
-public class AnnualAverageRoomsReserved {
-
-    String email = "";
-    String role = "";
-    String type = "";
-    double totalRevenue;
-    int totalRoomsSold;
-    double averageRoomRate;
+public class MonthRevenue {
+    
+    double totalRevenue = 0;
+    int totalRoomsSold = 0;
+    
+    Connection conn;
 
     //Document
     Document doc = new Document();
 
-    AnnualAverageRoomsReserved() {
-
-    }
-
-    AnnualAverageRoomsReserved(String email, String role, String type, double totalRevenue, int totalRoomsSold) {
-        this.email = email;
-        this.role = role;
-        this.type = type;
-        this.totalRevenue = totalRevenue;
-        this.totalRoomsSold = totalRoomsSold;
-        this.averageRoomRate = this.totalRevenue / this.totalRoomsSold;
-
+    public MonthRevenue() { }
+    
+    public void printMonthRevenue(String email, String role, String month,
+                                    String year, String roomType, Connection conn) {
+        this.conn = conn;
+        System.out.println("MonthlRevenue.java");
+        
+        //Compute for the annual revenue
+        computeMonthRevenue(month,year,roomType);
+        
         //Debugging
-        System.out.println("AnnualAverageRoomsReserved.java");
-        System.out.println("Username: " + this.email + "\n");
-        System.out.println("Role: " + this.role + "\n");
+        System.out.println("== printAnnualRevenue() ==========================");
+        System.out.println("Username: " + email + "\n");
+        System.out.println("Role: " + role + "\n");
         System.out.println("Total Revenue: " + this.totalRevenue);
         System.out.println("Total Room Sold: " + this.totalRoomsSold);
 
@@ -71,15 +56,15 @@ public class AnnualAverageRoomsReserved {
         try {
             //Filename
             PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + email + "_" + dtf.format(now) + "Annual" + type + "RoomReserved.pdf"));
+                    + email + "_" + dtf.format(now) + month + roomType + "RoomReserved.pdf"));
 
             //Header/Footer Event
-            AnnualAverageRoomsReserved.HeaderFooterPageEvent eve = new AnnualAverageRoomsReserved.HeaderFooterPageEvent();
+            MonthRevenue.HeaderFooterPageEvent eve = new MonthRevenue.HeaderFooterPageEvent();
             writer.setPageEvent(eve);
 
             //PDF Open
             doc.open();
-            Paragraph reportType = new Paragraph("Annual Average Rooms Reserved: \n", headerFont);
+            Paragraph reportType = new Paragraph(month + " Revenue: \n", headerFont);
             Paragraph introduction = new Paragraph();
             Paragraph body = new Paragraph();
             
@@ -88,15 +73,13 @@ public class AnnualAverageRoomsReserved {
             //User
             introduction.add("Welcome\n");
             introduction.add("User: " + email + "\n");
-            introduction.add("Role: " + this.role + "\n");
+            introduction.add("Role: " + role + "\n");
             
             //Body
             body.add("Total Revenue: ");
             body.add(Double.toString(this.totalRevenue) + "\n");
             body.add("Total Room Sold: ");
             body.add(Integer.toString(this.totalRoomsSold) + "\n");
-            body.add("Average Room Rate: ");
-            body.add(Double.toString(this.averageRoomRate));
             
             //Add to doc
             doc.add(reportType);
@@ -106,10 +89,48 @@ public class AnnualAverageRoomsReserved {
             //Close
             doc.close();
 
-            System.out.println("Annual Average" + type + " Printed");
+            System.out.println(month + " Revenue " + roomType + " Printed");
         } catch (Exception ex) {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
+        }
+    }
+    
+    public void computeMonthRevenue(String month, String year, String roomType){
+        try {
+            // get room rate
+            String q1 = "SELECT * FROM hotelbookingdb.rate_table"
+                            + " WHERE room_type=?";
+            PreparedStatement ps1 = this.conn.prepareStatement(q1);
+            ps1.setString(1, roomType);
+            ResultSet rateRecords = ps1.executeQuery();
+            
+            rateRecords.next();
+            double roomRate = Double.parseDouble(rateRecords.getString("room_rate"));
+            
+            // get reservations
+            String q2 = "SELECT COUNT(*) AS count_name FROM hotelbookingdb.reserve_table"
+                            + " WHERE room_no IN ("
+                            + "     SELECT room_no FROM hotelbookingdb.room_table"
+                            + "     WHERE room_type=?"
+                            + " ) AND '" + year + "-" + month + "-31' >= check_in"
+                            + " AND check_out > '" + year + "-" + month + "-01'";
+            PreparedStatement ps2 = this.conn.prepareStatement(q2);
+            ps2.setString(1, roomType);
+            ResultSet reserveRecords = ps2.executeQuery();
+            
+            if (reserveRecords.next()) {
+                totalRoomsSold = reserveRecords.getInt("count_name");
+            }
+            
+            totalRevenue = totalRoomsSold*roomRate;
+            
+            System.out.println("== computeAnnualRevenue() ==========================");
+            System.out.println("roomRate: " + roomRate);
+            System.out.println("totalRoomsSold: " + totalRoomsSold);
+            System.out.println("totalRevenue: " + totalRevenue);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
     }
 
