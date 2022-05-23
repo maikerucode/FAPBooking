@@ -24,7 +24,7 @@ public class ReportManager {
         this.email = email;
         this.role = role;
         
-        String file = "C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\ReportSophie.pdf";
+        String file = "C:\\Users\\Darla\\Downloads\\" + role + "-" + email + "-report.pdf";
 //        Document docs = new Document();
         
         try {
