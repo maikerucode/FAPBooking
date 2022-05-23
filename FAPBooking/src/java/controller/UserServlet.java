@@ -1,65 +1,60 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
-import com.itextpdf.text.DocumentException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.ReportManager;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import model.User;
+import model.UserManager;
 
 /**
  *
  * @author star
  */
-public class ReportServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
+    
+    private UserManager um;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("== ReportServlet =============================");
+        System.out.println("== UserServlet===============================");
         
         HttpSession session = request.getSession(true);
+        User user = (User) session.getAttribute("user");
+        
         ServletContext sc = getServletContext();
         Connection conn = (Connection) sc.getAttribute("conn");
         
         String action = request.getParameter("action");
         System.out.println("action is: " + action);
-        
         // prevents nullpointerexception to be thrown
         if (action == null) {
             action = "";
         }
         
-        User user = (User) session.getAttribute("user");
-        String email = user.getEmail();
-        String role = user.getRole();
+        // check if connection is null
+        if (conn != null) {
+            um = new UserManager();
         
-        // change/remove this
-        if (action.equals("Get Report")) {
-            try {
-                ReportManager rm = new ReportManager();
-                
-                // change/remove this
-                rm.printReport(email, role, conn);  
-                
-                response.sendRedirect("successreport.jsp");
+            if (action.equals("User Dashboard")) {
+                String refNumber = um.getRefNumber(user.getEmail(), conn);
+                request.setAttribute("refNumber", refNumber);
+                request.getRequestDispatcher("userdashboard.jsp").forward(request, response);
             }
-            
-            catch (DocumentException ex) {
-                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
-                response.sendRedirect("errorreport.jsp");
+
+            else if (action.equals("Update Reference Number")) {
+                String newRefNumber = request.getParameter("refNumber");
+                um.updateRefNumber(newRefNumber, user.getEmail(), conn);
+                response.sendRedirect("successuserupdate.jsp");
             }
+
+            else {
+                response.sendRedirect("error.jsp");
+            }
+        }
+        
+        else {
+            response.sendRedirect("errorconn.jsp");
         }
     }
 

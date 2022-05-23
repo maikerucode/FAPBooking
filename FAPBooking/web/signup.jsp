@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : signup
     Created on : 03 22, 22, 2:49:45 AM
     Author     : star
@@ -9,60 +9,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>University Inn</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&effect=shadow-multiple">
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap" rel="stylesheet">
-
-        <style>
-            body {
-                background-color: #54240C; 
-                /*654827*/
-                /*4d371d*/
-            }
-
-            h1, h3, h5, h6, a {
-                font-family: "Montserrat", serif;
-            }
-
-            .w3-marcellus {
-                /* font-family: "Lobster", Sans-serif;*/
-                font-family: 'Marcellus SC', serif;
-            }
-
-            input[type='text'] {
-                font-family: "Montserrat", serif;
-            }
-
-            .navbar {
-                justify-content: space-between;
-            }
-
-            .flexMain {
-                display: flex;
-                height: 768px;
-                width: 90vw;
-                margin: auto;
-                flex-wrap:wrap;
-            }
-
-            .flexItem {
-                background-color: green;
-                width: 50%;
-                height:33%;
-            }
-
-            .loginForm {
-                text-align: center;
-            }
-
-        </style>
-
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Sign-up Page</title>
     </head>
     <body>
         <%
@@ -72,6 +20,31 @@
                 return;
             }
         %>
+
+        <h1>Create a new account</h1>
+
+        <form method="post" action="Login">
+            <p>Email</p>
+            <input name="email" type="text" size="40" required/>
+
+            <p>First Name</p>
+            <input name="firstName" type="text" size="40" required/>
+
+            <p>Last Name</p>
+            <input name="lastName" type="text" size="40" required/>
+
+            <p>password</p>
+            <input name="password" type="password" size="40" required/>
+
+            <p>confirm password</p>
+            <input name="confirmPass" type="password" size="40" required/>
+            <br><br>
+
+            <img id="captcha" src="captcha.png">
+            <br>
+
+            <input type="text" name="captchaAnswer" required/>
+            <br><br>
 
         <header class="w3-display-container w3-content w3-center" style="max-width:1600px">
             <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-height:450px">
@@ -115,7 +88,7 @@
                 <input name="password" type="password" size="40" required/>
 
                 <p style="font-size: 20px">confirm password</p>
-                <input name="confirmPass" type="password" size="40" required/> 
+                <input name="confirmPass" type="password" size="40" required/>
 
                 <p style="font-size: 20px">role</p>
                 <select name="role">
@@ -123,7 +96,7 @@
                     <option value="Admin">Admin</option>
                 </select>
                 <br>
-                
+
                 <p style="font-size: 20px">captcha</p>
                 <img id="captcha" src="captcha.png">
                 <br><br>
@@ -132,6 +105,7 @@
                 <br><br>
 
                 <input type="submit" name="action" value="Sign-up"/>
+                <input type="hidden" name="role" value="Guest"/>
                 <br><br>
             </form>
 
@@ -144,15 +118,15 @@
 
 <!--refresh the page once if the back button is used-->
 <script>
-    window.addEventListener("pageshow", function (event) {
-        var historyTraversal = event.persisted ||
-                (typeof window.performance != "undefined" &&
-                        window.performance.navigation.type === 2);
-        if (historyTraversal) {
-            // Handle page restore.
-            window.location.reload();
-        }
-    });
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted ||
+                         ( typeof window.performance != "undefined" &&
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
 </script>
 
 <!--

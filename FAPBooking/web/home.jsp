@@ -21,19 +21,17 @@
             }
             
             String role = account.getRole();
+            System.out.println("role is: " + role);
         %>
-        
-        <h1>Hello, <% out.print(role); %> <% out.print(account.getEmail()); %>!</h1>
-        
         <!--logout button-->
         <form method="post" action="Logout">
             <input type="submit" name="action" value="Logout"/>
         </form>
         <br>
         
-        <!--get report PDF button-->
-        <form method="post" action="Report">
-            <input type="submit" name="action" value="Get Report"/>
+        <!--user dashboard button-->
+        <form method="get" action="User">
+            <input type="submit" name="action" value="User Dashboard"/>
         </form>
         <br>
         
@@ -41,12 +39,10 @@
         <form method="post" action="Booking">
             <input type="submit" name="action" value="Book a Room"/>
         </form>
-        <br>
+        <br><br>
         
         <!--admin dashboard button-->
         <form method="post" action="Admin" id="adminForm">
-            <% out.print("Not yet done..."); %>
-            <br>
             <input type="submit" name="action" value="Admin Dashboard"/>
             <input type="hidden" name="pageNumber" value="1"/>
             <input type="hidden" name="tableName" value="Reserve"/>

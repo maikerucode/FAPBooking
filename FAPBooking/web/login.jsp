@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : login
     Created on : 03 22, 22, 2:49:38 AM
     Author     : star
@@ -9,60 +9,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>University Inn</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&effect=shadow-multiple">
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap" rel="stylesheet">
-
-        <style>
-            body {
-                background-color: #54240C; 
-                /*654827*/
-                /*4d371d*/
-            }
-
-            h1, h3, h5, h6, a {
-                font-family: "Montserrat", serif;
-            }
-            
-            input[type='text'] {
-                font-family: "Montserrat", serif;
-            }
-
-            .w3-marcellus {
-                /* font-family: "Lobster", Sans-serif;*/
-                font-family: 'Marcellus SC', serif;
-            }
-
-            .navbar {
-                justify-content: space-between;
-            }
-
-            .flexMain {
-                display: flex;
-                height: 768px;
-                width: 90vw;
-                margin: auto;
-                flex-wrap:wrap;
-            }
-
-            .flexItem {
-                background-color: green;
-                width: 50%;
-                height:33%;
-            }
-
-            .loginForm {
-                text-align: center;
-            }
-
-        </style>
-
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Login Page</title>
     </head>
     <body>
         <%
@@ -113,7 +61,7 @@
                 <p style="font-size: 20px">password</p>
                 <input name="password" type="password" size="40" required/>
                 <br>
-                
+
                 <p style="font-size: 20px">captcha</p>
                 <img class="w3-border" id="captcha" src="captcha.png">
                 <br><br>
@@ -128,25 +76,31 @@
             <a href="signup.jsp">Not registered yet? Sign up here</a>
             <br><br>
 
-        </div>
+            <img id="captcha" src="captcha.png">
+            <br>
 
-        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
-            <p class="w3-medium"><a href="#">Back to Top</a></p>
-        </footer>
+            <input type="text" name="captchaAnswer" required/>
+            <br><br>
+
+            <input type="submit" name="action" value="Login"/>
+            <br><br>
+        </form>
+
+        <a href="signup.jsp">Not registered yet? Sign up here</a>
     </body>
 </html>
 
 <!--refresh the page once if the back button is used-->
 <script>
-    window.addEventListener("pageshow", function (event) {
-        var historyTraversal = event.persisted ||
-                (typeof window.performance != "undefined" &&
-                        window.performance.navigation.type === 2);
-        if (historyTraversal) {
-            // Handle page restore.
-            window.location.reload();
-        }
-    });
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted ||
+                         ( typeof window.performance != "undefined" &&
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
 </script>
 
 <!--

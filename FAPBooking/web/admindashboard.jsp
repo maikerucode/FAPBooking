@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Author     : star
 --%>
 
@@ -20,7 +20,7 @@
 
         <style>
             body {
-                background-color: #54240C; 
+                background-color: #54240C;
                 /*654827*/
                 /*4d371d*/
             }
@@ -58,91 +58,58 @@
     <body>
         <%
             User account = (User) session.getAttribute("user");
-            if (account == null) {
+            if (account == null || !account.getRole().equals("Admin")) {
                 response.sendRedirect("login.jsp");
                 return;
             }
 
             ResultSet rs = (ResultSet) request.getAttribute("records");
-            rs.first(); // return pointer to default position
+            rs.beforeFirst(); // return pointer to default position
             boolean checkLast = (Boolean) request.getAttribute("checkLast");
             int pageNumber = (Integer) request.getAttribute("pageNumber");
         %>
 
-        <header class="w3-display-container w3-content w3-center" style="max-width:1600px">
-            <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-width: 100%">
-            <div class="w3-display-middle w3-padding w3-border w3-wide w3-text-light-grey w3-center w3-hide-medium w3-hide-small">
-                <h1 class="w3-hide-medium w3-hide-small w3-xxlarge w3-marcellus">University Inn</h1>
-                <h3 class="w3-hide-medium w3-hide-small">yes. welcome.</h3>
-            </div>
+        <h1>Table of Reservations</h1>
 
-            <div class="w3-display-middle w3-padding-small w3-border w3-text-light-grey w3-center w3-hide-large">
-                <h5 class="w3-hide-large w3-marcellus" style="white-space:nowrap; bottom:-50px">University Inn</h5>
-            </div>
+        <div>
+            <table id="reserveTable">
+                <tr class="text-center">
+                    <th>Email</th>
+                    <th>Room No.</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Total Charge</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Reference No.</th>
+                </tr>
 
-            <div class="w3-row w3-bar w3-display-bottommiddle w3-deep-orange w3-hide-small w3-hide-medium" style="bottom:-16px">
-                <a href="welcome.jsp" class="w3-bar-item w3-button">Home</a>
-                <a href="about.jsp" class="w3-bar-item w3-button">About</a>
-                <a href="booking.jsp" class="w3-bar-item w3-button">Bookings</a>
-                <a href="login.jsp" class="w3-bar-item w3-button">Login</a>
-            </div>
-
-            <div class="w3-center w3-deep-orange w3-hide-large" style="max-height:30px" style="bottom:-16px">
-                <div class="w3-row w3-bar w3-deep-orange" style="max-height:30px">
-                    <a href="welcome.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
-                    <a href="about.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">About</a>
-                    <a href="booking.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Bookings</a>
-                    <a href="login.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Login</a>
-                </div>
-            </div>
-        </header>
-
-        <!--TBU...-->
-
-        <div class="w3-content" style="max-width:700px;">
-
-            <h1>Table of Reservations</h1>
-            <!--display table of reservations w/ edit/delete button-->
-            <!--when edit button click, go to another JSP-->
-
-            <div>
-                <table id="reserveTable">
+                <%
+                    while (rs.next()) {
+                %>
                     <tr class="text-center">
-                        <th>Email</th>
-                        <th>Room Number</th>
-                        <th>Check-in</th>
-                        <th>Check-out</th>
-                        <th>Total Charge</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-
-                    <%
-                        while (rs.next()) {
-                    %>
-                    <tr class="text-center">
-                        <td><%= rs.getString("email")%></td>
-                        <td><%= rs.getString("room_no")%></td>
-                        <td><%= rs.getDate("check_in")%></td>
-                        <td><%= rs.getDate("check_out")%></td>
-                        <td><%= rs.getObject("total_charge")%></td>
-                        <td><%= rs.getString("reserve_status")%></td>
+                        <td><%= rs.getString("email") %></td>
+                        <td><%= rs.getString("GROUP_CONCAT(room_no SEPARATOR ', ')") %></td>
+                        <td><%= rs.getDate("MAX(check_in)") %></td>
+                        <td><%= rs.getDate("MAX(check_out)") %></td>
+                        <td><%= rs.getObject("MAX(total_charge)") %></td>
+                        <td><%= rs.getString("MAX(reserve_status)") %></td>
                         <td>
                             <div>
                                 <form name="UpdateButton" method="post" action="Admin">
                                     <input name="action" type="submit" value="Update"/>
-                                    <input name="email" type="hidden" value="reserveTable"/>
-                                    <input name="jspName" type="hidden" value="reserveTable"/>
+                                    <input name="email" type="hidden" value="<%=rs.getString("email")%>"/>
+                                    <input type="hidden" name="tableName" value="Reserve"/>
                                 </form>
 
                                 <form name="DeleteButton" method="post" action="Admin"/>
-                                <input name="action" type="submit" value="Delete"/>
-                                <input name="email" type="hidden" value="<%=rs.getString("email")%>"/>
-                                <input name="totalCharge" type="hidden" value="<%=rs.getString("total_charge")%>"/>
-                                <input name="jspName" type="hidden" value="reserveTable"/>
+                                    <input name="action" type ="submit" value="Delete"/>
+                                    <input name="email" type="hidden" value="<%=rs.getString("email")%>"/>
+                                    <input type="hidden" name="tableName" value="Reserve"/>
                                 </form>
                             </div>
                         </td>
+                        <td><%= rs.getString("MAX(ref_no)") %></td>
                     </tr>
 
                     <%
@@ -164,7 +131,7 @@
                     <% int valNext = pageNumber + 1;%>
                     <input type="hidden" name="pageNumber" value="<%=valNext%>"/>
                     <input type="hidden" name="tableName" value="Reserve"/>
-                </form>   
+                </form>
             </div>
 
             <!--button to jsp w/ display prices w/ edit buttons-->
@@ -178,11 +145,6 @@
         </footer>
     </body>
 </html>
-
-<!--hide back button if page 1-->
-<!--hide next button if last page-->
-<!--use counters-->
-
 <script>
     var pageNumber = "<%=pageNumber%>";
     var checkLast = "<%=checkLast%>";
@@ -193,19 +155,30 @@
 <!--document.write("checkLast: " + checkLast);-->
 
 <!--hide backButton if current page number is 1-->
-    if (pageNumber === "1") {
-        backButton.style.display = "none";
-    } else {
-        backButton.style.display = "block";
-    }
+if (pageNumber == "1") {
+    backButton.style.display = "none";
+} else {
+    backButton.style.display = "block";
+}
 
 <!--hide nextButton if last page-->
-    if (checkLast === "true") {
-        nextButton.style.display = "none";
-    } else {
-        nextButton.style.display = "block";
-    }
-</script>    
+if (checkLast === "true") {
+    nextButton.style.display = "none";
+} else {
+    nextButton.style.display = "block";
+}
+
+<!--refresh the page once if the back button is used-->
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted ||
+                         ( typeof window.performance != "undefined" &&
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+</script>
 
 <!--
 references:

@@ -12,17 +12,19 @@ import model.*;
  */
 public class BookingServlet extends HttpServlet {
     
-    EntryValidator ev = new EntryValidator();
-    BookingManager bm = new BookingManager();
+    EntryValidator ev;
+    BookingManager bm;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        System.out.println("== BookingServlet ===========================");
         HttpSession session = request.getSession(true);
         Booking booking = (Booking) session.getAttribute("booking"); 
         
         ServletContext sc = getServletContext();
         Connection conn = (Connection) sc.getAttribute("conn");
+        
+        User user = (User) session.getAttribute("user");
         
         String action = request.getParameter("action");
         System.out.println("action is: " + action);
@@ -32,24 +34,24 @@ public class BookingServlet extends HttpServlet {
             action = "";
         }
         
-        // home.jsp -> booking.jsp
-        if (action.equals("Book a Room")) {
-            response.sendRedirect("booking.jsp");
+        ev = new EntryValidator();
+        bm = new BookingManager();
+        
+        // check if user tries to book while having an ongoing booking
+        if (action.equals("Book a Room") && bm.checkOngoing(user.getEmail(), conn)) {
+            response.sendRedirect("errorongoing.jsp");
         }
         
-        else if (action.equals("Confirm Booking") || action.equals("Submit Payment")) {            
-            User user = (User) session.getAttribute("user");
+        else if (action.equals("Book a Room")){
+            response.sendRedirect("booking.jsp");
+        }
+            
+        else if (action.equals("Confirm Booking") || action.equals("Submit Payment")) {
             boolean validBooking = false;
             System.out.println("user email: " + user.getEmail());
-                    
-            // check if user tries to book while having an ongoing booking
-            if(action.equals("Confirm Booking")
-                    && bm.checkOngoing(user.getEmail(), conn)) {
-                response.sendRedirect("errorongoing.jsp");
-            }
             
             // === input validation ================================
-            else if(action.equals("Confirm Booking")) {
+            if (action.equals("Confirm Booking")) {
                 int inMonth = Integer.parseInt(request.getParameter("inMonth"));
                 int inDay = Integer.parseInt(request.getParameter("inDay"));
                 int inYear = Integer.parseInt(request.getParameter("inYear"));
@@ -83,7 +85,6 @@ public class BookingServlet extends HttpServlet {
             
             // === booking =========================================
             if (validBooking || action.equals("Submit Payment")) {
-                
                 if (action.equals("Confirm Booking")) {
                     booking = new Booking();
                     
@@ -127,6 +128,10 @@ public class BookingServlet extends HttpServlet {
                     response.sendRedirect("errorbooking.jsp");
                 }
             }
+        }
+        
+        else {
+            response.sendRedirect("error.jsp");
         }
     }
 

@@ -8,229 +8,173 @@ import java.time.*;
  * @author star
  */
 public class BookingManager {
+
     Booking booking;
     Connection conn;
-    
+
     private int rateSingle;
     private int rateDouble;
     private int rateTriple;
     private int rateQuad;
     private int total_charge;
-    
+
     private ResultSet resultRooms;
     private ResultSet resultReserve;
-    
+
     private LocalDate reserveDateIn;
     private LocalDate reserveDateOut;
-    
+
     boolean availSingle, availDouble, availTriple, availQuad;
-    boolean availRooms = true;
-    
-    public BookingManager() { }
-    
-    // returns true if user has an ongoing room reservation
+    boolean availRooms;
+
+    public BookingManager() {
+    }
+
+    // returns true if user has a booking w/ ongoing/pending payment
     public boolean checkOngoing(String email, Connection conn) {
         try {
             String query = "SELECT * FROM hotelbookingdb.reserve_table"
-                        + " WHERE email = ? AND reserve_status = 'Ongoing'";
+                    + " WHERE email = ?"
+                    + " AND (reserve_status = 'Pending' OR reserve_status = 'Done')";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, email);
 
             ResultSet result = ps.executeQuery();
-            
-            if(result.next() == false) {
+
+            if (result.next() == false) {
                 return false;
             }
-        }
-        
-        catch (SQLException sqle) {
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-                
+
         return true;
     }
-    
+
     // checks the database if there are available rooms at the given date
     public boolean checkBooking(Booking booking, Connection conn) {
-        
         this.booking = booking;
         this.conn = conn;
-        
-        availSingle = checkRoom("Single", booking.getTypeSingle());
-        availDouble = checkRoom("Double", booking.getTypeDouble());
-        availTriple = checkRoom("Triple", booking.getTypeTriple());
-        availQuad = checkRoom("Quad", booking.getTypeQuad());
-        
+
+        availSingle = checkRoom("Single", booking.getTypeSingle(), false, "");
+        availDouble = checkRoom("Double", booking.getTypeDouble(), false, "");
+        availTriple = checkRoom("Triple", booking.getTypeTriple(), false, "");
+        availQuad = checkRoom("Quad", booking.getTypeQuad(), false, "");
+
         System.out.println("availSingle: " + availSingle);
         System.out.println("availDouble: " + availDouble);
         System.out.println("availTriple: " + availTriple);
         System.out.println("availQuad: " + availQuad);
-        
-//        booking.setResultRooms(resultRooms);
-        booking.setResultReserve(resultReserve);
-        
+
         return (availSingle && availDouble
-                    && availTriple && availQuad);
+                && availTriple && availQuad);
     }
     
+    public void book(String email) {
+        getRoomRates();
+        
+        checkRoom("Single", booking.getTypeSingle(), true, email);
+        checkRoom("Double", booking.getTypeDouble(), true, email);
+        checkRoom("Triple", booking.getTypeTriple(), true, email);
+        checkRoom("Quad", booking.getTypeQuad(), true, email);
+
+        getTotalCharge(email);
+    }
+//  ==============================================================================
+
     // checks for available rooms of a specific room type
-    public boolean checkRoom(String roomTypeName, int roomTypeVal) {
+    public boolean checkRoom(String roomTypeName, int roomTypeVal,
+                                boolean addRoom, String email) {
         try {
             System.out.println("== bm.checkRooms() ==========================");
             // retrieve all records of the given room type that are open
             String query = "SELECT * FROM hotelbookingdb.room_table"
-                        + " WHERE (room_type = ? AND room_status = 'Open')";
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, roomTypeName);
+                    + " WHERE (room_type = ? AND room_status = 'Open')";
+            PreparedStatement ps1 = conn.prepareStatement(query);
+            ps1.setString(1, roomTypeName);
+            resultRooms = ps1.executeQuery();
 
-            resultRooms = ps.executeQuery();
             int ctr = 0;
+
             System.out.println("roomTypeName: " + roomTypeName);
             System.out.println("roomTypeVal: " + roomTypeVal);
-            
+
             while (resultRooms.next() && ctr != roomTypeVal) {
                 System.out.println("--------------------------");
                 System.out.println(roomTypeName + " ctr: " + ctr);
-                
-                LocalDate from = booking.getBookDateIn().minusDays(30); // prev 30 days
-                LocalDate to = booking.getBookDateOut().plusDays(30); // next 30 days
-                System.out.println("LocalDate from: " + from);
-                System.out.println("LocalDate to: " + to);
 
-                // retrieve all records for the room 
+                // retrieve all ongoing/pending reservations for the room 
                 query = "SELECT * FROM hotelbookingdb.reserve_table"
                         + " WHERE room_no = ?"
-                        + " AND NOT (check_in > ?  OR check_out < ?)";
-
-                ps = conn.prepareStatement(query, 
+                        + " AND NOT check_in < ? AND NOT check_out > ?";
+                PreparedStatement ps2 = conn.prepareStatement(query,
                         ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                ps.setString(1, resultRooms.getString("room_no"));
-                ps.setObject(2, from);
-                ps.setObject(3, to); 
+                ps2.setString(1, resultRooms.getString("room_no"));
+                ps2.setObject(2, booking.getBookDateIn().minusDays(30)); // prev 30 days
+                ps2.setObject(3, booking.getBookDateOut().plusDays(30)); // next 30 days
+                resultReserve = ps2.executeQuery();
 
-                resultReserve = ps.executeQuery();
-                
                 // if there are no existing reservations for that room
                 if (resultReserve.next() == false) {
+                    System.out.println("resultReserve is empty...");
                     ctr++;
-                } 
+                    if (addRoom) {
+                        addBooking(email);
+                    }
+                }
 
                 // else, check for conflicting dates
                 else {
+                    System.out.println("resultReserve is not empty...");
                     do {
                         reserveDateIn = resultReserve.getDate("check_in")
-                                                    .toLocalDate();
+                                .toLocalDate();
                         reserveDateOut = resultReserve.getDate("check_out")
-                                                    .toLocalDate();
+                                .toLocalDate();
+
+                        System.out.println("booking.getBookDateIn(): " + booking.getBookDateIn());
+                        System.out.println("reserveDateOut: " + reserveDateOut);
+                        System.out.println("booking.getBookDateOut(): " + booking.getBookDateOut());
+                        System.out.println("reserveDateIn: " + reserveDateIn);
 
                         /* check if bookDateIn > reserveDateOut
                             or bookDateOut < reserveDateIn */
-                        if ((booking.getBookDateIn().isAfter(reserveDateOut)) 
-                                || (booking.getBookDateIn().isBefore(reserveDateIn))) {
+                        if ((booking.getBookDateIn().isAfter(reserveDateOut))
+                                || (booking.getBookDateOut().isBefore(reserveDateIn))) {
                             ctr++;
+                            if (addRoom) {
+                                addBooking(email);
+                            }
                         }
                     } while (resultReserve.next() && ctr < roomTypeVal);
                 }
             }
-            
-            if (ctr == roomTypeVal) {
-                availRooms = availRooms || true;
-            }
-            
+
+            availRooms = (roomTypeVal != 0 && ctr == roomTypeVal)
+                    || (roomTypeVal == 0);
+
             System.out.println("final ctr: " + ctr);
             System.out.println("availRooms: " + availRooms);
-        }
-
-        catch (SQLException sqle) {
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        System.out.println("=============================================");
         return availRooms;
     }
-    
-    // ====================================================================
-    /* in reserve_table, update record w/ the finalized total charges
-       if user has checked out */
-    
-    // performs the actual booking
-    public void book(String email) {
-        bookRooms("Single", booking.getTypeSingle(), email);
-        bookRooms("Double", booking.getTypeDouble(), email);
-        bookRooms("Triple", booking.getTypeTriple(), email);
-        bookRooms("Quad", booking.getTypeQuad(), email);
-        
-        getTotalCharge(email);
-    }
-    
-    public void bookRooms(String roomTypeName, int roomTypeVal, String email) {
-        try {
-            System.out.println("== bm.bookRooms() ===========================");
-            int ctr = 0;
-            getRoomRates(); // get the room rates from the database
-            
-            // resultRooms
-            String query = "SELECT * FROM hotelbookingdb.room_table"
-                        + " WHERE (room_type = ? AND room_status = 'Open')";
-            PreparedStatement ps = conn.prepareStatement(query,
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ps.setString(1, roomTypeName);
-            resultRooms = ps.executeQuery();
-            
-            // resultReserve
-            resultReserve = booking.getResultReserve();
-            
-            // reset pointers to default position
-            resultRooms.beforeFirst(); 
-            resultReserve.beforeFirst();
-            
-            while (resultRooms.next() && ctr != roomTypeVal) {
-                // if there are no existing reservations for that room
-                if (resultReserve.next() == false) {
-                    addBooking(email);
-                    ctr++;
-                }
-                
-                // else, check for conflicting dates
-                else {
-                    do {
-                        /* check if bookDateIn > reserveDateOut
-                            or bookDateOut < reserveDateIn */
-                        if ((booking.getBookDateIn().isAfter(reserveDateOut)) 
-                                || (booking.getBookDateOut().isBefore(reserveDateIn))) {
-                            addBooking(email);
-                            ctr++;
-                        }
-                    } while (resultReserve.next() && ctr < roomTypeVal);
-                }
-            }
-            
-            System.out.println("--------------------------");
-            System.out.println("roomTypeVal " + roomTypeVal);
-            System.out.println("ctr: " + ctr);
-        }
-        
-        catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        System.out.println("== bm.bookRooms() ===========================");
-        System.out.println("=============================================");
-    }
-    
+
     public void addBooking(String email) {
         try {
             /* email | room_no | room_type | check_in | check_out
-                 | total_charge | reserve_status */            
+                 | total_charge | reserve_status */
             String query = "INSERT INTO hotelbookingdb.reserve_table"
-                            + " VALUES(?,?,?,?,?,'Pending')";
+                    + " VALUES(?,?,?,?,'','Pending','')";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, email);
             ps.setString(2, resultRooms.getString("room_no"));
             ps.setObject(3, booking.getBookDateIn());
-            ps.setObject(4, booking.getBookDateOut()); 
-            ps.setString(5, "");
-            
+            ps.setObject(4, booking.getBookDateOut());
+
             ps.executeUpdate();
-            
+
             System.out.println("initial total_charge: " + total_charge);
 
             switch (resultRooms.getString("room_type")) {
@@ -253,61 +197,57 @@ public class BookingManager {
                 default:
                     break;
             }
-        }
-        
-        catch (SQLException sqle) {
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
     }
-    
-    public void getTotalCharge(String email) {        
+
+    public void getTotalCharge(String email) {
         try {
             String query = "UPDATE hotelbookingdb.reserve_table"
                     + " SET total_charge = ? WHERE email = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, total_charge);
             ps.setString(2, email);
-            
+
             ps.executeUpdate();
-        }
-        
-        catch (SQLException sqle) {
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
     }
-    
+
     public void getRoomRates() {
+//        System.out.println("-- getRoomRates() --------");
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM hotelbookingdb.rate_table"
                     + " WHERE room_type = 'Single'");
             rs.next();
             rateSingle = Integer.parseInt(rs.getString("room_rate"));
-            
+
             rs = stmt.executeQuery("SELECT * FROM hotelbookingdb.rate_table"
                     + " WHERE room_type = 'Double'");
             rs.next();
             rateDouble = Integer.parseInt(rs.getString("room_rate"));
-            
+
             rs = stmt.executeQuery("SELECT * FROM hotelbookingdb.rate_table"
                     + " WHERE room_type = 'Triple'");
             rs.next();
             rateTriple = Integer.parseInt(rs.getString("room_rate"));
-            
+
             rs = stmt.executeQuery("SELECT * FROM hotelbookingdb.rate_table"
                     + " WHERE room_type = 'Quad'");
             rs.next();
             rateQuad = Integer.parseInt(rs.getString("room_rate"));
-            
-            System.out.println("rateSingle: " + rateSingle);
-            System.out.println("rateDouble: " + rateDouble);
-            System.out.println("rateTriple: " + rateTriple);
-            System.out.println("rateQuad: " + rateQuad);
-        }
-        
-        catch (SQLException sqle) {
+
+//            System.out.println("rateSingle: " + rateSingle);
+//            System.out.println("rateDouble: " + rateDouble);
+//            System.out.println("rateTriple: " + rateTriple);
+//            System.out.println("rateQuad: " + rateQuad);
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
+//        System.out.println("--------------------------");
     }
 }
 

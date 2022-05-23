@@ -1,7 +1,8 @@
-<%-- 
+<%--
     Author     : star
 --%>
 
+<%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,7 +20,14 @@
     </head>
 
 
-    <body>        
+  <body>
+      <%
+          User account = (User) session.getAttribute("user");
+          if (account == null) {
+              response.sendRedirect("login.jsp");
+              return;
+          }
+      %>
         <header class="w3-display-container w3-content w3-center" style="max-width:1600px">
             <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-height:450px">
             <div class="w3-display-middle w3-padding w3-border w3-wide w3-text-light-grey w3-center w3-hide-medium w3-hide-small">
@@ -54,7 +62,10 @@
             <div class="w3-center">
                 <h1 style="color:red; font-size:20px">You already have an ongoing booking...</h1>
 
-                <a class="w3-text-white" href="booking.jsp">Return to Booking Page</a>
+                <h1 style="color:red; font-size:20px">You already have an ongoing booking...</h1>
+                <p style="color:red">You may view it in your user dashboard</p>
+
+                <a href="home.jsp">Return to Home Page</a>
 
             </div>
         </main>

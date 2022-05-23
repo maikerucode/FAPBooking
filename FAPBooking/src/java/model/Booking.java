@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.ResultSet;
 import java.time.LocalDate;
 
 /**
@@ -16,8 +15,6 @@ public class Booking {
 
     private LocalDate bookDateIn;
     private LocalDate bookDateOut;
-
-    private ResultSet resultReserve;
 
     private int total_charge;
 
@@ -78,21 +75,5 @@ public class Booking {
 
     public int getTotal_charge() {
         return total_charge;
-    }
-
-//    public ResultSet getResultRooms() {
-//        return resultRooms;
-//    }
-//
-//    public void setResultRooms(ResultSet resultRooms) {
-//        this.resultRooms = resultRooms;
-//    }
-
-    public ResultSet getResultReserve() {
-        return resultReserve;
-    }
-
-    public void setResultReserve(ResultSet resultReserve) {
-        this.resultReserve = resultReserve;
     }
 }

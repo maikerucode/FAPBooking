@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.AdminManager;
+import model.UserManager;
 
 /**
  *
@@ -17,18 +18,18 @@ import model.AdminManager;
  */
 public class AdminServlet extends HttpServlet {
 
-    AdminManager am = new AdminManager();
-    
-    // TBU...
+    private AdminManager am;
+    private UserManager um;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        System.out.println("== AdminServlet =============================");
         HttpSession session = request.getSession(true);
         
         ServletContext sc = getServletContext();
         Connection conn = (Connection) sc.getAttribute("conn");
         
+        String tableName = request.getParameter("tableName");
         String action = request.getParameter("action");
         System.out.println("action is: " + action);
         // prevents nullpointerexception to be thrown
@@ -36,41 +37,122 @@ public class AdminServlet extends HttpServlet {
             action = "";
         }
         
-        String tableName = request.getParameter("tableName");
-        int pageId = Integer.parseInt(request.getParameter("pageNumber"));
-        int pageTotal = 20;   // display 20 records
-        System.out.println("tableName: " + tableName);
-        System.out.println("pageId: " + pageId);
-        System.out.println("pageTotal: " + pageTotal);
-        
-        if (pageId == 1) { }
-        else {
-            pageId = pageId - 1;
-            pageId = pageId*pageTotal + 1;
+        // check if connection is null
+        if (conn != null) {
+            am = new AdminManager();
+            
+            if (action.equals("Admin Dashboard") || action.equals("View Rooms")
+                     || action.equals("View Rates") || action.equals("View Users")
+                    || action.equals("Back") || action.equals("Next")) {
+                int pageId = Integer.parseInt(request.getParameter("pageNumber"));
+                int pageTotal = 20;   // display 20 records
+                System.out.println("tableName: " + tableName);
+                System.out.println("pageNumber: " + Integer.parseInt(request.getParameter("pageNumber")));
+
+                if (pageId == 1) { }
+                else {
+                    pageId = pageId - 1;
+                    pageId = pageId*pageTotal + 1;
+                }
+
+                ResultSet rs = am.getRecords(pageId, pageTotal, tableName, conn);
+                boolean checkLast = am.checkLast();
+
+                request.setAttribute("records", rs);
+                request.setAttribute("checkLast", checkLast);
+                request.setAttribute("pageNumber", Integer.parseInt(request.getParameter("pageNumber")));
+
+                System.out.println("pageId: " + pageId);
+                System.out.println("checkLast: " + checkLast);
+
+                switch (tableName) {
+                    case "Reserve":
+                        request.getRequestDispatcher("admindashboard.jsp").forward(request, response);
+                        break;
+                    case "User":
+                        request.getRequestDispatcher("adminviewusers.jsp").forward(request, response);
+                        break;
+                    case "Room":
+                        request.getRequestDispatcher("adminviewrooms.jsp").forward(request, response);
+                        break;
+                    case "Rate":
+                        request.getRequestDispatcher("adminviewrates.jsp").forward(request, response);
+                        break;
+                    default:
+                        response.sendRedirect("error.jsp");
+                        break;
+                }
+            }
+
+            else if (action.equals("Delete")) {
+                Object val = "";
+
+                switch(tableName) {
+                    case "Reserve": case "User":
+                        val = request.getParameter("email");
+                        break;
+                    case "Room":
+                        val = request.getParameter("roomNumber");
+                        break;
+                    case "Rate":
+                        val = request.getParameter("roomRate");
+                        break;
+                    default:
+                        break;
+                }   
+
+                if (am.deleteRecord(tableName, val, conn)) {
+                    response.sendRedirect("successdelete.jsp");
+                } else {
+                    response.sendRedirect("errordelete.jsp");
+                }
+            }
+
+            else if (action.equals("Add an Admin")) {
+                String key = getServletContext().getInitParameter("securityKey");
+                String cipher = getServletContext().getInitParameter("securityCipher");
+                um = new UserManager();
+
+                String email = request.getParameter("email");
+                String firstName = request.getParameter("firstName");
+                String lastName = request.getParameter("lastName");
+                String password = request.getParameter("password");
+
+                boolean dupe = um.register(email, firstName, lastName, password,
+                                            "Admin", key, cipher, conn);
+
+                if (!dupe) {
+                    response.sendRedirect("successaddadmin.jsp");
+                } else {
+                    response.sendRedirect("erroremaildupe.jsp");
+                }
+            }
+
+            else if (action.equals("Update")) {
+                request.setAttribute("email", request.getParameter("email"));
+                request.getRequestDispatcher("adminupdatereserve.jsp").forward(request, response);
+            }
+
+            else if (action.equals("Update Reservation")) {
+                String email = (String) request.getParameter("email");
+                String reserveStat = (String) request.getParameter("reserveStatus");
+                String refNumber = (String) request.getParameter("refNumber");
+
+                if (am.updateReserve(tableName, email, reserveStat, refNumber, conn)) {
+                    response.sendRedirect("successupdate.jsp");
+                } else {
+                    response.sendRedirect("errorupdate.jsp");
+                }
+            }
+
+            else {
+                response.sendRedirect("error.jsp");
+            }
         }
         
-        // NTS: pass the value of pageNumber, checkLast to admindashboard jsp
-        if (action.equals("Admin Dashboard")) {
-            ResultSet rs = am.getRecords(pageId, pageTotal, tableName, conn);
-            boolean checkLast = am.checkLast();
-            
-            request.setAttribute("records", rs);
-            request.setAttribute("checkLast", checkLast);
-            request.setAttribute("pageNumber", pageId);
-            
-            System.out.println("rs: " + rs);
-            System.out.println("checkLast: " + checkLast);
-            System.out.println("pageId: " + pageId);
-            
-            request.getRequestDispatcher("admindashboard.jsp").forward(request, response);
-        }
-        
         else {
-            // placeholder jsp destination
             response.sendRedirect("errorconn.jsp");
         }
-            
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
