@@ -65,7 +65,13 @@
                                 </form>
                             </div>
                         </td>
-                        <td><%= rs.getString("MAX(ref_no)") %></td>
+                        <%
+                            String refNo = rs.getString("MAX(ref_no)");
+                            if (refNo == null) {
+                                refNo = "N/A";
+                            }
+                        %>
+                        <td><%= refNo %></td>
                     </tr>
                 <%
                     }
