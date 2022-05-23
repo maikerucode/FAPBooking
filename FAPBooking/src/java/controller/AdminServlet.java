@@ -23,7 +23,7 @@ public class AdminServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        System.out.println("== AdminServlet =============================");
         HttpSession session = request.getSession(true);
         
         ServletContext sc = getServletContext();

@@ -20,8 +20,6 @@
             }
         %>
         
-        <h1>Let's book a room, <% out.print(account.getEmail()); %>!</h1>
-        
         <!--booking button-->
         <form method="post" action="Booking">
             <h3>length of stay</h3>
@@ -60,7 +58,7 @@
                 <%
                     out.println("<option value='" + y + "'>"
                                     + y + "</option>");
-                    out.println("<option value='" + y + "'>"
+                    out.println("<option value='" + y.plusYears(1) + "'>"
                                     + y.plusYears(1) + "</option>");
                 %>
             </select>
@@ -92,9 +90,9 @@
                 <%
                     out.println("<option value='" + y + "'>"
                                     + y + "</option>");
-                    out.println("<option value='" + y + "'>"
+                    out.println("<option value='" + y.plusYears(1) + "'>"
                                     + y.plusYears(1) + "</option>");
-                    out.println("<option value='" + y + "'>"
+                    out.println("<option value='" + y.plusYears(2) + "'>"
                                     + y.plusYears(2) + "</option>");
                 %>
             </select>

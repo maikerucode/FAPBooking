@@ -27,6 +27,7 @@ public class ReportServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("== ReportServlet =============================");
         
         HttpSession session = request.getSession(true);
         ServletContext sc = getServletContext();

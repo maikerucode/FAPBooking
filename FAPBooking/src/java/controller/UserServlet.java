@@ -17,6 +17,7 @@ public class UserServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("== UserServlet===============================");
         
         HttpSession session = request.getSession(true);
         User user = (User) session.getAttribute("user");

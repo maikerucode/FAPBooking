@@ -158,7 +158,6 @@ public class BookingManager {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        System.out.println("=============================================");
         return availRooms;
     }
 

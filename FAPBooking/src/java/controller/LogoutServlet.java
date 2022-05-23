@@ -20,12 +20,12 @@ public class LogoutServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        System.out.println("== LogoutServlet ============================");
         HttpSession session = request.getSession(false);
         
         if (session != null) {
             session.removeAttribute("user");
-            
+            session.invalidate();
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         
