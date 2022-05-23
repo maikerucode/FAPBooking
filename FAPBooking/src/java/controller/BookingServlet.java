@@ -12,8 +12,8 @@ import model.*;
  */
 public class BookingServlet extends HttpServlet {
     
-    EntryValidator ev = new EntryValidator();
-    BookingManager bm = new BookingManager();
+    EntryValidator ev;
+    BookingManager bm;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,6 +33,9 @@ public class BookingServlet extends HttpServlet {
         if (action == null) {
             action = "";
         }
+        
+        ev = new EntryValidator();
+        bm = new BookingManager();
         
         // check if user tries to book while having an ongoing booking
         if (action.equals("Book a Room") && bm.checkOngoing(user.getEmail(), conn)) {
