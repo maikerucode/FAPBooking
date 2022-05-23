@@ -102,25 +102,22 @@
             <!-- =================================================== -->
             
             <h3>room types</h3>
-            <!--nts: retrieve available number of rooms for each room type from DB
-                then display here
-            --> 
             
             <p>Single</p>
             <input name="roomSingle" type="number" min="0" max="10"
-                   placeholder="0" value="0" step="1"/>
+                   placeholder="0" value="0" step="1" required/>
             
             <p>Double</p>
             <input name="roomDouble" type="number" min="0" max="10"
-                   placeholder="0" value="0" step="1"/>
+                   placeholder="0" value="0" step="1" required/>
             
             <p>Triple</p>
             <input name="roomTriple" type="number" min="0" max="10"
-                   placeholder="0" value="0" step="1"/>
+                   placeholder="0" value="0" step="1" required/>
             
             <p>Quad</p>
             <input name="roomQuad" type="number" min="0" max="10"
-                   placeholder="0" value="0" step="1"/>            
+                   placeholder="0" value="0" step="1" required/>            
             <br><br><br>
 
             <input type="submit" name="action" value="Confirm Booking"/>
