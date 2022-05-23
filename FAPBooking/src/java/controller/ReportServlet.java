@@ -8,6 +8,7 @@ package controller;
 import com.itextpdf.text.DocumentException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,9 +20,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.BookingManager;
 import model.ReportManager;
 import model.User;
+import model.UserManager;
+import reports.AccountDetails;
 import reports.OrderOfReceipt;
+import reports.Stamper;
 
 /**
  *
@@ -29,6 +34,9 @@ import reports.OrderOfReceipt;
  */
 public class ReportServlet extends HttpServlet {
 
+    Stamper st = new Stamper();
+    String filename;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -47,27 +55,41 @@ public class ReportServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         String email = user.getEmail();
         String role = user.getRole();
-        ;
 
-        if (action.equals("Get Report")) {
-            try {
-                String dateString = "2002/01/14";
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                Date date = formatter.parse(dateString);
+        
+
+//        if (action.equals("Get Report")) {
+//            try {
+//                ReportManager rm = new ReportManager();
+//                rm.printReport(email, role, conn);
+//                response.sendRedirect("reportconfirm.jsp");
+//            } catch (DocumentException exm) {
+//                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, exm);
+//                response.sendRedirect("errorreport.jsp");
+//            }
+////            } catch(ParseException pe){
+////                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, pe);
+////                response.sendRedirect("errorreport.jsp");
+////            }
+//        }
+        if(action.equals("Get Report")){
+            try{
+                AccountDetails ad = new AccountDetails();
+                Stamper st = new Stamper();
+                UserManager em = new UserManager();
+                BookingManager bm = new BookingManager();
                 
-                ReportManager rm = new ReportManager();
-                OrderOfReceipt oor = new OrderOfReceipt();
-                oor.OrderOfRecipt(email, role, date, role, role, 0);
-                rm.printReport(email, role, conn);
-                response.sendRedirect("reportconfirm.jsp");
-            } catch (DocumentException exm) {
-                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, exm);
-                response.sendRedirect("errorreport.jsp");
-            } catch(ParseException pe){
-                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, pe);
+                filename = ad.AccountDetails(email, role, conn);
+                st.Stamper(email, role, filename, "AccountDetails");
+                
+            } catch (Exception ex){
+                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
                 response.sendRedirect("errorreport.jsp");
             }
+            
         }
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

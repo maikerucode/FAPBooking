@@ -80,6 +80,42 @@ public class UserManager {
         return true;
     }
     
+    //Getting One User
+    public ResultSet getSingleUser(String email, Connection conn){
+        ResultSet records = null;
+        
+        try{
+            if(conn != null) {
+                String query = "SELECT * FROM user_table WHERE email = ?";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, email);
+                records = ps.executeQuery(); 
+            } else {
+                System.out.println("getSingleData is null: ");
+            }
+            
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        return records;
+    }
+    
+    //Get Data
+    public ResultSet getUsers(Connection conn) {
+        try {
+            if (conn != null) {
+                String query = "SELECT * FROM USER_TBL";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet records = ps.executeQuery();
+                return records;
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        System.out.println("getData is null: ");
+        return null;
+    }
+    
     public static String encrypt(String str, String cipher, String algo) {
         
         String encryptedString = null;
@@ -115,4 +151,6 @@ public class UserManager {
         
         return decryptedString;
     }
+    
+    
 }

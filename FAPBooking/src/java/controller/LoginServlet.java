@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
         //Debugging
         System.out.println("driver: " + driver);
         System.out.println("usernamae: " + username);
-        System.out.println("password: " + driver);
+        System.out.println("password: " + password);
         
         System.out.println("driverUrl: " + driverUrl);
         System.out.println("hostname: " + hostname);
