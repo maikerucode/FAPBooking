@@ -17,7 +17,7 @@ public class BookingServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        System.out.println("== BookingServlet ===========================");
         HttpSession session = request.getSession(true);
         Booking booking = (Booking) session.getAttribute("booking"); 
         

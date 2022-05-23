@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        System.out.println("== LoginServlet =============================");
         // check if connection is null
         if (conn != null) {
             
