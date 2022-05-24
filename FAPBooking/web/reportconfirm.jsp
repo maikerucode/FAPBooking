@@ -54,7 +54,7 @@
             <br><br>
 
             <div class="w3-center">
-                <h1 class="w3-text-green" style="font-size:20px">Report Generated! Please check your Downloads folder :)</h1>
+                <h1 class="w3-text-green" style="font-size:20px">Report Generated! Please check your Desktop :)</h1>
 
                 <a class="w3-text-white" href="booking.jsp">Return to Booking Page</a>
 

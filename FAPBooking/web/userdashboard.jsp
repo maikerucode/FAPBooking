@@ -83,7 +83,7 @@
                 <a href="welcome.jsp" class="w3-bar-item w3-button">Home</a>
                 <a href="about.jsp" class="w3-bar-item w3-button">About</a>
                 <a href="booking.jsp" class="w3-bar-item w3-button">Book Now</a>
-                <a href="#" class="w3-bar-item w3-button w3-light-grey">Login</a>
+                <a href="#" class="w3-bar-item w3-button w3-light-grey">Login/Dashboard</a>
             </div>
 
             <div class="w3-center w3-deep-orange w3-hide-large" style="max-height:30px" style="bottom:-16px">
@@ -120,7 +120,7 @@
 
             <h3>Account Details</h3>
             <form name="GenerateAccountDetails" method="post" action="Report">
-                <input name="action" type="submit" value="Get Report" class="w3-btn w3-round w3-deep-orange"/>
+                <input name="action" type="submit" value="Get AccountDetails Report" class="w3-btn w3-round w3-deep-orange"/>
             </form>
             <br><br>
         </div>

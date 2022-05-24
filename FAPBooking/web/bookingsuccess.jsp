@@ -61,6 +61,7 @@
 
             <div class="w3-center">
                 <h1 class="w3-text-green" style="font-size:20px">Payment Confirmed!</h1>
+                <h1 class="w3-text-green" style="font-size:13px">Please proceed to your dashboard to update your reference number.</h1>
 
                 <a class="w3-text-white" href="home.jsp">Return to Home Page</a>
 

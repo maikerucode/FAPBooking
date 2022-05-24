@@ -55,7 +55,11 @@
             th {
                 padding-bottom: 10px;
                 padding-top: 10px;
-            }/*
+            }
+
+            table, th, td {
+                border: 2px solid black;
+            }
 
 
 
@@ -76,7 +80,7 @@
             int pageNumber = (Integer) request.getAttribute("pageNumber");
         %>
 
-        <header class="w3-display-container w3-content w3-center" style="max-width:1600px">
+        <header class="w3-display-container w3-content w3-center" style="max-width:1650px">
             <img class="w3-image" src="https://i.imgur.com/CvGZnaN.jpg" alt="Me" width="1600" height="200" style="max-height:450px">
             <div class="w3-display-middle w3-padding w3-border w3-wide w3-text-light-grey w3-center w3-hide-medium w3-hide-small">
                 <h1 class="w3-hide-medium w3-hide-small w3-xxlarge w3-marcellus">University Inn</h1>
@@ -91,7 +95,7 @@
                 <a href="welcome.jsp" class="w3-bar-item w3-button">Home</a>
                 <a href="about.jsp" class="w3-bar-item w3-button">About</a>
                 <a href="booking.jsp" class="w3-bar-item w3-button">Book Now</a>
-                <a href="#" class="w3-bar-item w3-button w3-light-grey">Login</a>
+                <a href="#" class="w3-bar-item w3-button w3-light-grey">Login/Dashboard</a>
             </div>
 
             <div class="w3-center w3-deep-orange w3-hide-large" style="max-height:30px" style="bottom:-16px">
@@ -99,7 +103,7 @@
                     <a href="welcome.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Home</a>
                     <a href="about.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">About</a>
                     <a href="booking.jsp" class="w3-bar-item w3-button" style="font-size: 10px;">Book Now</a>
-                    <a href="#" class="w3-bar-item w3-button w3-light-grey" style="font-size: 10px;">Login</a>
+                    <a href="#" class="w3-bar-item w3-button w3-light-grey" style="font-size: 10px;">Login/Dashboard</a>
                 </div>
             </div>
         </header>
@@ -108,8 +112,8 @@
             <h1 class="w3-text-light-grey w3-hide-small w3-hide-medium">Table of Reservations</h1>
             <h1 class="w3-text-light-grey w3-hide-large" style="font-size:18px">Table of Reservations</h1>
 
-            <div class="w3-content w3-center" style="max-width:1300px;">
-                <table id="reserveTable" class="w3-responsive w3-bordered w3-striped w3-center w3-hide-small w3-hide-medium" align="center">
+            <div class="w3-content w3-center" style="max-width:1300px; min-width:1300px">
+                <table id="reserveTable" class="w3-responsive w3-bordered w3-center w3-hide-small w3-hide-medium w3-white" align="center">
                     <tr class="text-center w3-deep-orange">
                         <th>Email</th>
                         <th>Room No.</th>
@@ -152,7 +156,7 @@
                                 refNo = "N/A";
                             }
                         %>
-                          <td style="padding-left:150px; padding-right:150px"><%= refNo %></td>
+                        <td style="padding-left:150px; padding-right:150px"><%= refNo%></td>
                     </tr>
 
                     <%
@@ -164,7 +168,7 @@
                     %>
                 </table>
 
-                <table id="reserveTable" class="w3-responsive w3-bordered w3-striped w3-center w3-hide-large w3-tiny" align="center" style="max-width:80%">
+                <table id="reserveTable" class="w3-responsive w3-bordered w3-hide-large w3-tiny w3-white" style="max-width:80%">
                     <tr class="text-center w3-deep-orange">
                         <th>Email</th>
                         <th>Room No.</th>
@@ -228,42 +232,68 @@
                 <br><br>
             </div>
             <br>
+            <div class="w3-text-light-grey">
+                
+            <h3>Account Details</h3>
+            <form name="GenerateAccountDetails" method="post" action="Report">
+                <input name="action" type="submit" value="Get AccountDetails Report" class="w3-btn w3-round w3-deep-orange"/>
+            </form>
+            <h3>Annual Number of Users</h3>
+            <form name="GenerateAnnualNumberUsers" method="post" action="Report">
+                <input name="action" type="submit" value="Get AnnualNumberOfUsers Report" class="w3-btn w3-round w3-deep-orange"/>
+            </form>
+            <h3>Monthly Number of Users</h3>
+            <form name="GenerateMonthlyNumberUsers" method="post" action="Report">
+                <input name="action" type="submit" value="Get MonthlyNumberOfUsers Report" class="w3-btn w3-round w3-deep-orange"/>
+            </form>
+            <h3>Annual Preferred Rooms</h3>
+            <form name="GenerateAnnualPrefferedRooms" method="post" action="Report">
+                <input name="action" type="submit" value="et AnnualPrefferredRooms Report" class="w3-btn w3-round w3-deep-orange"/>
+            </form>
+            <h3>Monthly Preferred Rooms</h3>
+            <form name="GenerateMonthlyPreferredRooms" method="post" action="Report">
+                <input name="action" type="submit" value="Get MonthlyPrefferredRooms Report" class="w3-btn w3-round w3-deep-orange"/>
+            </form>
+            </div>
+            <br><br>
+
         </main>
         <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge" style="bottom: 0; width: 100%;">
             <p class="w3-medium"><a href="#">Back to Top</a></p>
         </footer>
-        </body>
-    <script>
-        var pageNumber = "<%=pageNumber%>";         var checkLast = "<%=checkLast%>";
-        console.log("script checkLast: " + checkLast);
-                var backButton = document.getElementById("backButton");
-                var nextButton = document.getElementById("nextButton");
-                <!--document.write("pageNumber: " + pageNumber);-->
-<!--document.write("checkLast: " + checkLast);-->
+    </body>
+        <script>         var pageNum
+
+    ber = "<%=pageNumber%>";         var checkLast = "<%=checkLast%>";
+    console.log("script checkLast: " + checkLast);
+    var backButton = document.getElementById("backButton");
+            var nextButton = document.getElementById("nextButton");
+<!--document.write("pageNumber: " + pageNumber);-->
+        <!--document.write("checkLast: " + checkLast);-->
 
 <!--hide backButton if current page number is 1-->
-        if (pageNumber == "1") {
-            backButton.style.display = "none";
-        } else {
-            backButton.style.display = "block";
-        }
+    if (pageNumber == "1") {
+        backButton.style.display = "none";
+    } else {
+        backButton.style.display = "block";
+    }
 
 <!--hide nextButton if last page-->
-        if (checkLast === "true") {
-            nextButton.style.display = "none";
-        } else {
-            nextButton.style.display = "block";
-        }
+    if (checkLast === "true") {
+        nextButton.style.display = "none";
+    } else {
+        nextButton.style.display = "block";
+    }
 
 <!--refresh the page once if the back button is used-->
 window.addEventListener( "pageshow", function ( event ) {
-  var historyTraversal = event.persisted ||
-                         ( typeof window.performance != "undefined" &&
-                              window.performance.navigation.type === 2 );
-  if ( historyTraversal ) {
-    // Handle page restore.
-    window.location.reload();
-  }
+var historyTraversal = event.persisted ||
+                     ( typeof window.performance != "undefined" &&
+                          window.performance.navigation.type === 2 );
+if ( historyTraversal ) {
+// Handle page restore.
+window.location.reload();
+}
 });
     </script>
 </html>

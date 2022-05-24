@@ -65,11 +65,13 @@ public class ReportServlet extends HttpServlet {
                 AccountDetails ad = new AccountDetails();
                 filename = ad.AccountDetails(email, role, conn);
                 st.Stamper(email, role, filename, "AccountDetails");
+                response.sendRedirect("reportconfirm.jsp");
             } 
             if (action.equals("Get OrderOfReceipt Report")) {
                 OrderOfReceipt oor = new OrderOfReceipt();
                 filename = oor.OrderOfRecipt(email, role, conn);
                 st.Stamper(email, role, filename, "OrderOfReceipt");
+                response.sendRedirect("reportconfirm.jsp");
             } 
             else if (action.equals("Get AnnualNumberOfUsers Report")) {
                 String year = "2022";
@@ -77,6 +79,7 @@ public class ReportServlet extends HttpServlet {
                 AnnualNumberOfUsers anou = new AnnualNumberOfUsers();
                 filename = anou.AnnualNumberOfUsers(email, role, year, conn);
                 st.Stamper(email, role, filename, "AnnualNumberOfUsers");
+                response.sendRedirect("reportconfirm.jsp");
             } 
             else if (action.equals("Get MonthlyNumberOfUsers Report")) {
                 String year = "2022";
@@ -85,6 +88,7 @@ public class ReportServlet extends HttpServlet {
                 MonthlyNumberOfUsers mnou = new MonthlyNumberOfUsers();
                 filename = mnou.MonthlyNumberOfUsers(email, role, year, month, conn);
                 st.Stamper(email, role, filename, "MonthlyNumberOfUsers");
+                response.sendRedirect("reportconfirm.jsp");
             }
             else if (action.equals("Get AnnualPrefferredRooms Report")) {
                 String year = "2022";
@@ -92,6 +96,7 @@ public class ReportServlet extends HttpServlet {
                 AnnualPrefferredRooms apr = new AnnualPrefferredRooms();
                 filename = apr.AnnualPrefferredRooms(email, role, year, conn);
                 st.Stamper(email, role, filename, "AnnualPrefferredRooms");
+                response.sendRedirect("reportconfirm.jsp");
             } 
             else if (action.equals("Get MonthlyPrefferredRooms Report")) {
                 String year = "2022";
@@ -100,6 +105,7 @@ public class ReportServlet extends HttpServlet {
                 MonthlyPrefferredRooms mpr = new MonthlyPrefferredRooms();
                 filename = mpr.MonthlyPrefferredRooms(email, role, year, month, conn);
                 st.Stamper(email, role, filename, "MonthlyPrefferredRooms");
+                response.sendRedirect("reportconfirm.jsp");
             } 
 
         } catch (Exception ex) {
