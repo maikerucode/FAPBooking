@@ -62,7 +62,7 @@
             </div>
         </main>
         <br><br><br><br>><br><br><br><br><br>
-        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
+        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge" style="bottom: 0; width: 100%;">
             <p class="w3-medium"><a href="#">Back to Top</a></p>
         </footer>
 

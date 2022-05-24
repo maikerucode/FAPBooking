@@ -60,67 +60,69 @@
         </header>
 
         <br><br><br>
-        <div align="center">
-            <!--logout button-->
-            <form method="post" action="Logout">
-                <input type="submit" name="action" class="w3-btn w3-round w3-deep-orange" value="Logout" style="width:180px"/>
-            </form>
-            <br>
+        <main>
+            <div align="center">
+                <!--logout button-->
+                <form method="post" action="Logout">
+                    <input type="submit" name="action" class="w3-btn w3-round w3-deep-orange" value="Logout" style="width:180px"/>
+                </form>
+                <br>
 
-            <!--user dashboard button-->
-            <form method="get" action="User">
-                <input type="submit" name="action" class="w3-btn w3-round w3-deep-orange" value="User Dashboard" style="width:180px"/>
-            </form>
-            <br>
+                <!--user dashboard button-->
+                <form method="get" action="User">
+                    <input type="submit" name="action" class="w3-btn w3-round w3-deep-orange" value="User Dashboard" style="width:180px"/>
+                </form>
+                <br>
 
-            <!--booking button-->
-            <form method="post" action="Booking">
-                <input type="submit" name="action" class="w3-btn w3-round w3-deep-orange" value="Book a Room" style="width:180px"/>
-            </form>
-            <br>
+                <!--booking button-->
+                <form method="post" action="Booking">
+                    <input type="submit" name="action" class="w3-btn w3-round w3-deep-orange" value="Book a Room" style="width:180px"/>
+                </form>
+                <br>
 
-            <!--admin dashboard button-->
-            <form method="post" action="Admin" id="adminForm">
-                <input type="submit" name="action" class="w3-btn w3-round w3-deep-orange" value="Admin Dashboard" style="width:180px"/>
-                <input type="hidden" name="pageNumber" value="1"/>
-                <input type="hidden" name="tableName" value="Reserve"/>
-            </form>
-            <br><br>
-        </div>
-        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
+                <!--admin dashboard button-->
+                <form method="post" action="Admin" id="adminForm">
+                    <input type="submit" name="action" class="w3-btn w3-round w3-deep-orange" value="Admin Dashboard" style="width:180px"/>
+                    <input type="hidden" name="pageNumber" value="1"/>
+                    <input type="hidden" name="tableName" value="Reserve"/>
+                </form>
+                <br><br>
+            </div>
+        </main>
+        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge" style="bottom: 0; width: 100%;">
             <p class="w3-medium"><a href="#">Back to Top</a></p>
         </footer>
     </body>
-</html>
 
-<script>
-    var role = "<%=role%>";
-    var adminForm = document.getElementById("adminForm");
+    <script>
+        var role = "<%=role%>";
+        var adminForm = document.getElementById("adminForm");
 <!--document.write("JavaScript role:" + role);-->
 
 <!--show admin dashboard button if user is an admin-->
-    if (role === "Guest") {
-        adminForm.style.display = "none";
-    } else {
-        adminForm.style.display = "block";
-    }
+        if (role === "Guest") {
+            adminForm.style.display = "none";
+        } else {
+            adminForm.style.display = "block";
+        }
 
 <!--refresh the page once if the back button is used-->
-    window.addEventListener("pageshow", function (event) {
-        var historyTraversal = event.persisted ||
-                (typeof window.performance != "undefined" &&
-                        window.performance.navigation.type === 2);
-        if (historyTraversal) {
-            // Handle page restore.
-            window.location.reload();
-        }
-    });
+        window.addEventListener("pageshow", function (event) {
+            var historyTraversal = event.persisted ||
+                    (typeof window.performance != "undefined" &&
+                            window.performance.navigation.type === 2);
+            if (historyTraversal) {
+                // Handle page restore.
+                window.location.reload();
+            }
+        });
 
 <!--prevent form resubmission if page is refreshed-->
-    if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href);
-    }
-</script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+</html>
 
 <!--
 references:

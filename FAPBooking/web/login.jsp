@@ -58,34 +58,36 @@
         </header>
 
         <br><br>
+        <main>
+            <div class="loginForm w3-text-light-grey w3-marcellus">
+                <h1 class="w3-marcellus">Login</h1>
 
-        <div class="loginForm w3-text-light-grey w3-marcellus">
-            <h1 class="w3-marcellus">Login</h1>
+                <form method="post" action="Login">
+                    <p style="font-size: 20px">email</p>
+                    <input name="email" type="text" size="40" required/>
 
-            <form method="post" action="Login">
-                <p style="font-size: 20px">email</p>
-                <input name="email" type="text" size="40" required/>
+                    <p style="font-size: 20px">password</p>
+                    <input name="password" type="password" size="40" required/>
+                    <br>
 
-                <p style="font-size: 20px">password</p>
-                <input name="password" type="password" size="40" required/>
-                <br>
+                    <p style="font-size: 20px">captcha</p>
+                    <img class="w3-border" id="captcha" src="captcha.png">
+                    <br><br>
 
-                <p style="font-size: 20px">captcha</p>
-                <img class="w3-border" id="captcha" src="captcha.png">
+                    <input type="text" name="captchaAnswer" placeholder="Enter here..." required/>
+                    <br><br>
+
+                    <input type="submit" name="action" value="Login" class="w3-btn w3-round w3-deep-orange"/>
+                    <br><br>
+                </form>
+
+                <a href="signup.jsp">Not registered yet? Sign up here</a>
                 <br><br>
-
-                <input type="text" name="captchaAnswer" placeholder="Enter here..." required/>
-                <br><br>
-
-                <input type="submit" name="action" value="Login"/>
-                <br><br>
-            </form>
-
-            <a href="signup.jsp">Not registered yet? Sign up here</a>
-            <br><br>
-            <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
-                <p class="w3-medium"><a href="#">Back to Top</a></p>
-            </footer>
+            </div>
+        </main>
+        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge" style="bottom: 0; width: 100%;">
+            <p class="w3-medium"><a href="#">Back to Top</a></p>
+        </footer>
 
     </body>
 </html>

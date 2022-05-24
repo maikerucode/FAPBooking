@@ -84,27 +84,154 @@
             </div>
         </header>
         <br><br>
-        <div class="w3-content" style="max-width:700px;">
+        <main>
+            <div class="w3-content" style="max-width:700px;">
+                <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
+                    <div class="w3-margin-bottom" align="center">
+                        <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:100%">
+                        <img class="w3-hide-small w3-hide-large" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:500px">
+                        <img class="w3-hide-large w3-hide-medium" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:400px">
+                        <div class="w3-container w3-white w3-hide-small w3-hide-medium">
+                            <h3>University Inn</h3>
+                            <h6 class="w3-opacity">Established in 2022</h6>
+                            <p>University Inn is committed to provide comfortable and hygienic accommodations, as students and guests remain the first and foremost priority. The hotel applies more stringent sanitation protocols to protect and secure the guests’ welfare.
 
-            <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
-                <div class="w3-margin-bottom">
-                    <img class="w3-hide-small w3-hide-medium" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:100%">
-                    <img class="w3-hide-large" src="http://drive.google.com/uc?export=view&id=176fu03FzCzIuaKqS1hpiyhKk57-OKgUW" alt="Norway" style="width:100; max-width:100%">
-                    <div class="w3-container w3-white">
-                        <h3>University Inn</h3>
-                        <h6 class="w3-opacity">Established in 2022</h6>
-                        <p>University Inn is committed to provide comfortable and hygienic accommodations, as students and guests remain the first and foremost priority. The hotel applies more stringent sanitation protocols to protect and secure the guests’ welfare.
-
-Guests are assured of comfort, luxury and impeccable service at the University Inn. Stay and experience the renowned Fueled by Passion Service by the hotel's gracious associates.</p>
+                                Guests are assured of comfort, luxury and impeccable service at the University Inn. Stay and experience the renowned Fueled by Passion Service by the hotel's gracious associates.</p>
 
 
+                        </div>
+                        
+                        <div class="w3-container w3-white w3-hide-small w3-hide-large" style="max-width:500px;">
+                            <h3>University Inn</h3>
+                            <h6 class="w3-opacity">Established in 2022</h6>
+                            <p>University Inn is committed to provide comfortable and hygienic accommodations, as students and guests remain the first and foremost priority. The hotel applies more stringent sanitation protocols to protect and secure the guests’ welfare.
+
+                                Guests are assured of comfort, luxury and impeccable service at the University Inn. Stay and experience the renowned Fueled by Passion Service by the hotel's gracious associates.</p>
+
+
+                        </div>
+                        
+                        <div class="w3-container w3-white w3-small w3-hide-large w3-hide-medium" style="max-width:400px;">
+                            <h3>University Inn</h3>
+                            <h6 class="w3-opacity">Established in 2022</h6>
+                            <p>University Inn is committed to provide comfortable and hygienic accommodations, as students and guests remain the first and foremost priority. The hotel applies more stringent sanitation protocols to protect and secure the guests’ welfare.
+
+                                Guests are assured of comfort, luxury and impeccable service at the University Inn. Stay and experience the renowned Fueled by Passion Service by the hotel's gracious associates.</p>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-            <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
-                <p class="w3-medium"><a href="#">Back to Top</a></p>
-            </footer>
+            <div class="w3-content w3-hide-small w3-hide-medium" style="max-width:700px;">
+                <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
+                    <div class="w3-container w3-white">
+                        <h3>About Us</h3>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third">
+                        <h4 align="center">Sophie Reginio</h4>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third">
+                        <h4 align="center">Carlos Gabriel Diaz</h4>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third">
+                        <h4 align="center">Michael Sarmiento</h4>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third w3-margin-bottom" style="height:275px">
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/sseuta">Sophie Reginio</a>
+                        <br>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third w3-margin-bottom" style="height:275px">
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/CarlosDiazTo">Carlos Gabriel Diaz</a>
+                        <br>
+                        <h5>Twitter:</h5>
+                        <a href="https://twitter.com/CarlosDiazTo">@CarlosDiazTo</a>
+                        <br>
+                        <h5>Instagram:</h5>
+                        <a href="https://www.instagram.com/carlosdiazto/?hl=en">carlosdiazto</a>
+                        <br><br>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third w3-margin-bottom" style="height:275px">
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/maikerumsg">Michael Joshua Sarmiento</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-content w3-hide-large w3-hide-small w3-small" style="max-width:500px;">
+                <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
+                    <div class="w3-container w3-white">
+                        <h3>About Us</h3>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third" style="height:250px">
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/sseuta">Sophie Reginio</a>
+                        <br>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third" style="height:250px">
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/CarlosDiazTo">Carlos Gabriel Diaz</a>
+                        <br>
+                        <h5>Twitter:</h5>
+                        <a href="https://twitter.com/CarlosDiazTo">@CarlosDiazTo</a>
+                        <br>
+                        <h5>Instagram:</h5>
+                        <a href="https://www.instagram.com/carlosdiazto/?hl=en">carlosdiazto</a>
+                        <br><br>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third w3-margin-bottom" style="height:250px">
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/maikerumsg">Michael Joshua Sarmiento</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-content w3-hide-large w3-hide-medium w3-tiny" style="max-width:400px;">
+                <div class="w3-row-padding w3-padding-16 w3-text-light-grey">
+                    <div class="w3-container w3-white">
+                        <h3>About Us</h3>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third" style="height:150px">
+                        <h4 align="center">Sophie Reginio</h4>
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/sseuta">Sophie Reginio</a>
+                        <br>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third" style="height:300px">
+                        <h4 align="center">Carlos Gabriel Diaz</h4>
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/CarlosDiazTo">Carlos Gabriel Diaz</a>
+                        <br>
+                        <h5>Twitter:</h5>
+                        <a href="https://twitter.com/CarlosDiazTo">@CarlosDiazTo</a>
+                        <br>
+                        <h5>Instagram:</h5>
+                        <a href="https://www.instagram.com/carlosdiazto/?hl=en">carlosdiazto</a>
+                        <br><br>
+                    </div>
+                    <div class="w3-border w3-light-grey w3-third" style="height:150px">
+                        <h4 align="center">Michael Sarmiento</h4>
+                        <br>
+                        <h5>Facebook: </h5>
+                        <a href="https://www.facebook.com/maikerumsg">Michael Joshua Sarmiento</a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
+            <p class="w3-medium"><a href="#">Back to Top</a></p>
+        </footer>
     </body>
 </html>

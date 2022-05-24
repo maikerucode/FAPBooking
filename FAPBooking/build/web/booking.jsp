@@ -198,10 +198,12 @@
             <input name="roomQuad" type="number" min="0" max="10"
                    placeholder="0" value="0" step="1" required/>
             <br><br><br>
+            
+            <input type="submit" name="action" value="Confirm Booking" class="w3-btn w3-round w3-deep-orange"/>
         </form>
 
         <br><br>
-        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge">
+        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge" style="bottom: 0; width: 100%;">
             <p class="w3-medium"><a href="#">Back to Top</a></p>
         </footer>
     </body>
