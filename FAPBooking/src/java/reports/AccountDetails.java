@@ -19,13 +19,14 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import java.io.FileOutputStream;
+import java.sql.Connection;
 
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.ReportManager;
+import model.*;
 
 /**
  *
@@ -34,14 +35,19 @@ import model.ReportManager;
 public class AccountDetails {
 
     //Variables
-    String firstname = "";
-    String lastname = "";
     String email = "";
-    int phonenumber = 0;
     String role = "";
-    String home = "";
     ResultSet userResult;
     ResultSet reservationResult;
+    
+    //Mandatory
+    String location = System.getProperty("user.home");
+    String Filename;
+    Connection conn;
+    
+    //Model
+    UserManager um = new UserManager();
+    BookingManager bm = new BookingManager();
 
     //Document
     Document doc = new Document();
@@ -50,22 +56,23 @@ public class AccountDetails {
     public void AccountDetails() {
     }
 
-    public void AccountDetails(String firstname, String lastname, String email, int phonenumber, String role, ResultSet userResult, ResultSet reservationResult) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public String AccountDetails(String email, String role, Connection conn) {
         this.email = email;
-        this.phonenumber = phonenumber;
         this.role = role;
-        this.userResult = userResult;
-        this.reservationResult = reservationResult;
+        this.conn = conn;
 
         //Debugging
         System.out.println("AccountDetails.java");
         System.out.println("Username: " + this.email);
         System.out.println("Role: " + this.role + "\n");
-
+        
+        //Querries - galing sa model for querries
+        userResult = um.getSingleUser(email, conn);
+        reservationResult = bm.userReservations(email, conn);
+        
         //Date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtfFilename = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         LocalDateTime now = LocalDateTime.now();
 
         //Fonts
@@ -89,9 +96,15 @@ public class AccountDetails {
         //PDF Formulation
         try {
             //PDFWriter Directs PDF to Desktop
-            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + email + "_" + dtf.format(now) + "_AccountDetails.pdf"));
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(location + "\\Desktop\\"
+                    + email + "_" + dtfFilename.format(now) + "_AccountDetails.pdf"));
 
+            Filename = location + "\\Desktop\\" + email + "_" + dtfFilename.format(now) + "_AccountDetails.pdf";
+
+            System.out.println("Account Details Filename: " + Filename);
+            
+            System.out.println("location: " + location);
+            
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
             //Header/Footer Event
@@ -103,7 +116,7 @@ public class AccountDetails {
             Paragraph reportType = new Paragraph("Account Details: \n", headerFont);
             Paragraph introduction = new Paragraph();
             Paragraph body = new Paragraph();
-            
+
             introduction.add("Date and Time: " + dtf.format(now) + "\n\n");
 
             //User
@@ -115,7 +128,7 @@ public class AccountDetails {
             PdfPTable usertbl = new PdfPTable(4);
             PdfPTable reservationtbl = new PdfPTable(5);
 
-            body.add("User Details");
+            introduction.add("User Details");
             //User Table
             usertbl.addCell("Email");
             usertbl.addCell("firstname");
@@ -128,38 +141,48 @@ public class AccountDetails {
                 usertbl.addCell(userResult.getString("lastname"));
                 usertbl.addCell(userResult.getString("role"));
             }
-            
-            body.add("Reservation Details");
-            //Reservation Table
-            usertbl.addCell("Room Number");
-            usertbl.addCell("Check In");
-            usertbl.addCell("Check Out");
-            usertbl.addCell("Total Charge");
-            usertbl.addCell("Reference Number");
-            
-            while (reservationResult.next()) {
-                usertbl.addCell(userResult.getString("room_no"));
-                usertbl.addCell(userResult.getString("check_in"));
-                usertbl.addCell(userResult.getString("check_out"));
-                usertbl.addCell(userResult.getString("total_charge"));
-                usertbl.addCell(userResult.getString("ref_no"));
+
+            body.add("\n Reservation Details");
+
+            if (reservationResult.next() == false) {
+                System.out.println("reservationResult is null");
+            } else {
+                do {
+                    //Reservation Table
+                    reservationtbl.addCell("Room Number");
+                    reservationtbl.addCell("Check In");
+                    reservationtbl.addCell("Check Out");
+                    reservationtbl.addCell("Total Charge");
+                    reservationtbl.addCell("Reference Number");
+
+                    reservationtbl.addCell(reservationResult.getString("room_no"));
+                    reservationtbl.addCell(reservationResult.getString("check_in"));
+                    reservationtbl.addCell(reservationResult.getString("check_out"));
+                    reservationtbl.addCell(reservationResult.getString("total_charge"));
+                    reservationtbl.addCell(reservationResult.getString("ref_no"));
+
+                } while (reservationResult.next());
+
             }
-            
+
             //Reservations Table
             //Add to doc
             doc.add(reportType);
             doc.add(introduction);
             doc.add(usertbl);
+            doc.add(body);
             doc.add(reservationtbl);
 
             //Close
             doc.close();
 
             System.out.println("Account Details Printed");
+
         } catch (Exception ex) {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
+        return Filename;
     }
 
     public class HeaderFooterPageEvent extends PdfPageEventHelper {

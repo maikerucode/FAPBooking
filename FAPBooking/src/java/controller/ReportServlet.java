@@ -18,48 +18,73 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.ReportManager;
 import model.User;
+import reports.*;
 
 /**
  *
  * @author star
  */
 public class ReportServlet extends HttpServlet {
-    
+
+    String filename;
+    Stamper st = new Stamper();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("== ReportServlet =============================");
-        
+
         HttpSession session = request.getSession(true);
         ServletContext sc = getServletContext();
         Connection conn = (Connection) sc.getAttribute("conn");
-        
+
         String action = request.getParameter("action");
         System.out.println("action is: " + action);
-        
+
         // prevents nullpointerexception to be thrown
         if (action == null) {
             action = "";
         }
-        
+
         User user = (User) session.getAttribute("user");
         String email = user.getEmail();
         String role = user.getRole();
-        
-        // change/remove this
-        if (action.equals("Get Report")) {
-            try {
-                ReportManager rm = new ReportManager();
-                
-                // change/remove this
-                rm.printReport(email, role, conn);  
-                
-                response.sendRedirect("successreport.jsp");
+
+        try {
+            // change/remove this
+//            if (action.equals("Get Report")) {
+//
+//                ReportManager rm = new ReportManager();
+//
+//                // change/remove this
+//                rm.printReport(email, role, conn);
+//
+//                response.sendRedirect("successreport.jsp");
+//
+//            } 
+            if (action.equals("Get AccountDetails Report")) {
+                AccountDetails ad = new AccountDetails();
+                filename = ad.AccountDetails(email, role, conn);
+                st.Stamper(email, role, filename, "AccountDetails");
+            } 
+            else if (action.equals("Get AnnualNumberOfUsers Report")) {
+                String year = "2022";
+
+                AnnualNumberOfUsers anou = new AnnualNumberOfUsers();
+                filename = anou.AnnualNumberOfUsers(email, role, year, conn);
+                st.Stamper(email, role, filename, "AnnualNumberOfUsers");
+            } 
+            else if (action.equals("Get Report")) {
+                String year = "2022";
+                String month = "05";
+
+                MonthlyNumberOfUsers mnou = new MonthlyNumberOfUsers();
+                filename = mnou.MonthlyNumberOfUsers(email, role, year, month, conn);
+                st.Stamper(email, role, filename, "MonthlyNumberOfUsers");
             }
-            
-            catch (DocumentException ex) {
-                Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
-                response.sendRedirect("errorreport.jsp");
-            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect("errorreport.jsp");
         }
     }
 
