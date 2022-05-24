@@ -4,58 +4,43 @@
  */
 package reports;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.FileOutputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.io.*;
+import java.sql.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.logging.*;
 import model.ReportManager;
 
 /**
  *
  * @author Lenovo
  */
-public class MonthlyAverageRoomsReserved {
+public class AnnualRevenue {
     
-    String email = "";
-    String role = "";
-    String type = "";
-    double totalRevenue;
-    int totalRoomsSold;
-    double averageRoomRate;
-
+    double totalRevenue = 0;
+    int totalRoomsSold = 0;
+    
+    Connection conn;
+    
     //Document
     Document doc = new Document();
 
-    MonthlyAverageRoomsReserved() {
+    public AnnualRevenue() { }
 
-    }
-    
-    MonthlyAverageRoomsReserved(String email, String role, String type, double totalRevenue, int totalRoomsSold) {
-        this.email = email;
-        this.role = role;
-        this.type = type;
-        this.totalRevenue = totalRevenue;
-        this.totalRoomsSold = totalRoomsSold;
-        this.averageRoomRate = this.totalRevenue / this.totalRoomsSold;
+    public void printAnnualRevenue(String email, String role,
+                                    String year, String roomType, Connection conn) {
+        this.conn = conn;
+        System.out.println("AnnualRevenue.java");
+        
+        //Compute for the annual revenue
+        computeAnnualRevenue(year,roomType);
 
         //Debugging
-        System.out.println("MonthlyAverageRoomsReserved.java");
-        System.out.println("Username: " + this.email + "\n");
-        System.out.println("Role: " + this.role + "\n");
+        System.out.println("== printAnnualRevenue() ==========================");
+        System.out.println("Username: " + email + "\n");
+        System.out.println("Role: " + role + "\n");
         System.out.println("Total Revenue: " + this.totalRevenue);
         System.out.println("Total Room Sold: " + this.totalRoomsSold);
 
@@ -71,15 +56,15 @@ public class MonthlyAverageRoomsReserved {
         try {
             //Filename
             PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + email + "_" + dtf.format(now) + "Annual" + type + "RoomReserved.pdf"));
+                    + email + "_" + dtf.format(now) + "Annual" + roomType + "Revenue.pdf"));
 
             //Header/Footer Event
-            MonthlyAverageRoomsReserved.HeaderFooterPageEvent eve = new MonthlyAverageRoomsReserved.HeaderFooterPageEvent();
+            AnnualRevenue.HeaderFooterPageEvent eve = new AnnualRevenue.HeaderFooterPageEvent();
             writer.setPageEvent(eve);
 
             //PDF Open
             doc.open();
-            Paragraph reportType = new Paragraph("Monthly Average Rooms Reserved: \n", headerFont);
+            Paragraph reportType = new Paragraph("Annual Revenue: \n", headerFont);
             Paragraph introduction = new Paragraph();
             Paragraph body = new Paragraph();
             
@@ -88,15 +73,13 @@ public class MonthlyAverageRoomsReserved {
             //User
             introduction.add("Welcome\n");
             introduction.add("User: " + email + "\n");
-            introduction.add("Role: " + this.role + "\n");
+            introduction.add("Role: " + role + "\n");
             
             //Body
             body.add("Total Revenue: ");
             body.add(Double.toString(this.totalRevenue) + "\n");
             body.add("Total Room Sold: ");
             body.add(Integer.toString(this.totalRoomsSold) + "\n");
-            body.add("Average Room Rate: ");
-            body.add(Double.toString(this.averageRoomRate));
             
             //Add to doc
             doc.add(reportType);
@@ -106,13 +89,51 @@ public class MonthlyAverageRoomsReserved {
             //Close
             doc.close();
 
-            System.out.println("Monthly Average " + type + " Printed");
+            System.out.println("Annual Revenue" + roomType + " Printed");
         } catch (Exception ex) {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
     }
-
+    
+    public void computeAnnualRevenue(String year, String roomType) {
+        try {
+            // get room rate
+            String q1 = "SELECT * FROM hotelbookingdb.rate_table"
+                            + " WHERE room_type=?";
+            PreparedStatement ps1 = this.conn.prepareStatement(q1);
+            ps1.setString(1, roomType);
+            ResultSet rateRecords = ps1.executeQuery();
+            
+            rateRecords.next();
+            double roomRate = Double.parseDouble(rateRecords.getString("room_rate"));
+            
+            // get reservations
+            String q2 = "SELECT COUNT(*) AS count_name FROM hotelbookingdb.reserve_table"
+                            + " WHERE room_no IN ("
+                            + "     SELECT room_no FROM hotelbookingdb.room_table"
+                            + "     WHERE room_type=?"
+                            + " ) AND '" + year + "-12-31' >= check_in"
+                            + " AND check_out > '" + year + "-01-01'";
+            PreparedStatement ps2 = this.conn.prepareStatement(q2);
+            ps2.setString(1, roomType);
+            ResultSet reserveRecords = ps2.executeQuery();
+            
+            if (reserveRecords.next()) {
+                totalRoomsSold = reserveRecords.getInt("count_name");
+            }
+            
+            totalRevenue = totalRoomsSold*roomRate;
+            
+            System.out.println("== computeAnnualRevenue() ==========================");
+            System.out.println("roomRate: " + roomRate);
+            System.out.println("totalRoomsSold: " + totalRoomsSold);
+            System.out.println("totalRevenue: " + totalRevenue);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+    
     public class HeaderFooterPageEvent extends PdfPageEventHelper {
 
         @Override //Header
@@ -144,3 +165,8 @@ public class MonthlyAverageRoomsReserved {
         }
     }
 }
+
+/* References:
+overlapping dates query: https://stackoverflow.com/questions/28927400/sql-query-to-select-rows-where-the-year-is-between-two-dates
+retrieve records based on values of another table: https://stackoverflow.com/questions/19163219/select-records-in-on-table-based-on-conditions-from-another-table
+*/

@@ -59,7 +59,7 @@
 
 
 
-        </style>    
+        </style>
 
     </head>
     <body align="center">
@@ -146,7 +146,13 @@
                                 </form>
                             </div>
                         </td>
-                        <td style="padding-left:150px; padding-right:150px"><%= rs.getString("MAX(ref_no)")%></td>
+                        <%
+                            String refNo = rs.getString("MAX(ref_no)");
+                            if (refNo == null) {
+                                refNo = "N/A";
+                            }
+                        %>
+                          <td style="padding-left:150px; padding-right:150px"><%= refNo %></td>
                     </tr>
 
                     <%

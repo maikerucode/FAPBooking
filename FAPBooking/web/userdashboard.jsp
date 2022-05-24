@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Author     : star
 --%>
 
@@ -28,8 +28,8 @@
             h1, h3, h5, h6, a {
                 font-family: "Montserrat", serif;
             }
-            
-            
+
+
             .w3-marcellus {
                 /* font-family: "Lobster", Sans-serif;*/
                 font-family: 'Marcellus SC', serif;
@@ -98,21 +98,21 @@
         <br><br>
         <main>
         <div class="w3-content w3-center w3-text-light-grey" style="max-width:1300px;">
-            <h1>Hello, <% out.print(account.getEmail()); %>!</h1>
+          <h1>Hello, <% out.print(account.getEmail()); %>!</h1>
 
-            <h3 class="w3-marcellus">Full Name</h3>
-            <p><% out.print(account.getFirstName()); %> <% out.print(account.getLastName()); %></p>
+          <h3 class="w3-marcellus">Full Name</h3>
+          <p><% out.print(account.getFirstName()); %> <% out.print(account.getLastName()); %></p>
 
-            <h3 class="w3-marcellus">Email</h3>
-            <p><% out.print(account.getEmail());%></p>
+          <h3 class="w3-marcellus">Email</h3>
+          <p><% out.print(account.getEmail()); %></p>
 
-            <h3 class="w3-marcellus">Reference Number</h3>
-            <p><%= refNo%></p>
+          <h3 class="w3-marcellus">Reference Number</h3>
+          <p><%= refNo %></p>
 
-            <h3 class="w3-marcellus">Update your payment's reference number</h3>
-            <form name="UpdateRecordButton" method="post" action="User" >
-                <input name="refNumber" type="text" size="40" required/> 
-                <br><br>
+          <h3>Update your payment's reference number</h3>
+          <form name="UpdateRecordButton" method="post" action="User">
+              <input name="refNumber" type="text" size="40" required/>
+              <br><br>
 
                 <input name="updateRefNumber" type="submit" value="Update" class="w3-btn w3-round w3-deep-orange"/>
                 <input type="hidden" name="action" value="Update Reference Number"/>
