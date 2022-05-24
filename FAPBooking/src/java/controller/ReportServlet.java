@@ -66,6 +66,11 @@ public class ReportServlet extends HttpServlet {
                 filename = ad.AccountDetails(email, role, conn);
                 st.Stamper(email, role, filename, "AccountDetails");
             } 
+            if (action.equals("Get OrderOfReceipt Report")) {
+                OrderOfReceipt oor = new OrderOfReceipt();
+                filename = oor.OrderOfRecipt(email, role, conn);
+                st.Stamper(email, role, filename, "OrderOfReceipt");
+            } 
             else if (action.equals("Get AnnualNumberOfUsers Report")) {
                 String year = "2022";
 
@@ -73,7 +78,7 @@ public class ReportServlet extends HttpServlet {
                 filename = anou.AnnualNumberOfUsers(email, role, year, conn);
                 st.Stamper(email, role, filename, "AnnualNumberOfUsers");
             } 
-            else if (action.equals("Get Report")) {
+            else if (action.equals("Get MonthlyNumberOfUsers Report")) {
                 String year = "2022";
                 String month = "05";
 
@@ -81,6 +86,21 @@ public class ReportServlet extends HttpServlet {
                 filename = mnou.MonthlyNumberOfUsers(email, role, year, month, conn);
                 st.Stamper(email, role, filename, "MonthlyNumberOfUsers");
             }
+            else if (action.equals("Get AnnualPrefferredRooms Report")) {
+                String year = "2022";
+
+                AnnualPrefferredRooms apr = new AnnualPrefferredRooms();
+                filename = apr.AnnualPrefferredRooms(email, role, year, conn);
+                st.Stamper(email, role, filename, "AnnualPrefferredRooms");
+            } 
+            else if (action.equals("Get MonthlyPrefferredRooms Report")) {
+                String year = "2022";
+                String month = "05";
+
+                MonthlyPrefferredRooms mpr = new MonthlyPrefferredRooms();
+                filename = mpr.MonthlyPrefferredRooms(email, role, year, month, conn);
+                st.Stamper(email, role, filename, "MonthlyPrefferredRooms");
+            } 
 
         } catch (Exception ex) {
             Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);

@@ -18,35 +18,41 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.BookingManager;
 import model.ReportManager;
 
 /**
  *
  * @author Lenovo
  */
-public class AnnuallPrefferredRooms {
+public class AnnualPrefferredRooms {
 
     //Variables
-    String email;
-    String role;
-
-    //type
-    String firstType;
-    String secondType;
-    String thirdType;
-    String fourthType;
+    //mainModel mm = new mainModel();
+    String email = "";
+    String role = "";
+    String year = "";
 
     //quantity per type
-    int firstCount;
-    int secondCount;
-    int thirdCount;
-    int fourthCount;
+    int singleCount;
+    int doubleCount;
+    int tripleCount;
+    int quadCount;
     ResultSet result;
+
+    //Mandatory
+    String location = System.getProperty("user.home");
+    String Filename;
+    Connection conn;
+
+    //Model
+    BookingManager bm = new BookingManager();
 
     //Document
     Document doc = new Document();
@@ -55,41 +61,22 @@ public class AnnuallPrefferredRooms {
     public void AnnualPrefferredRooms() {
     }
 
-    public void AnnualPrefferredRooms(String email, String role,
-            String firstType, String secondType, String thirdType, String fourthType,
-            int firstCount, int secondCount, int thirdCount, int forthCount, ResultSet result) {
+    public String AnnualPrefferredRooms(String email, String role, String year, Connection conn) {
         this.email = email;
         this.role = role;
-
-        this.firstType = firstType;
-        this.secondType = secondType;
-        this.thirdType = thirdType;
-        this.fourthType = fourthType;
-
-        this.firstCount = firstCount;
-        this.secondCount = secondCount;
-        this.thirdCount = thirdCount;
-        this.fourthCount = forthCount;
+        this.conn = conn;
 
         //Debugging
         System.out.println("AnnualPrefferredRooms.java");
         System.out.println("Username: " + this.email + "\n");
         System.out.println("Role: " + this.role + "\n");
 
-        //Quantity
-        System.out.println("First Count: " + this.firstCount + "\n");
-        System.out.println("Second Count: " + this.secondCount + "\n");
-        System.out.println("Third Count: " + this.thirdCount + "\n");
-        System.out.println("Forth Count" + this.fourthCount + "\n");
-
-        //Type
-        System.out.println("First Type: " + this.firstType + "\n");
-        System.out.println("Second Type: " + this.secondType + "\n");
-        System.out.println("Third Type: " + this.thirdType + "\n");
-        System.out.println("Forth Type" + this.fourthType + "\n");
+        //Querries - galing sa model for querries
+        result = bm.getAnnualReservations(year, conn);
 
         //Date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtfFilename = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         LocalDateTime now = LocalDateTime.now();
 
         //Fonts
@@ -99,14 +86,57 @@ public class AnnuallPrefferredRooms {
         //PDF Formulation
         try {
             //PDFWriter Directs PDF to Desktop
-            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + email + "_" + dtf.format(now) + "AnnualPrefferredRooms.pdf"));
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(location + "\\Desktop\\"
+                    + email + "_" + dtfFilename.format(now) + "_AnnualPrefferredRooms.pdf"));
+
+            Filename = location + "\\Desktop\\" + email + "_" + dtfFilename.format(now) + "_AnnualPrefferredRooms.pdf";
+
+            System.out.println("AnnualPrefferredRooms Filename: " + Filename);
+
+            System.out.println("location: " + location);
 
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
+
             //Header/Footer Event
-            AnnuallPrefferredRooms.HeaderFooterPageEvent eve = new AnnuallPrefferredRooms.HeaderFooterPageEvent();
+            AnnualPrefferredRooms.HeaderFooterPageEvent eve = new AnnualPrefferredRooms.HeaderFooterPageEvent();
             writer.setPageEvent(eve);
+
+            if (result.next() == false) {
+                System.out.println("annualPrefferredRooms is null");
+            } else {
+                do {
+                    //Room Counts
+                    //Single Rooms
+                    if (result.getString("room_no").equals("200")
+                            || result.getString("room_no").equals("201")
+                            || result.getString("room_no").equals("300")
+                            || result.getString("room_no").equals("301")) {
+                        singleCount++;
+                    }
+                    //Double Rooms
+                    if (result.getString("room_no").equals("202")
+                            || result.getString("room_no").equals("302")) {
+                        doubleCount++;
+                    }
+                    //Triple Rooms
+                    if (result.getString("room_no").equals("203")
+                            || result.getString("room_no").equals("303")) {
+                        tripleCount++;
+                    }
+                    //Quad Rooms
+                    if (result.getString("room_no").equals("204")
+                            || result.getString("room_no").equals("304")) {
+                        quadCount++;
+                    }
+
+                } while (result.next());
+                //Quantity
+                System.out.println("First Count: " + this.singleCount + "\n");
+                System.out.println("Second Count: " + this.doubleCount + "\n");
+                System.out.println("Third Count: " + this.tripleCount + "\n");
+                System.out.println("Forth Count" + this.quadCount + "\n");
+            }
 
             //PDF Open
             doc.open();
@@ -127,18 +157,33 @@ public class AnnuallPrefferredRooms {
             table.addCell("Quantity");
 
             //Table Input
-            table.addCell(firstType);
-            table.addCell(Integer.toString(firstCount));
-            table.addCell(secondType);
-            table.addCell(Integer.toString(secondCount));
-            table.addCell(thirdType);
-            table.addCell(Integer.toString(thirdCount));
-            table.addCell(fourthType);
-            table.addCell(Integer.toString(fourthCount));
+            table.addCell("Single Rooms");
+            table.addCell(Integer.toString(singleCount));
+            table.addCell("Double Rooms");
+            table.addCell(Integer.toString(doubleCount));
+            table.addCell("Triple Rooms");
+            table.addCell(Integer.toString(tripleCount));
+            table.addCell("Quadruple Rooms");
+            table.addCell(Integer.toString(quadCount));
 
-            //Add to doc
+            String Largest;
+
+            if ((singleCount >= doubleCount) && (singleCount >= tripleCount) && (singleCount >= quadCount)) { // singleCount >= doubleCount,tripleCount,quadCount,e
+                Largest = "Single with " + singleCount;
+            } else if ((doubleCount >= tripleCount) && (doubleCount >= quadCount)) {      // doubleCount >= tripleCount,quadCount,e
+                Largest = "Double with " + doubleCount;
+            } else if ((tripleCount >= quadCount)) {                            // tripleCount >= quadCount,e
+                Largest = "Triple with " + tripleCount;
+            } else {                                                // quadCount >= e
+                Largest = "Quadrouple with " + quadCount;
+            }
+
+            body.add("Most Prefferred Room This Year " + year + ": " + Largest); //Add to doc
+
             doc.add(reportType);
             doc.add(introduction);
+            doc.add(table);
+            doc.add(body);
 
             //Close
             doc.close();
@@ -147,8 +192,9 @@ public class AnnuallPrefferredRooms {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
+        return Filename;
     }
-    
+
     public class HeaderFooterPageEvent extends PdfPageEventHelper {
 
         @Override //Header

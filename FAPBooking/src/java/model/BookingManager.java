@@ -70,6 +70,25 @@ public class BookingManager {
         }
         return records;
     }
+    
+    public ResultSet userPendingReservations(String email, Connection conn) {
+        ResultSet records = null;
+
+        if (conn != null) {
+            try {
+                String query = "SELECT * FROM hotelbookingdb.reserve_table"
+                        + " WHERE email = ? AND reserve_status = 'Pending'";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, email);
+                records = ps.executeQuery();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        } else {
+            System.out.println("userReservations is null: ");
+        }
+        return records;
+    }
 
     // checks the database if there are available rooms at the given date
     public boolean checkBooking(Booking booking, Connection conn) {
@@ -139,6 +158,44 @@ public class BookingManager {
         return result;
     }
 
+    //checks all reservations made by the user
+    public ResultSet getAnnualReservations(String year, Connection conn) {
+        ResultSet records = null;
+
+        if (conn != null) {
+            try {
+                String query = "SELECT * FROM hotelbookingdb.reserve_table WHERE check_in LIKE ?";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, "%" + year + "%");
+                records = ps.executeQuery();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        } else {
+            System.out.println("userReservations is null: ");
+        }
+        return records;
+    }
+    
+    //checks all reservations made by the user
+    public ResultSet getMonthlyReservations(String month, String year, Connection conn) {
+        ResultSet records = null;
+
+        if (conn != null) {
+            try {
+                String query = "SELECT * FROM hotelbookingdb.reserve_table WHERE check_in LIKE ?";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, "%" + year + "_" + month + "%");
+                records = ps.executeQuery();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        } else {
+            System.out.println("userReservations is null: ");
+        }
+        return records;
+    }
+    
     //  ==============================================================================
     // checks for available rooms of a specific room type
     public boolean checkRoom(String roomTypeName, int roomTypeVal,

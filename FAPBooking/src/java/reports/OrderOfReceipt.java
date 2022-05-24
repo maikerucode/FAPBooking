@@ -19,6 +19,7 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import java.io.FileOutputStream;
+import java.sql.Connection;
 import java.util.Date;
 
 import java.sql.ResultSet;
@@ -26,7 +27,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.BookingManager;
 import model.ReportManager;
+import model.UserManager;
 
 /**
  *
@@ -35,36 +38,42 @@ import model.ReportManager;
 public class OrderOfReceipt {
 
     //Variables
-    String email;
-    String role;
-    Date date;
-    String roomType;
-    String numberOfPeople;
-    double price;
+    String email = "";
+    String role = "";
+    ResultSet userResult;
+    ResultSet reservationResult;
 
+    //Mandatory
+    String location = System.getProperty("user.home");
+    String Filename;
+    Connection conn;
+    
+    //Model
+    UserManager um = new UserManager();
+    BookingManager bm = new BookingManager();
+    
     //Document
     Document doc = new Document();
 
+    public void OrderOfRecipt(){}
 
-    public void OrderOfRecipt(String email, String role, Date date, String roomType, String numberOfPeople, double price) {
+    public String OrderOfRecipt(String email, String role, Connection conn) {
         this.email = email;
         this.role = role;
-        this.date = date;
-        this.roomType = roomType;
-        this.numberOfPeople = numberOfPeople;
-        this.price = price;
+        this.conn = conn;
 
         //Debugging
         System.out.println("OrderOfReceipt.java");
         System.out.println("Username: " + this.email + "\n");
         System.out.println("Role: " + this.role + "\n");
-        System.out.println("Date: " + this.date + "\n");
-        System.out.println("Room type: " + this.roomType + "\n");
-        System.out.println("Number of People: " + this.numberOfPeople + "\n");
-        System.out.println("Price: " + this.price + "\n");
 
+        //Querries - galing sa model for querries
+        userResult = um.getSingleUser(email, conn);
+        reservationResult = bm.userPendingReservations(email, conn);
+        
         //Date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtfFilename = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         LocalDateTime now = LocalDateTime.now();
 
         //Fonts
@@ -74,9 +83,13 @@ public class OrderOfReceipt {
         //PDF Formulation
         try {
             //PDFWriter Directs PDF to Desktop
-            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\" + System.getProperty("user.name") + "\\Desktop\\"
-                    + email + "_" + dtf.format(now) + "OrderOfReceipt.pdf"));
+            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(location + "\\Desktop\\"
+                    + email + "_" + dtfFilename.format(now) + "_OrderOfReceipt.pdf"));
 
+            Filename = location + "\\Desktop\\" + email + "_" + dtfFilename.format(now) + "_OrderOfReceipt.pdf";
+
+            System.out.println("Order of Receipt Filename: " + Filename);
+            
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
             //Header/Footer Event
@@ -89,34 +102,50 @@ public class OrderOfReceipt {
             Paragraph introduction = new Paragraph();
             Paragraph body = new Paragraph();
 
-            introduction.add(dtf.format(now) + "\n");
+            introduction.add("Date and Time: " + dtf.format(now) + "\n");
 
             //User
+            userResult.next();
             introduction.add("Welcome\n");
             introduction.add("User: " + email + "\n");
+            introduction.add("Firsname: " + userResult.getString("firstName") + "\n");
+            introduction.add("Latsname: " + userResult.getString("lastName") + "\n");
             introduction.add("Role: " + this.role + "\n");
 
+            //Tables
+            PdfPTable reservationtbl = new PdfPTable(6);
+            
             //Body
-            Phrase userP = new Phrase("User: ", bodyFont);
-            body.add(email + "\n");
-            Phrase dateP = new Phrase("Date Reserved: ", bodyFont);
-            body.add(date.toString() + "\n");
-            Phrase roomTP = new Phrase("Room Type: ", bodyFont);
-            body.add(roomType + "\n");
-            Phrase numberOfPeopleP = new Phrase("Number of People: ", bodyFont);
-            body.add(numberOfPeople + "\n");
-            Phrase PriceP = new Phrase("Price: ", bodyFont);
-            body.add(price + "\n");
+            if (reservationResult.next() == false) {
+                System.out.println("reservationResult is null");
+            } else {
+                do {
+                    //Reservation Table
+                    reservationtbl.addCell("Room Number");
+                    reservationtbl.addCell("Check In");
+                    reservationtbl.addCell("Check Out");
+                    reservationtbl.addCell("Total Charge");
+                    reservationtbl.addCell("Reserve Status");
+                    reservationtbl.addCell("Reference Number");
 
+                    reservationtbl.addCell(reservationResult.getString("room_no"));
+                    reservationtbl.addCell(reservationResult.getString("check_in"));
+                    reservationtbl.addCell(reservationResult.getString("check_out"));
+                    reservationtbl.addCell(reservationResult.getString("total_charge"));
+                    reservationtbl.addCell(reservationResult.getString("reserve_status"));
+                    reservationtbl.addCell(reservationResult.getString("ref_no"));
+
+                } while (reservationResult.next());
+
+            }
+
+            body.add("Thank you for Joining University Inn");
+            
             //Add to doc
             doc.add(reportType);
             doc.add(introduction);
+            doc.add(reservationtbl);
             doc.add(body);
-            doc.add(userP);
-            doc.add(dateP);
-            doc.add(roomTP);
-            doc.add(numberOfPeopleP);
-            doc.add(PriceP);
 
             //Close
             doc.close();
@@ -126,6 +155,7 @@ public class OrderOfReceipt {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
+        return Filename;
     }
 
     public class HeaderFooterPageEvent extends PdfPageEventHelper {
