@@ -119,6 +119,25 @@ public class BookingManager {
         }
         return result;
     }
+    
+    public ResultSet GetMonthlyNumUsers(String month ,String year, Connection conn) {
+        ResultSet result = null;
+
+        if (conn != null) {
+            try {
+                String query = "SELECT DISTINCT email, firstName, LastName, role, check_in FROM hotelbookingdb.reserve_table INNER JOIN hotelbookingdb.user_table USING (email) WHERE check_in LIKE ?";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, "%" + year + "_" + month + "%");
+                result = ps.executeQuery();
+            } catch (SQLException sqle) {
+                System.err.println(sqle.getMessage());
+                sqle.printStackTrace();
+            }
+        } else {
+            System.out.println("getAnnualNumusers is null: ");
+        }
+        return result;
+    }
 
     //  ==============================================================================
     // checks for available rooms of a specific room type

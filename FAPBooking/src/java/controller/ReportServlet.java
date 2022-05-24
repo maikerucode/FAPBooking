@@ -28,7 +28,7 @@ public class ReportServlet extends HttpServlet {
 
     String filename;
     Stamper st = new Stamper();
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("== ReportServlet =============================");
@@ -61,19 +61,27 @@ public class ReportServlet extends HttpServlet {
 //                response.sendRedirect("successreport.jsp");
 //
 //            } 
-            if (action.equals("Get AccountDetails Report")){
+            if (action.equals("Get AccountDetails Report")) {
                 AccountDetails ad = new AccountDetails();
                 filename = ad.AccountDetails(email, role, conn);
                 st.Stamper(email, role, filename, "AccountDetails");
             } 
-            else if(action.equals("Get Report")){
+            else if (action.equals("Get AnnualNumberOfUsers Report")) {
                 String year = "2022";
-                
+
                 AnnualNumberOfUsers anou = new AnnualNumberOfUsers();
                 filename = anou.AnnualNumberOfUsers(email, role, year, conn);
-                st.Stamper(email, role, filename, "AccountDetails");
+                st.Stamper(email, role, filename, "AnnualNumberOfUsers");
+            } 
+            else if (action.equals("Get Report")) {
+                String year = "2022";
+                String month = "05";
+
+                MonthlyNumberOfUsers mnou = new MonthlyNumberOfUsers();
+                filename = mnou.MonthlyNumberOfUsers(email, role, year, month, conn);
+                st.Stamper(email, role, filename, "MonthlyNumberOfUsers");
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);
             response.sendRedirect("errorreport.jsp");
