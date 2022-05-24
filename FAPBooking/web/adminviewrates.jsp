@@ -55,7 +55,11 @@
             th {
                 padding-bottom: 10px;
                 padding-top: 10px;
-            }/*
+            }
+
+            table, th, td {
+                border: 2px solid black;
+            }
 
 
 
@@ -102,21 +106,22 @@
         </header>
         <main>
             <br><br>
-            <h1>Table of Room Rates</h1>
 
-            <div>
-                <table id="reserveTable">
-                    <tr class="text-center">
-                        <th>Room Type</th>
-                        <th>Room Rate</th>
+            <div class="w3-content w3-center w3-text-light-grey">
+                <h1>Table of Room Rates</h1>
+
+                <table id="reserveTable" class="w3-responsive w3-bordered w3-center w3-hide-small w3-hide-medium w3-white" align="center" style="max-width:280px;">
+                    <tr class="text-center w3-deep-orange">
+                        <th style="padding-left:20px; padding-right:20px">Room Type</th>
+                        <th style="padding-left:20px; padding-right:20px">Room Rate</th>
                     </tr>
 
                     <%
                         while (rs.next()) {
                     %>
                     <tr class="text-center">
-                        <td><%= rs.getString("room_type")%></td>
-                        <td><%= rs.getString("room_rate")%></td>
+                        <td style="padding-left:20px; padding-right:20px"><%= rs.getString("room_type")%></td>
+                        <td style="padding-left:20px; padding-right:20px"><%= rs.getString("room_rate")%></td>
                     </tr>
                     <%
                         }
@@ -124,15 +129,16 @@
                 </table>
                 <br>
             </div>
-
+                <br>
             <!--return button-->
             <div>
-                <form method="post" action="Admin" id="returnButton">
-                    <input name="returnButton" type="submit" value="Return"/>
+                <form method="post" action="Admin" id="returnButton" align="center">
+                    <input name="returnButton" type="submit" value="Return" class="w3-btn w3-round w3-deep-orange"/>
                     <input name="action" type="hidden" value="Admin Dashboard"/>
                     <input type="hidden" name="pageNumber" value="1"/>
                     <input type="hidden" name="tableName" value="Reserve"/>
                 </form>
+                <br>
             </div>
         </main>
         <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge" style="bottom: 0; width: 100%;">

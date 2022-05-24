@@ -233,45 +233,71 @@
             </div>
             <br>
             <div class="w3-text-light-grey">
-                
-            <h3>Account Details</h3>
-            <form name="GenerateAccountDetails" method="post" action="Report">
-                <input name="action" type="submit" value="Get AccountDetails Report" class="w3-btn w3-round w3-deep-orange"/>
-            </form>
-            <h3>Annual Number of Users</h3>
-            <form name="GenerateAnnualNumberUsers" method="post" action="Report">
-                <input name="action" type="submit" value="Get AnnualNumberOfUsers Report" class="w3-btn w3-round w3-deep-orange"/>
-            </form>
-            <h3>Monthly Number of Users</h3>
-            <form name="GenerateMonthlyNumberUsers" method="post" action="Report">
-                <input name="action" type="submit" value="Get MonthlyNumberOfUsers Report" class="w3-btn w3-round w3-deep-orange"/>
-            </form>
-            <h3>Annual Preferred Rooms</h3>
-            <form name="GenerateAnnualPrefferedRooms" method="post" action="Report">
-                <input name="action" type="submit" value="et AnnualPrefferredRooms Report" class="w3-btn w3-round w3-deep-orange"/>
-            </form>
-            <h3>Monthly Preferred Rooms</h3>
-            <form name="GenerateMonthlyPreferredRooms" method="post" action="Report">
-                <input name="action" type="submit" value="Get MonthlyPrefferredRooms Report" class="w3-btn w3-round w3-deep-orange"/>
-            </form>
+
+                <h3>Account Details</h3>
+                <form name="GenerateAccountDetails" method="post" action="Report">
+                    <input name="action" type="submit" value="Get AccountDetails Report" class="w3-btn w3-round w3-deep-orange"/>
+                </form>
+                <h3>Annual Number of Users</h3>
+                <form name="GenerateAnnualNumberUsers" method="post" action="Report">
+                    <input name="action" type="submit" value="Get AnnualNumberOfUsers Report" class="w3-btn w3-round w3-deep-orange"/>
+                </form>
+                <h3>Monthly Number of Users</h3>
+                <form name="GenerateMonthlyNumberUsers" method="post" action="Report">
+                    <input name="action" type="submit" value="Get MonthlyNumberOfUsers Report" class="w3-btn w3-round w3-deep-orange"/>
+                </form>
+                <h3>Annual Preferred Rooms</h3>
+                <form name="GenerateAnnualPrefferedRooms" method="post" action="Report">
+                    <input name="action" type="submit" value="Get AnnualPrefferredRooms Report" class="w3-btn w3-round w3-deep-orange"/>
+                </form>
+                <h3>Monthly Preferred Rooms</h3>
+                <form name="GenerateMonthlyPreferredRooms" method="post" action="Report">
+                    <input name="action" type="submit" value="Get MonthlyPrefferredRooms Report" class="w3-btn w3-round w3-deep-orange"/>
+                </form>
             </div>
+            
             <br><br>
 
-        </main>
-        <footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge" style="bottom: 0; width: 100%;">
-            <p class="w3-medium"><a href="#">Back to Top</a></p>
-        </footer>
-    </body>
-        <script>         var pageNum
+            <!--button to jsp w/ room table -->
+            <form name="ViewRoomsButton" method="post" action="Admin"/>
+            <input type="submit" name="action" value="View Rooms" class="w3-btn w3-round w3-deep-orange"/>
+            <input type="hidden" name="pageNumber" value="1"/>
+            <input type="hidden" name="tableName" value="Room"/>
+        </form>
+        <br><br>
 
-    ber = "<%=pageNumber%>";         var checkLast = "<%=checkLast%>";
-    console.log("script checkLast: " + checkLast);
-    var backButton = document.getElementById("backButton");
-            var nextButton = document.getElementById("nextButton");
-<!--document.write("pageNumber: " + pageNumber);-->
+        <!--button to jsp w/ rate table -->
+        <form name="ViewRoomsButton" method="post" action="Admin"/>
+        <input type="submit" name="action" value="View Rates" class="w3-btn w3-round w3-deep-orange"/>
+        <input type="hidden" name="pageNumber" value="1"/>
+        <input type="hidden" name="tableName" value="Rate"/>
+    </form>
+    <br><br>
+
+    <!--button to jsp w/ user table -->
+    <form name="ViewUsersButton" method="post" action="Admin"/>
+    <input type="submit" name="action" value="View Users" class="w3-btn w3-round w3-deep-orange"/>
+    <input type="hidden" name="pageNumber" value="1"/>
+    <input type="hidden" name="tableName" value="User"/>
+</form>
+<br><br>
+
+</main>
+<footer class="w3-container w3-padding-32 w3-center w3-opacity w3-black w3-xlarge" style="bottom: 0; width: 100%;">
+    <p class="w3-medium"><a href="#">Back to Top</a></p>
+</footer>
+</body>
+<script>         var pageNum
+
+            ber = "<%=pageNumber%>";
+    var checkLast = "<%=checkLast%>";
+    console.log("script checkLast: " 
+    + checkLast);
+    var backButton = document.getElementById("backButton");             var nextButton = document.getElementById("nextButton");
+            <!--document.write("pageNumber: " + pageNumber);-->
         <!--document.write("checkLast: " + checkLast);-->
 
-<!--hide backButton if current page number is 1-->
+        <!--hide backButton if current page number is 1-->
     if (pageNumber == "1") {
         backButton.style.display = "none";
     } else {
@@ -288,14 +314,14 @@
 <!--refresh the page once if the back button is used-->
 window.addEventListener( "pageshow", function ( event ) {
 var historyTraversal = event.persisted ||
-                     ( typeof window.performance != "undefined" &&
-                          window.performance.navigation.type === 2 );
+             ( typeof window.performance != "undefined" &&
+                  window.performance.navigation.type === 2 );
 if ( historyTraversal ) {
 // Handle page restore.
 window.location.reload();
 }
 });
-    </script>
+</script>
 </html>
 
 <!--
