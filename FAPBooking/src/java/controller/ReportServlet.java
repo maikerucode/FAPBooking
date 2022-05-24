@@ -66,6 +66,11 @@ public class ReportServlet extends HttpServlet {
                 filename = ad.AccountDetails(email, role, conn);
                 st.Stamper(email, role, filename, "AccountDetails");
             } 
+            if (action.equals("Get OrderOfReceipt Report")) {
+                OrderOfReceipt oor = new OrderOfReceipt();
+                filename = oor.OrderOfRecipt(email, role, conn);
+                st.Stamper(email, role, filename, "OrderOfReceipt");
+            } 
             else if (action.equals("Get AnnualNumberOfUsers Report")) {
                 String year = "2022";
 
@@ -88,7 +93,7 @@ public class ReportServlet extends HttpServlet {
                 filename = apr.AnnualPrefferredRooms(email, role, year, conn);
                 st.Stamper(email, role, filename, "AnnualPrefferredRooms");
             } 
-            else if (action.equals("Get Report")) {
+            else if (action.equals("Get MonthlyPrefferredRooms Report")) {
                 String year = "2022";
                 String month = "05";
 

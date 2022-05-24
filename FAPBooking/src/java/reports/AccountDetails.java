@@ -137,8 +137,8 @@ public class AccountDetails {
 
             while (userResult.next()) {
                 usertbl.addCell(userResult.getString("email"));
-                usertbl.addCell(userResult.getString("firstname"));
-                usertbl.addCell(userResult.getString("lastname"));
+                usertbl.addCell(userResult.getString("firstName"));
+                usertbl.addCell(userResult.getString("lastName"));
                 usertbl.addCell(userResult.getString("role"));
             }
 
