@@ -74,13 +74,19 @@
 
                 <p style="font-size: 20px">confirm password</p>
                 <input name="confirmPass" type="password" size="40" required/>
+                 
+                <p style="font-size: 20px">role</p>
+                <select name="role">
+                    <option value="Guest">Guest</option>
+                    <option value="Admin">Admin</option>
+                </select>
                 <br><br>
-
+                
                 <img id="captcha" src="captcha.png">
                 <br><br>
 
                 <input type="text" name="captchaAnswer" required/>
-
+                
                 <input type="submit" name="action" value="Sign-up"/>
                 <input type="hidden" name="role" value="Guest"/>
                 <br><br>

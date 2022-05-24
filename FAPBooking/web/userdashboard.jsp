@@ -8,8 +8,52 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>User Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>University Inn</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster&effect=shadow-multiple">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap" rel="stylesheet">
+
+        <style>
+            body {
+                background-color: #54240C;
+                /*654827*/
+                /*4d371d*/
+            }
+
+            h1, h3, h5, h6, a {
+                font-family: "Montserrat", serif;
+            }
+
+            .w3-marcellus {
+                /* font-family: "Lobster", Sans-serif;*/
+                font-family: 'Marcellus SC', serif;
+            }
+
+            .navbar {
+                justify-content: space-between;
+            }
+
+            .flexMain {
+                display: flex;
+                height: 768px;
+                width: 90vw;
+                margin: auto;
+                flex-wrap:wrap;
+            }
+
+            .flexItem {
+                background-color: green;
+                width: 50%;
+                height:33%;
+            }
+
+        </style>
+
     </head>
     <body>
         <%
