@@ -73,7 +73,7 @@ public class ReportServlet extends HttpServlet {
                 filename = anou.AnnualNumberOfUsers(email, role, year, conn);
                 st.Stamper(email, role, filename, "AnnualNumberOfUsers");
             } 
-            else if (action.equals("Get Report")) {
+            else if (action.equals("Get MonthlyNumberOfUsers Report")) {
                 String year = "2022";
                 String month = "05";
 
@@ -81,6 +81,13 @@ public class ReportServlet extends HttpServlet {
                 filename = mnou.MonthlyNumberOfUsers(email, role, year, month, conn);
                 st.Stamper(email, role, filename, "MonthlyNumberOfUsers");
             }
+            else if (action.equals("Get Report")) {
+                String year = "2022";
+
+                AnnualPrefferredRooms apr = new AnnualPrefferredRooms();
+                filename = apr.AnnualPrefferredRooms(email, role, year, conn);
+                st.Stamper(email, role, filename, "AnnualPrefferredRooms");
+            } 
 
         } catch (Exception ex) {
             Logger.getLogger(ReportServlet.class.getName()).log(Level.SEVERE, null, ex);

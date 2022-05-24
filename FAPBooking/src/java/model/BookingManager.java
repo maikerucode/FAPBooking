@@ -139,6 +139,24 @@ public class BookingManager {
         return result;
     }
 
+    //checks all reservations made by the user
+    public ResultSet getAnnualReservations(String year, Connection conn) {
+        ResultSet records = null;
+
+        if (conn != null) {
+            try {
+                String query = "SELECT * FROM hotelbookingdb.reserve_table WHERE check_in LIKE ?";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, "%" + year + "%");
+                records = ps.executeQuery();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        } else {
+            System.out.println("userReservations is null: ");
+        }
+        return records;
+    }
     //  ==============================================================================
     // checks for available rooms of a specific room type
     public boolean checkRoom(String roomTypeName, int roomTypeVal,
