@@ -91,12 +91,13 @@ public class AnnualPrefferredRooms {
 
             Filename = location + "\\Desktop\\" + email + "_" + dtfFilename.format(now) + "_AnnualPrefferredRooms.pdf";
 
-            System.out.println("Account Details Filename: " + Filename);
+            System.out.println("AnnualPrefferredRooms Filename: " + Filename);
 
             System.out.println("location: " + location);
 
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
+
             //Header/Footer Event
             AnnualPrefferredRooms.HeaderFooterPageEvent eve = new AnnualPrefferredRooms.HeaderFooterPageEvent();
             writer.setPageEvent(eve);
@@ -166,22 +167,19 @@ public class AnnualPrefferredRooms {
             table.addCell(Integer.toString(quadCount));
 
             String Largest;
-            
+
             if ((singleCount >= doubleCount) && (singleCount >= tripleCount) && (singleCount >= quadCount)) { // singleCount >= doubleCount,tripleCount,quadCount,e
                 Largest = "Single with " + singleCount;
-            } 
-            else if ((doubleCount >= tripleCount) && (doubleCount >= quadCount)) {      // doubleCount >= tripleCount,quadCount,e
+            } else if ((doubleCount >= tripleCount) && (doubleCount >= quadCount)) {      // doubleCount >= tripleCount,quadCount,e
                 Largest = "Double with " + doubleCount;
-            } 
-            else if ((tripleCount >= quadCount)) {                            // tripleCount >= quadCount,e
+            } else if ((tripleCount >= quadCount)) {                            // tripleCount >= quadCount,e
                 Largest = "Triple with " + tripleCount;
-            } 
-            else {                                                // quadCount >= e
+            } else {                                                // quadCount >= e
                 Largest = "Quadrouple with " + quadCount;
             }
 
             body.add("Most Prefferred Room This Year " + year + ": " + Largest); //Add to doc
-            
+
             doc.add(reportType);
             doc.add(introduction);
             doc.add(table);

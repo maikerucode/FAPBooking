@@ -81,12 +81,20 @@ public class ReportServlet extends HttpServlet {
                 filename = mnou.MonthlyNumberOfUsers(email, role, year, month, conn);
                 st.Stamper(email, role, filename, "MonthlyNumberOfUsers");
             }
-            else if (action.equals("Get Report")) {
+            else if (action.equals("Get AnnualPrefferredRooms Report")) {
                 String year = "2022";
 
                 AnnualPrefferredRooms apr = new AnnualPrefferredRooms();
                 filename = apr.AnnualPrefferredRooms(email, role, year, conn);
                 st.Stamper(email, role, filename, "AnnualPrefferredRooms");
+            } 
+            else if (action.equals("Get Report")) {
+                String year = "2022";
+                String month = "05";
+
+                MonthlyPrefferredRooms mpr = new MonthlyPrefferredRooms();
+                filename = mpr.MonthlyPrefferredRooms(email, role, year, month, conn);
+                st.Stamper(email, role, filename, "MonthlyPrefferredRooms");
             } 
 
         } catch (Exception ex) {
