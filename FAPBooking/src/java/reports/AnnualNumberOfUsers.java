@@ -18,11 +18,13 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.BookingManager;
 import model.ReportManager;
 
 /**
@@ -30,27 +32,42 @@ import model.ReportManager;
  * @author Lenovo
  */
 public class AnnualNumberOfUsers {
-    
+
     //Variables
     //mainModel mm = new mainModel();
     String email = "";
     String role = "";
+    String year = "";
+    ResultSet result;
+    int userCount = 0;
+
+    //Mandatory
     String location = System.getProperty("user.home");
+    String Filename;
+    Connection conn;
+
+    //Model
+    BookingManager bm = new BookingManager();
 
     //Document
     Document doc = new Document();
 
-    AnnualNumberOfUsers() {
+    public void AnnualNumberOfUsers() {
     }
 
-    AnnualNumberOfUsers(String email, String role, ResultSet result) {
+    public String AnnualNumberOfUsers(String email, String role, String year, Connection conn) {
         this.email = email;
         this.role = role;
+        this.conn = conn;
+        this.year = year;
 
         //Debugging
         System.out.println("AnnualNumberOfUsers.java");
         System.out.println("Username: " + this.email + "\n");
         System.out.println("Role: " + this.role + "\n");
+
+        //Querries - galing sa model for querries
+        result = bm.GetAnnualNumUsers(year, conn);
 
         //Date
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -65,8 +82,12 @@ public class AnnualNumberOfUsers {
         try {
             //PDFWriter Directs PDF to Desktop
             PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(location + "\\Desktop\\"
-                    + email + "_" + dtf.format(now) + "AnnualNumberOfUsers.pdf"));
+                    + email + "_" + dtfFilename.format(now) + "_AnnualNumberOfUsers.pdf"));
 
+            Filename = location + "\\Desktop\\" + email + "_" + dtfFilename.format(now) + "_AnnualNumberOfUsers.pdf";
+            
+            System.out.println("AnnualNumberOfUsers Filename: " + Filename);
+            
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
             //Header/Footer Event
@@ -79,7 +100,7 @@ public class AnnualNumberOfUsers {
             Paragraph introduction = new Paragraph();
             Paragraph body = new Paragraph();
 
-            introduction.add(dtf.format(now) + "\n");
+            introduction.add("Date and Time: " + dtf.format(now) + "\n");
 
             //User
             introduction.add("Welcome\n");
@@ -88,19 +109,26 @@ public class AnnualNumberOfUsers {
 
             //Body
             //Tables
-            PdfPTable table = new PdfPTable(2);
+            PdfPTable table = new PdfPTable(4);
             table.addCell("User");
+            table.addCell("First Name");
+            table.addCell("Last Name");
             table.addCell("Role");
 
             while (result.next()) {
                 table.addCell(result.getString("email"));
+                table.addCell(result.getString("firstName"));
+                table.addCell(result.getString("lastName"));
                 table.addCell(result.getString("role"));
+                userCount++;
             }
-
+            body.add("Number of Users: " + userCount);
+            
             //Add to doc
             doc.add(reportType);
             doc.add(introduction);
             doc.add(body);
+            doc.add(table);
 
             //Close
             doc.close();
@@ -110,8 +138,9 @@ public class AnnualNumberOfUsers {
             Logger.getLogger(AccountDetails.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
+        return Filename;
     }
-    
+
     public class HeaderFooterPageEvent extends PdfPageEventHelper {
 
         @Override //Header

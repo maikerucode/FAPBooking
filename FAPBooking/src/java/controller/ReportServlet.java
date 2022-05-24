@@ -61,9 +61,16 @@ public class ReportServlet extends HttpServlet {
 //                response.sendRedirect("successreport.jsp");
 //
 //            } 
-            if (action.equals("Get Report")){
+            if (action.equals("Get AccountDetails Report")){
                 AccountDetails ad = new AccountDetails();
                 filename = ad.AccountDetails(email, role, conn);
+                st.Stamper(email, role, filename, "AccountDetails");
+            } 
+            else if(action.equals("Get Report")){
+                String year = "2022";
+                
+                AnnualNumberOfUsers anou = new AnnualNumberOfUsers();
+                filename = anou.AnnualNumberOfUsers(email, role, year, conn);
                 st.Stamper(email, role, filename, "AccountDetails");
             }
             

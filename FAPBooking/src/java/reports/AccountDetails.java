@@ -39,9 +39,13 @@ public class AccountDetails {
     String role = "";
     ResultSet userResult;
     ResultSet reservationResult;
+    
+    //Mandatory
     String location = System.getProperty("user.home");
     String Filename;
     Connection conn;
+    
+    //Model
     UserManager um = new UserManager();
     BookingManager bm = new BookingManager();
 
@@ -61,6 +65,8 @@ public class AccountDetails {
         System.out.println("AccountDetails.java");
         System.out.println("Username: " + this.email);
         System.out.println("Role: " + this.role + "\n");
+        
+        //Querries - galing sa model for querries
         userResult = um.getSingleUser(email, conn);
         reservationResult = bm.userReservations(email, conn);
         
@@ -95,6 +101,10 @@ public class AccountDetails {
 
             Filename = location + "\\Desktop\\" + email + "_" + dtfFilename.format(now) + "_AccountDetails.pdf";
 
+            System.out.println("Account Details Filename: " + Filename);
+            
+            System.out.println("location: " + location);
+            
             //Directs PDF to currect project directory (Tentative)
             //PdfWriter.getInstance(doc, new FileOutputStream(currPath + "\\Admin" + uname + "Report.pdf"));
             //Header/Footer Event
